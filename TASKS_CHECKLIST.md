@@ -1,7 +1,7 @@
 # TASKS_CHECKLIST.md
 
 ## Universal /push — Swarm Goal
-Status: COMPLETE (release openfable-20261011 published 2026-10-11)
+Status: COMPLETE (release openfable-20261011-v2 published 2026-10-11)
 
 - [x] /swarm — activate swarm orchestration for all tasks
 - [x] Complete all tasks in TASKS_CHECKLIST.md (this file)
@@ -17,6 +17,16 @@ Status: COMPLETE (release openfable-20261011 published 2026-10-11)
 - [x] Macro /push command definition (skills/macro + command template)
 - [x] README screenshot sections for all platform artifacts
 - [x] Release asset manifest update
+
+## Additional Integrations Completed
+- [x] router-exploits suite (60+ CVEs, zero-dep router scanner)
+- [x] 24 Cyber Security Agents + skills + /commands
+- [x] agent-toolkit skills (3 new, 22 deduped)
+- [x] 254 openclaw plugin-skills (vscode_* excluded)
+- [x] C:\Projects sweep (179 skills, 26 agents, 2 commands)
+- [x] Home directory sweep (.opencode, .cursor, .vscode, .zcode, .openclaw, MCPs, projects, root files)
+- [x] .zcode/skills verified fully covered (290/290)
+- [x] /goal release-gate macro + /swarm command
 
 ## Verification (2026-10-11 session)
 - [x] bun typecheck passes (12/12 packages, 2026-10-11)

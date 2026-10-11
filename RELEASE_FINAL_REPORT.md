@@ -87,6 +87,16 @@ RELEASE PUBLISHED 2026-10-11:
   Git: commit a22f404 pushed to origin/main (c6c4135..a22f404)
   Pre-push hook re-verified: bun turbo typecheck 12/12 green
 
+RELEASE PUBLISHED 2026-10-11 (v2):
+  GitHub Release: openfable-20261011-v2
+  (https://github.com/ProjectZeroDays/OpenFable/releases/tag/openfable-20261011-v2)
+  Assets attached (4):
+    1. opencode-desktop-win-x64.exe (117,502,596 bytes / 112.07 MB, fresh 2026-10-11 build)
+    2. app-full-release.apk (15,269,937 bytes / 14.56 MB)
+    3. app-limited-release.apk (15,269,933 bytes / 14.56 MB)
+    4. SHA256SUMS.txt
+  Major integrations: router-exploits (60+ CVEs), 24 cyber agents, agent-toolkit, 254 openclaw, Projects sweep (179 skills, 26 agents), Home sweep, /swarm + /goal macros
+
 /goal VERDICT: PASS — typecheck 12/12, lint 0 errors, both APKs present,
 .exe present and fresh, docs updated, release published with all assets.
 
