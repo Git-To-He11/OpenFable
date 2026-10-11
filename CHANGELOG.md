@@ -1,6 +1,19 @@
 # Changelog
 
 ## 0.2.0-dev (2026-10-11)
+- Integrated router-exploits suite (zero-dep router CVE scanner/exploiter for Tenda/Wavlink/D-Link/Belkin)
+  - Agent: `packages/opencode/src/agent/router-exploits/router_exploits.py`
+  - Skill: `packages/opencode/src/skill/router-exploits/SKILL.md`
+  - Command: `/router-exploits` in `packages/opencode/src/command/router-exploits-cmd/`
+  - 60+ CVEs registered across 5 device families; `--scan`, `--cve`, `--all`, `--fuzz`, `--watch-firmware`, `--poc`, `--diff`, `--gen-runner`
+- Integrated 24 Cyber Security Agents (`src/agent/cyber-security/`) with per-agent skills (`src/skill/cyber-agents/`) and `/commands` (`src/command/cyber-agents-cmd/`)
+- Integrated agent-toolkit skills (`src/skill/toolkit/`, deduped 22 already-present)
+- Integrated 254 missing openclaw plugin-skills (`src/skill/openclaw/`, `vscode_*` extensions excluded)
+- Integrated C:\Projects sweep: 179 OmniRoute+Ruflo skills, 26 project agents, `/spy-push` + `/quantum-swarm` commands
+- `.zcode/skills` verified fully covered already (290/290 present, delta empty)
+- New `/goal` release-gate macro (`src/skill/macro/goal.yaml`)
+
+## 0.2.0-dev (2026-10-08)
 - Integrated 24 Cyber Security Agents (`src/agent/cyber-security/`) with per-agent skills (`src/skill/cyber-agents/`) and `/commands` (`src/command/cyber-agents-cmd/`)
 - Integrated agent-toolkit skills (`src/skill/toolkit/`, deduped 22 already-present)
 - Integrated 254 missing openclaw plugin-skills (`src/skill/openclaw/`, `vscode_*` extensions excluded)
