@@ -3,32 +3,33 @@ import java.util.Properties
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("org.jetbrains.kotlin.plugin.compose") version "2.1.0"
 }
 
 // ---------------------------------------------------------------------------
 // Release signing from environment variables (CI + local release builds):
-//   QUANTUM_KEYSTORE           path to the keystore (.jks)
-//   QUANTUM_KEYSTORE_PASSWORD  keystore password
-//   QUANTUM_KEY_ALIAS          key alias
-//   QUANTUM_KEY_PASSWORD       key password (defaults to keystore password)
+//   OPENFABLE_KEYSTORE           path to the keystore (.jks)
+//   OPENFABLE_KEYSTORE_PASSWORD  keystore password
+//   OPENFABLE_KEY_ALIAS          key alias
+//   OPENFABLE_KEY_PASSWORD       key password (defaults to keystore password)
 // Falls back to debug signing when the variables are absent so local
 // `assembleRelease` still produces an installable APK.
 // ---------------------------------------------------------------------------
-val envKeystore: String? = providers.environmentVariable("QUANTUM_KEYSTORE").orNull
-val envStorePass: String? = providers.environmentVariable("QUANTUM_KEYSTORE_PASSWORD").orNull
-val envKeyAlias: String? = providers.environmentVariable("QUANTUM_KEY_ALIAS").orNull
-val envKeyPass: String? = providers.environmentVariable("QUANTUM_KEY_PASSWORD").orNull ?: envStorePass
+val envKeystore: String? = providers.environmentVariable("OPENFABLE_KEYSTORE").orNull
+val envStorePass: String? = providers.environmentVariable("OPENFABLE_KEYSTORE_PASSWORD").orNull
+val envKeyAlias: String? = providers.environmentVariable("OPENFABLE_KEY_ALIAS").orNull
+val envKeyPass: String? = providers.environmentVariable("OPENFABLE_KEY_PASSWORD").orNull ?: envStorePass
 
 android {
-    namespace = "com.projectzerodays.quantumcli"
-    compileSdk = 34
+    namespace = "com.projectzerodays.openfable"
+    compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.projectzerodays.quantumcli"
+        applicationId = "com.projectzerodays.openfable"
         minSdk = 26
-        targetSdk = 34
-        versionCode = 3
-        versionName = "4.4.2"
+        targetSdk = 35
+        versionCode = 5
+        versionName = "0.2.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables { useSupportLibrary = true }
     }
@@ -43,6 +44,18 @@ android {
                 keyPassword = envKeyPass
                 enableV1Signing = true
                 enableV2Signing = true
+                enableV3Signing = true
+            }
+        } else {
+            // Allow local release builds with debug key for testing
+            create("release") {
+                storeFile = rootProject.file("debug.keystore")
+                storePassword = "android"
+                keyAlias = "androiddebugkey"
+                keyPassword = "android"
+                enableV1Signing = true
+                enableV2Signing = true
+                enableV3Signing = true
             }
         }
     }
@@ -55,11 +68,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            if (envKeystore != null && envStorePass != null && envKeyAlias != null && envKeyPass != null) {
-                signingConfig = signingConfigs.getByName("release")
-            } else {
-                signingConfig = signingConfigs.getByName("debug")
-            }
+            signingConfig = signingConfigs.getByName("release")
         }
         debug {
             applicationIdSuffix = ".debug"
@@ -97,7 +106,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.14"
+        // Kotlin 2.0+ uses the Compose Compiler Gradle plugin instead of kotlinCompilerExtensionVersion
     }
     packaging {
         resources {
@@ -108,8 +117,8 @@ android {
         }
     }
     lint {
-        abortOnError = false
-        checkReleaseBuilds = false
+        abortOnError = true
+        checkReleaseBuilds = true
     }
     testOptions {
         unitTests.isReturnDefaultValues = true
@@ -117,7 +126,7 @@ android {
 }
 
 dependencies {
-    val composeBom = platform("androidx.compose:compose-bom:2024.05.00")
+    val composeBom = platform("androidx.compose:compose-bom:2024.10.01")
     implementation(composeBom)
     androidTestImplementation(composeBom)
 
