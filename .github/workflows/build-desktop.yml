@@ -1,0 +1,38 @@
+name: build-desktop
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main, dev]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      OPENFABLE_CHANNEL: prod
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: ./.github/actions/setup-bun
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build opencode server
+        run: bun run --cwd packages/opencode build:node
+
+      - name: Build desktop app
+        run: |
+          cd packages/desktop
+          bun run build
+          bun run package:win
+
+      - name: Upload desktop artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: desktop-exe
+          path: packages/desktop/dist/*.exe

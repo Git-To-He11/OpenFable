@@ -174,7 +174,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
       const ok =
         hasKey ||
         Boolean(authInfo) ||
-        Boolean(config.provider?.["openfable"]?.options?.apiKey)
+        Boolean(config.provider?.["opencode"]?.options?.apiKey)
 
       // Prefer working opencode-zen auth; fall back to MiMo / xiaomi if Zen free tier blocks
       const opencodeZenKey = (authInfo && (authInfo.type === "api" || authInfo.type === "wellknown") ? authInfo.key : undefined) ?? env["OPENCODE_API_KEY"]
@@ -290,16 +290,10 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
       const profile = configProfile ?? envProfile
 
       const awsAccessKeyId = env["AWS_ACCESS_KEY_ID"]
-
-      // TODO: Using process.env directly because Env.set only updates a process.env shallow copy,
-      // until the scope of the Env API is clarified (test only or runtime?)
       const awsBearerToken = iife(() => {
-        const envToken = process.env.AWS_BEARER_TOKEN_BEDROCK
+        const envToken = env["AWS_BEARER_TOKEN_BEDROCK"]
         if (envToken) return envToken
-        if (auth?.type === "api") {
-          process.env.AWS_BEARER_TOKEN_BEDROCK = auth.key
-          return auth.key
-        }
+        if (auth?.type === "api") return auth.key
         return undefined
       })
 
@@ -531,19 +525,15 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
     }),
     "sap-ai-core": Effect.fnUntraced(function* () {
       const auth = yield* dep.auth("sap-ai-core")
-      // TODO: Using process.env directly because Env.set only updates a shallow copy (not process.env),
-      // until the scope of the Env API is clarified (test only or runtime?)
+      const env = yield* dep.env()
       const envServiceKey = iife(() => {
-        const envAICoreServiceKey = process.env.AICORE_SERVICE_KEY
+        const envAICoreServiceKey = env["AICORE_SERVICE_KEY"]
         if (envAICoreServiceKey) return envAICoreServiceKey
-        if (auth?.type === "api") {
-          process.env.AICORE_SERVICE_KEY = auth.key
-          return auth.key
-        }
+        if (auth?.type === "api") return auth.key
         return undefined
       })
-      const deploymentId = process.env.AICORE_DEPLOYMENT_ID
-      const resourceGroup = process.env.AICORE_RESOURCE_GROUP
+      const deploymentId = env["AICORE_DEPLOYMENT_ID"]
+      const resourceGroup = env["AICORE_RESOURCE_GROUP"]
 
       return {
         autoload: !!envServiceKey,

@@ -1,13 +1,13 @@
 {
   "name": "@openfable/desktop",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
   "license": "MIT",
-  "homepage": "https://opencode.ai",
+  "homepage": "https://github.com/ProjectZeroDays/OpenFable",
   "author": {
-    "name": "OpenCode",
-    "email": "hello@opencode.ai"
+    "name": "ProjectZeroDays",
+    "email": "xanstomper@proton.me"
   },
   "scripts": {
     "typecheck": "tsgo -b",
