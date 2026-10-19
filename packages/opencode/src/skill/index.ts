@@ -136,14 +136,18 @@ const add = Effect.fnUntraced(function* (state: State, match: string, bus: Bus.I
   if (!md) return
 
   const parsed = Info.pick({ name: true, description: true, hidden: true }).safeParse(md.data)
-  if (!parsed.success) return
+  if (!parsed.success) {
+    log.error("skill SKILL.md parse failed", { skill: match, issues: parsed.error.issues })
+    return
+  }
 
   if (state.skills[parsed.data.name]) {
-    log.warn("duplicate skill name", {
+    log.warn("duplicate skill name — skipping duplicate", {
       name: parsed.data.name,
       existing: state.skills[parsed.data.name].location,
       duplicate: match,
     })
+    return
   }
 
   state.dirs.add(path.dirname(match))
@@ -363,8 +367,8 @@ export function fmt(list: Info[], opts: { verbose: boolean }) {
   ].join("\n")
 }
 
-export * as Skill from "."
+export { zcodeSkills, type ZcodeSkill } from './zcode'
 
-// Integrated external skills
-export * from './zcode'
+// Namespace export for tests (Skill.defaultLayer, Skill.Service, Skill.fmt, etc.)
+export * as Skill from "."
 
