@@ -542,7 +542,7 @@ it.live("session.processor effect tests retry recognized structured json errors"
 
         expect(value).toBe("continue")
         expect(yield* llm.calls).toBe(2)
-        expect(parts.some((part) => part.type === "text" && part.text === "after")).toBe(true)
+        expect(parts.some((part: any) => part.type === "text" && part.text === "after")).toBe(true)
         expect(handle.message.error).toBeUndefined()
       }),
     { git: true, config: (url) => providerCfg(url) },
