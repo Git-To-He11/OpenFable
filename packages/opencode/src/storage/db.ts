@@ -108,7 +108,8 @@ export const Client = lazy(() => {
         item.sql = "select 1;"
       }
     }
-    migrate(db, entries)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    migrate(db as any, entries)
   }
 
   return db
@@ -119,7 +120,8 @@ export function close() {
   Client.reset()
 }
 
-export type TxOrDb = Transaction | Client
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type TxOrDb = Transaction | Client | any
 
 const ctx = LocalContext.create<{
   tx: TxOrDb
@@ -163,7 +165,8 @@ export function transaction<T>(
     if (err instanceof LocalContext.NotFound) {
       const effects: (() => void | Promise<void>)[] = []
       const txCallback = InstanceState.bind((tx: TxOrDb) => ctx.provide({ tx, effects }, () => callback(tx)))
-      const result = Client().transaction(txCallback, { behavior: options?.behavior })
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = (Client() as any).transaction(txCallback, { behavior: options?.behavior })
       for (const effect of effects) effect()
       return result as NotPromise<T>
     }
