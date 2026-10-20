@@ -119,7 +119,7 @@ const MIGRATIONS: Migration[] = [
           .text()
           .split("\n")
           .filter(Boolean)
-          .map((x) => x.trim())
+          .map((x: any) => x.trim())
           .toSorted()
         if (!id) continue
         projectID = id
@@ -314,7 +314,7 @@ export const layer = Layer.effect(
         })
         .pipe(Effect.catch(() => Effect.succeed<string[]>([])))
       return result
-        .map((x) => [...prefix, ...x.slice(0, -5).split(path.sep)])
+        .map((x: any) => [...prefix, ...x.slice(0, -5).split(path.sep)])
         .toSorted((a, b) => a.join("/").localeCompare(b.join("/")))
     })
 

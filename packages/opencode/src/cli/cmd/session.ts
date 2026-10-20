@@ -152,8 +152,8 @@ export const SessionListCommand = cmd({
 function formatSessionTable(sessions: Session.Info[]): string {
   const lines: string[] = []
 
-  const maxIdWidth = Math.max(20, ...sessions.map((s) => s.id.length))
-  const maxTitleWidth = Math.max(25, ...sessions.map((s) => s.title.length))
+  const maxIdWidth = Math.max(20, ...sessions.map((s: any) => s.id.length))
+  const maxTitleWidth = Math.max(25, ...sessions.map((s: any) => s.title.length))
 
   const header = `Session ID${" ".repeat(maxIdWidth - 10)}  Title${" ".repeat(maxTitleWidth - 5)}  Updated`
   lines.push(header)
@@ -169,7 +169,7 @@ function formatSessionTable(sessions: Session.Info[]): string {
 }
 
 function formatSessionJSON(sessions: Session.Info[]): string {
-  const jsonData = sessions.map((session) => ({
+  const jsonData = sessions.map((session: any) => ({
     id: session.id,
     title: session.title,
     updated: session.time.updated,

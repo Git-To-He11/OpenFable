@@ -420,7 +420,7 @@ describe("file/index Filesystem patterns", () => {
         directory: tmp.path,
         fn: async () => {
           const result = await status()
-          const entry = result.find((f) => f.path === "file.txt")
+          const entry = result.find((f: any) => f.path === "file.txt")
           expect(entry).toBeDefined()
           expect(entry!.status).toBe("modified")
           expect(entry!.added).toBeGreaterThan(0)
@@ -437,7 +437,7 @@ describe("file/index Filesystem patterns", () => {
         directory: tmp.path,
         fn: async () => {
           const result = await status()
-          const entry = result.find((f) => f.path === "new.txt")
+          const entry = result.find((f: any) => f.path === "new.txt")
           expect(entry).toBeDefined()
           expect(entry!.status).toBe("added")
           expect(entry!.added).toBe(4) // 3 lines + trailing newline splits to 4
@@ -459,8 +459,8 @@ describe("file/index Filesystem patterns", () => {
         fn: async () => {
           const result = await status()
           // Deleted files appear in both numstat (as "modified") and diff-filter=D (as "deleted")
-          const entries = result.filter((f) => f.path === "gone.txt")
-          expect(entries.some((e) => e.status === "deleted")).toBe(true)
+          const entries = result.filter((f: any) => f.path === "gone.txt")
+          expect(entries.some((e: any) => e.status === "deleted")).toBe(true)
         },
       })
     })
@@ -481,9 +481,9 @@ describe("file/index Filesystem patterns", () => {
         directory: tmp.path,
         fn: async () => {
           const result = await status()
-          expect(result.some((f) => f.path === "keep.txt" && f.status === "modified")).toBe(true)
-          expect(result.some((f) => f.path === "remove.txt" && f.status === "deleted")).toBe(true)
-          expect(result.some((f) => f.path === "brand-new.txt" && f.status === "added")).toBe(true)
+          expect(result.some((f: any) => f.path === "keep.txt" && f.status === "modified")).toBe(true)
+          expect(result.some((f: any) => f.path === "remove.txt" && f.status === "deleted")).toBe(true)
+          expect(result.some((f: any) => f.path === "brand-new.txt" && f.status === "added")).toBe(true)
         },
       })
     })
@@ -530,7 +530,7 @@ describe("file/index Filesystem patterns", () => {
         directory: tmp.path,
         fn: async () => {
           const result = await status()
-          const entry = result.find((f) => f.path === "data.bin")
+          const entry = result.find((f: any) => f.path === "data.bin")
           expect(entry).toBeDefined()
           expect(entry!.status).toBe("modified")
           expect(entry!.added).toBe(0)
@@ -575,8 +575,8 @@ describe("file/index Filesystem patterns", () => {
         directory: tmp.path,
         fn: async () => {
           const nodes = await list()
-          const dirs = nodes.filter((n) => n.type === "directory")
-          const files = nodes.filter((n) => n.type === "file")
+          const dirs = nodes.filter((n: any) => n.type === "directory")
+          const files = nodes.filter((n: any) => n.type === "file")
           // Dirs come first
           const firstFile = nodes.findIndex((n) => n.type === "file")
           const lastDir = nodes.findLastIndex((n) => n.type === "directory")
@@ -584,9 +584,9 @@ describe("file/index Filesystem patterns", () => {
             expect(lastDir).toBeLessThan(firstFile)
           }
           // Alphabetical within dirs
-          expect(dirs.map((d) => d.name)).toEqual(dirs.map((d) => d.name).toSorted())
+          expect(dirs.map((d: any) => d.name)).toEqual(dirs.map((d: any) => d.name).toSorted())
           // Alphabetical within files
-          expect(files.map((f) => f.name)).toEqual(files.map((f) => f.name).toSorted())
+          expect(files.map((f: any) => f.name)).toEqual(files.map((f: any) => f.name).toSorted())
         },
       })
     })
@@ -600,7 +600,7 @@ describe("file/index Filesystem patterns", () => {
         directory: tmp.path,
         fn: async () => {
           const nodes = await list()
-          const names = nodes.map((n) => n.name)
+          const names = nodes.map((n: any) => n.name)
           expect(names).not.toContain(".git")
           expect(names).not.toContain(".DS_Store")
           expect(names).toContain("visible.txt")
@@ -619,9 +619,9 @@ describe("file/index Filesystem patterns", () => {
         directory: tmp.path,
         fn: async () => {
           const nodes = await list()
-          const logNode = nodes.find((n) => n.name === "app.log")
-          const tsNode = nodes.find((n) => n.name === "main.ts")
-          const buildNode = nodes.find((n) => n.name === "build")
+          const logNode = nodes.find((n: any) => n.name === "app.log")
+          const tsNode = nodes.find((n: any) => n.name === "main.ts")
+          const buildNode = nodes.find((n: any) => n.name === "build")
           expect(logNode?.ignored).toBe(true)
           expect(tsNode?.ignored).toBe(false)
           expect(buildNode?.ignored).toBe(true)
@@ -640,7 +640,7 @@ describe("file/index Filesystem patterns", () => {
         fn: async () => {
           const nodes = await list("sub")
           expect(nodes.length).toBe(2)
-          expect(nodes.map((n) => n.name).sort()).toEqual(["a.txt", "b.txt"])
+          expect(nodes.map((n: any) => n.name).sort()).toEqual(["a.txt", "b.txt"])
           // Paths should be relative to project root (normalize for Windows)
           expect(nodes[0].path.replaceAll("\\", "/").startsWith("sub/")).toBe(true)
         },
@@ -710,7 +710,7 @@ describe("file/index Filesystem patterns", () => {
         directory: tmp.path,
         fn: async () => {
           const result = await search({ query: "main", type: "file" })
-          expect(result.some((f) => f.includes("main"))).toBe(true)
+          expect(result.some((f: any) => f.includes("main"))).toBe(true)
         },
       })
     })
@@ -726,8 +726,8 @@ describe("file/index Filesystem patterns", () => {
           const result = await search({ query: "", type: "directory" })
           expect(result.length).toBeGreaterThan(0)
           // Find first hidden dir index
-          const firstHidden = result.findIndex((d) => d.split("/").some((p) => p.startsWith(".") && p.length > 1))
-          const lastVisible = result.findLastIndex((d) => !d.split("/").some((p) => p.startsWith(".") && p.length > 1))
+          const firstHidden = result.findIndex((d) => d.split("/").some((p: any) => p.startsWith(".") && p.length > 1))
+          const lastVisible = result.findLastIndex((d) => !d.split("/").some((p: any) => p.startsWith(".") && p.length > 1))
           if (firstHidden >= 0 && lastVisible >= 0) {
             expect(firstHidden).toBeGreaterThan(lastVisible)
           }
@@ -744,7 +744,7 @@ describe("file/index Filesystem patterns", () => {
           await init()
 
           const result = await search({ query: "main", type: "file" })
-          expect(result.some((f) => f.includes("main"))).toBe(true)
+          expect(result.some((f: any) => f.includes("main"))).toBe(true)
         },
       })
     })

@@ -20,7 +20,7 @@ export function resolveCredentials(
   providers: Array<{ id: string; key?: string; options: Record<string, unknown>; models: Record<string, { api: { url: string } }> }>,
   config: VoiceProviderConfig,
 ): VoiceCredentials | VoiceCredentialError {
-  const provider = providers.find((p) => p.id === config.providerID)
+  const provider = providers.find((p: any) => p.id === config.providerID)
   if (!provider) return { error: "not_found", providerID: config.providerID, model: config.model }
   const apiKey = provider.key || (provider.options?.apiKey as string | undefined)
   if (!apiKey) return { error: "no_key", providerID: config.providerID, model: config.model }

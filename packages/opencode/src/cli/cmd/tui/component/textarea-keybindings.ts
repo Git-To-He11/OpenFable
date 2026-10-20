@@ -48,7 +48,7 @@ function mapTextareaKeybindings(
   const configKey = `input_${action.replace(/-/g, "_")}`
   const bindings = keybinds[configKey]
   if (!bindings) return []
-  return bindings.map((binding) => ({
+  return bindings.map((binding: any) => ({
     name: binding.name,
     ctrl: binding.ctrl || undefined,
     meta: binding.meta || undefined,

@@ -71,7 +71,7 @@ distinctivetoken from CC`,
 
           const results = yield* memory.search({ query: "distinctivetoken" })
           expect(results.length).toBe(2)
-          const scopes = results.map((r) => r.scope).sort()
+          const scopes = results.map((r: any) => r.scope).sort()
           expect(scopes).toEqual(["cc", "global"])
         }),
       { config: noLazyReconcile },

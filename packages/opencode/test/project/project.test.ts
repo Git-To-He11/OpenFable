@@ -38,7 +38,7 @@ function mockGitFailure(failArg: string) {
       return ChildProcessSpawner.make(
         Effect.fnUntraced(function* (command) {
           const std = ChildProcess.isStandardCommand(command) ? command : undefined
-          if (std?.command === "git" && std.args.some((a) => a === failArg)) {
+          if (std?.command === "git" && std.args.some((a: any) => a === failArg)) {
             return ChildProcessSpawner.makeHandle({
               pid: ChildProcessSpawner.ProcessId(0),
               exitCode: Effect.succeed(ChildProcessSpawner.ExitCode(128)),
@@ -436,7 +436,7 @@ describe("Project.list and Project.get", () => {
 
     const all = Project.list()
     expect(all.length).toBeGreaterThan(0)
-    expect(all.find((p) => p.id === project.id)).toBeDefined()
+    expect(all.find((p: any) => p.id === project.id)).toBeDefined()
   })
 
   test("get returns project by id", async () => {
@@ -497,6 +497,6 @@ describe("Project.addSandbox and Project.removeSandbox", () => {
     await run((svc) => svc.addSandbox(project.id, sandboxDir))
 
     GlobalBus.off("event", on)
-    expect(events.some((e) => e.payload.type === Project.Event.Updated.type)).toBe(true)
+    expect(events.some((e: any) => e.payload.type === Project.Event.Updated.type)).toBe(true)
   })
 })

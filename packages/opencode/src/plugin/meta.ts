@@ -142,7 +142,7 @@ function next(prev: Entry | undefined, core: Core, now: number): { state: State;
 export async function touchMany(items: Touch[]): Promise<Array<{ state: State; entry: Entry }>> {
   if (!items.length) return []
   const file = storePath()
-  const rows = await Promise.all(items.map((item) => row(item)))
+  const rows = await Promise.all(items.map((item: any) => row(item)))
 
   return Flock.withLock(lock(file), async () => {
     const store = await read(file)

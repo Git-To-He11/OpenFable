@@ -60,7 +60,7 @@ describe("plugin.meta", () => {
     expect((three.entry.modified ?? 0) > (one.entry.modified ?? 0)).toBe(true)
 
     const all = await PluginMeta.list()
-    expect(Object.values(all).some((item) => item.spec === spec && item.source === "file")).toBe(true)
+    expect(Object.values(all).some((item: any) => item.spec === spec && item.source === "file")).toBe(true)
     const saved = await map<{ spec: string; load_count: number }>(file)
     expect(saved["demo.file"]?.spec).toBe(spec)
     expect(saved["demo.file"]?.load_count).toBe(3)
@@ -94,9 +94,9 @@ describe("plugin.meta", () => {
     expect(two.entry.load_count).toBe(2)
 
     const all = await PluginMeta.list()
-    expect(Object.values(all).some((item) => item.id === "acme-plugin" && item.version === "1.1.0")).toBe(true)
+    expect(Object.values(all).some((item: any) => item.id === "acme-plugin" && item.version === "1.1.0")).toBe(true)
     const saved = await map<{ id: string; version?: string }>(file)
-    expect(Object.values(saved).some((item) => item.id === "acme-plugin" && item.version === "1.1.0")).toBe(true)
+    expect(Object.values(saved).some((item: any) => item.id === "acme-plugin" && item.version === "1.1.0")).toBe(true)
   })
 
   test("serializes concurrent metadata updates across processes", async () => {
@@ -124,14 +124,14 @@ describe("plugin.meta", () => {
       ),
     )
 
-    expect(out.map((item) => item.code)).toEqual(Array.from({ length: n }, () => 0))
-    expect(out.map((item) => item.stderr.toString()).filter(Boolean)).toEqual([])
+    expect(out.map((item: any) => item.code)).toEqual(Array.from({ length: n }, () => 0))
+    expect(out.map((item: any) => item.stderr.toString()).filter(Boolean)).toEqual([])
 
     const all = await PluginMeta.list()
-    const hit = Object.values(all).find((item) => item.spec === spec)
+    const hit = Object.values(all).find((item: any) => item.spec === spec)
     expect(hit?.load_count).toBe(n)
 
     const saved = await map<{ spec: string; load_count: number }>(file)
-    expect(Object.values(saved).find((item) => item.spec === spec)?.load_count).toBe(n)
+    expect(Object.values(saved).find((item: any) => item.spec === spec)?.load_count).toBe(n)
   }, 20_000)
 })

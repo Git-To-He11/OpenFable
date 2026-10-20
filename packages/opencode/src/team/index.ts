@@ -76,7 +76,7 @@ export const layer: Layer.Layer<Service, never, Bus.Service> = Layer.effect(
       role: string,
     ) {
       const members = yield* readMembersFile(teamID)
-      const existing = members.find((m) => m.sessionID === sessionID)
+      const existing = members.find((m: any) => m.sessionID === sessionID)
       if (!existing) {
         members.push({ sessionID, agent, role, joinedAt: Date.now() })
         yield* writeMembersFile(teamID, members)
@@ -89,7 +89,7 @@ export const layer: Layer.Layer<Service, never, Bus.Service> = Layer.effect(
       sessionID: SessionID,
     ) {
       const members = yield* readMembersFile(teamID)
-      const filtered = members.filter((m) => m.sessionID !== sessionID)
+      const filtered = members.filter((m: any) => m.sessionID !== sessionID)
       if (filtered.length !== members.length) {
         yield* writeMembersFile(teamID, filtered)
         log.info("team member removed", { teamID, sessionID })

@@ -46,11 +46,11 @@ export const layer: Layer.Layer<Service> = Layer.effect(
   Service,
   Effect.gen(function* () {
     const getReference = Effect.fn("MythosAnthology.getReference")(function* (topic: string) {
-      return TOPICS.find((t) => t.topic === topic)
+      return TOPICS.find((t: any) => t.topic === topic)
     })
 
     const listTopics = Effect.fn("MythosAnthology.listTopics")(function* () {
-      return TOPICS.map((t) => t.topic)
+      return TOPICS.map((t: any) => t.topic)
     })
 
     const getFrameworkPath = Effect.fn("MythosAnthology.getFrameworkPath")(function* () {

@@ -38,7 +38,7 @@ export class CognitiveOrchestrator {
   onEvent(listener: (event: WorkflowEvent) => void): () => void {
     this.listeners.push(listener)
     return () => {
-      this.listeners = this.listeners.filter((l) => l !== listener)
+      this.listeners = this.listeners.filter((l: any) => l !== listener)
     }
   }
 
@@ -147,7 +147,7 @@ export class CognitiveOrchestrator {
   }
 
   private countFilesChanged(result: VerifyResult): number {
-    const files = new Set(result.diagnostics.map((d) => d.file))
+    const files = new Set(result.diagnostics.map((d: any) => d.file))
     return files.size
   }
 
@@ -157,7 +157,7 @@ export class CognitiveOrchestrator {
 
   private estimateTestCoverage(result: VerifyResult): number {
     if (result.testPass) return 0.8
-    if (result.diagnostics.some((d) => d.kind === "test")) return 0.3
+    if (result.diagnostics.some((d: any) => d.kind === "test")) return 0.3
     return 0.5
   }
 }

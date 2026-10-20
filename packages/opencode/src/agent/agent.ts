@@ -89,14 +89,14 @@ export const layer = Layer.effect(
       Effect.fn("Agent.state")(function* (_ctx) {
         const cfg = yield* config.get()
         const skillDirs = yield* skill.dirs()
-        const whitelistedDirs = [Truncate.GLOB, ...skillDirs.map((dir) => path.join(dir, "*"))]
+        const whitelistedDirs = [Truncate.GLOB, ...skillDirs.map((dir: any) => path.join(dir, "*"))]
 
         const defaults = Permission.fromConfig({
           "*": "allow",
           doom_loop: "ask",
           external_directory: {
             "*": "ask",
-            ...Object.fromEntries(whitelistedDirs.map((dir) => [dir, "allow"])),
+            ...Object.fromEntries(whitelistedDirs.map((dir: any) => [dir, "allow"])),
           },
           question: "deny",
           plan_enter: "deny",
@@ -225,7 +225,7 @@ export const layer = Layer.effect(
                 read: "allow",
                 external_directory: {
                   "*": "ask",
-                  ...Object.fromEntries(whitelistedDirs.map((dir) => [dir, "allow"])),
+                  ...Object.fromEntries(whitelistedDirs.map((dir: any) => [dir, "allow"])),
                 },
               }),
               user,
@@ -407,7 +407,7 @@ export const layer = Layer.effect(
         // Ensure Truncate.GLOB is allowed unless explicitly configured
         for (const name in agents) {
           const agent = agents[name]
-          const explicit = agent.permission.some((r) => {
+          const explicit = agent.permission.some((r: any) => {
             if (r.permission !== "external_directory") return false
             if (r.action !== "deny") return false
             return r.pattern === Truncate.GLOB
@@ -449,7 +449,7 @@ export const layer = Layer.effect(
             if (agent.hidden === true) throw new Error(`default agent "${c.default_agent}" is hidden`)
             return agent.name
           }
-          const visible = Object.values(agents).find((a) => a.mode !== "subagent" && a.hidden !== true)
+          const visible = Object.values(agents).find((a: any) => a.mode !== "subagent" && a.hidden !== true)
           if (!visible) throw new Error("no primary visible agent found")
           return visible.name
         })
@@ -517,7 +517,7 @@ export const layer = Layer.effect(
                 )),
             {
               role: "user",
-              content: `Create an agent configuration based on this request: "${input.description}".\n\nIMPORTANT: The following identifiers already exist and must NOT be used: ${existing.map((i) => i.name).join(", ")}\n  Return ONLY the JSON object, no other text, do not wrap in backticks`,
+              content: `Create an agent configuration based on this request: "${input.description}".\n\nIMPORTANT: The following identifiers already exist and must NOT be used: ${existing.map((i: any) => i.name).join(", ")}\n  Return ONLY the JSON object, no other text, do not wrap in backticks`,
             },
           ],
           model: language,

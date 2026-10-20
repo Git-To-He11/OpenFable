@@ -137,7 +137,7 @@ function failedRemoves(...chunks: string[]) {
   return chunks.filter(Boolean).flatMap((chunk) =>
     chunk
       .split("\n")
-      .map((line) => line.trim())
+      .map((line: any) => line.trim())
       .flatMap((line) => {
         const match = line.match(/^warning:\s+failed to remove\s+(.+):\s+/i)
         if (!match) return []
@@ -320,7 +320,7 @@ export const layer: Layer.Layer<
     function parseWorktreeList(text: string) {
       return text
         .split("\n")
-        .map((line) => line.trim())
+        .map((line: any) => line.trim())
         .reduce<{ path?: string; branch?: string }[]>((acc, line) => {
           if (!line) return acc
           if (line.startsWith("worktree ")) {

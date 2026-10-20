@@ -579,7 +579,7 @@ const older = (row: Cursor) =>
   or(lt(MessageTable.time_created, row.time), and(eq(MessageTable.time_created, row.time), lt(MessageTable.id, row.id)))
 
 function hydrate(rows: (typeof MessageTable.$inferSelect)[]) {
-  const ids = rows.map((row) => row.id)
+  const ids = rows.map((row: any) => row.id)
   const partByMessage = new Map<string, Part[]>()
   if (ids.length > 0) {
     const partRows = Database.use((db) =>
@@ -598,7 +598,7 @@ function hydrate(rows: (typeof MessageTable.$inferSelect)[]) {
     }
   }
 
-  return rows.map((row) => ({
+  return rows.map((row: any) => ({
     info: info(row),
     parts: partByMessage.get(row.id) ?? [],
   }))
@@ -646,7 +646,7 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
         text: string
         attachments?: Array<{ mime: string; url: string; filename?: string }>
       }
-      const attachments = (outputObject.attachments ?? []).filter((attachment) => {
+      const attachments = (outputObject.attachments ?? []).filter((attachment: any) => {
         return attachment.url.startsWith("data:") && attachment.url.includes(",")
       })
 
@@ -654,7 +654,7 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
         type: "content",
         value: [
           { type: "text", text: outputObject.text },
-          ...attachments.map((attachment) => ({
+          ...attachments.map((attachment: any) => ({
             type: "media",
             mediaType: attachment.mime,
             data: iife(() => {
@@ -731,7 +731,7 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
         msg.info.error &&
         !(
           AbortedError.isInstance(msg.info.error) &&
-          msg.parts.some((part) => part.type !== "step-start" && part.type !== "reasoning")
+          msg.parts.some((part: any) => part.type !== "step-start" && part.type !== "reasoning")
         )
       ) {
         continue
@@ -760,8 +760,8 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
 
             // For providers that don't support media in tool results, extract media files
             // (images, PDFs) to be sent as a separate user message
-            const mediaAttachments = attachments.filter((a) => isMedia(a.mime))
-            const nonMediaAttachments = attachments.filter((a) => !isMedia(a.mime))
+            const mediaAttachments = attachments.filter((a: any) => isMedia(a.mime))
+            const nonMediaAttachments = attachments.filter((a: any) => !isMedia(a.mime))
             if (!supportsMediaInToolResults && mediaAttachments.length > 0) {
               media.push(...mediaAttachments)
             }
@@ -843,7 +843,7 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
                 type: "text" as const,
                 text: SYNTHETIC_ATTACHMENT_PROMPT,
               },
-              ...media.map((attachment) => ({
+              ...media.map((attachment: any) => ({
                 type: "file" as const,
                 url: attachment.url,
                 mediaType: attachment.mime,
@@ -856,11 +856,11 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
     }
   }
 
-  const tools = Object.fromEntries(Array.from(toolNames).map((toolName) => [toolName, { toModelOutput }]))
+  const tools = Object.fromEntries(Array.from(toolNames).map((toolName: any) => [toolName, { toModelOutput }]))
 
   return yield* Effect.promise(() =>
     convertToModelMessages(
-      result.filter((msg) => msg.parts.some((part) => part.type !== "step-start")),
+      result.filter((msg: any) => msg.parts.some((part: any) => part.type !== "step-start")),
       {
         //@ts-expect-error (convertToModelMessages expects a ToolSet but only actually needs tools[name]?.toModelOutput)
         tools,
@@ -979,7 +979,7 @@ export function filterCompacted(msgs: Iterable<WithParts>) {
   const result = [] as WithParts[]
   for (const msg of msgs) {
     result.push(msg)
-    if (msg.info.role === "user" && msg.parts.some((p) => p.type === "checkpoint" || p.type === "compaction")) break
+    if (msg.info.role === "user" && msg.parts.some((p: any) => p.type === "checkpoint" || p.type === "compaction")) break
   }
   result.reverse()
   return result

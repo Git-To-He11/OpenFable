@@ -273,7 +273,7 @@ export const layer: Layer.Layer<Service, never, Bus.Service> = Layer.effect(
 
     const renderForAgent = Effect.fn("ActorRegistry.renderForAgent")(function* (sessionID: SessionID) {
       const actors = yield* listBySession(sessionID)
-      const active = actors.filter((actor) => actor.background && (actor.status === "pending" || actor.status === "running"))
+      const active = actors.filter((actor: any) => actor.background && (actor.status === "pending" || actor.status === "running"))
       if (active.length === 0) return ""
 
       const lines: string[] = []

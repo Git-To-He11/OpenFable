@@ -39,7 +39,7 @@ describe("WorkflowRuntime agent() fan-out", () => {
         const { runID } = yield* runtime.start({ script, sessionID: parent.id, parentActorID: "main", model: ref })
         const outcome = yield* runtime.wait({ runID })
         expect(outcome.status).toBe("completed")
-        expect((outcome as { result: string[] }).result.filter((x) => x === "done").length).toBe(3)
+        expect((outcome as { result: string[] }).result.filter((x: any) => x === "done").length).toBe(3)
       }),
       { git: true, config: providerCfg },
     ),
@@ -105,7 +105,7 @@ describe("WorkflowRuntime concurrency + resilience", () => {
         const script = [
           `export const meta = { name: "t", description: "d" }`,
           `const r = await parallel([() => agent("a"), () => agent("b")])`,
-          `return r.map((x) => (x === null || x === undefined) ? "null" : x)`,
+          `return r.map((x: any) => (x === null || x === undefined) ? "null" : x)`,
         ].join("\n")
         const { runID } = yield* runtime.start({ script, sessionID: parent.id, parentActorID: "main", model: ref })
         const outcome = yield* runtime.wait({ runID })
@@ -153,7 +153,7 @@ describe("WorkflowRuntime convergence (scout drives fan-out)", () => {
           `export const meta = { name: "t", description: "d" }`,
           `const s = await agent("scout", { schema: ${JSON.stringify(scoutSchema)} })`,
           `const todo = (s && s.todo) || []`,
-          `await parallel(todo.map((u) => () => agent("work " + u)))`,
+          `await parallel(todo.map((u: any) => () => agent("work " + u)))`,
           `return todo.length`,
         ].join("\n")
         const { runID } = yield* runtime.start({ script, sessionID: parent.id, parentActorID: "main", model: ref })
@@ -247,7 +247,7 @@ describe("WorkflowRuntime error visibility", () => {
         const script = [
           `export const meta = { name: "t", description: "d" }`,
           `const r = await parallel([() => agent("a")])`,
-          `return r.map((x) => x.nope.deeper)`,
+          `return r.map((x: any) => x.nope.deeper)`,
         ].join("\n")
         const { runID } = yield* runtime.start({ script, sessionID: parent.id, parentActorID: "main", model: ref })
         const outcome = yield* runtime.wait({ runID })
@@ -344,11 +344,11 @@ describe("WorkflowRuntime cancel cascade", () => {
         expect(s.status).toBe("cancelled")
 
         // At least one child was actually spawned (else the test proves nothing).
-        const children = (yield* registry.listBySession(parent.id)).filter((a) => a.actorID !== "main")
+        const children = (yield* registry.listBySession(parent.id)).filter((a: any) => a.actorID !== "main")
         expect(children.length).toBeGreaterThan(0)
         // Every spawned child was reclaimed: cancel stamped lastOutcome="cancelled"
         // on each. An orphan (never reclaimed) would have lastOutcome unset here.
-        expect(children.filter((a) => a.lastOutcome !== "cancelled")).toEqual([])
+        expect(children.filter((a: any) => a.lastOutcome !== "cancelled")).toEqual([])
       }),
       { git: true, config: providerCfg },
     ),
@@ -401,7 +401,7 @@ describe("WorkflowRuntime per-agent timeout (straggler-abort)", () => {
         const script = [
           `export const meta = { name: "t", description: "d" }`,
           `const r = await parallel([() => agent("a"), () => agent("b")])`,
-          `return r.map((x) => (x === null || x === undefined) ? "null" : "ok")`,
+          `return r.map((x: any) => (x === null || x === undefined) ? "null" : "ok")`,
         ].join("\n")
         const { runID } = yield* runtime.start({
           script,
@@ -414,8 +414,8 @@ describe("WorkflowRuntime per-agent timeout (straggler-abort)", () => {
         const outcome = yield* runtime.wait({ runID })
         expect(outcome.status).toBe("completed")
         const r = (outcome as { result: string[] }).result
-        expect(r.filter((x) => x === "null").length).toBe(1)
-        expect(r.filter((x) => x === "ok").length).toBe(1)
+        expect(r.filter((x: any) => x === "null").length).toBe(1)
+        expect(r.filter((x: any) => x === "ok").length).toBe(1)
       }),
       { git: true, config: providerCfg },
     ),
@@ -447,7 +447,7 @@ describe("WorkflowRuntime lifecycle cap", () => {
         const script = [
           `export const meta = { name: "t", description: "d" }`,
           `const r = await parallel([() => agent("a"), () => agent("b"), () => agent("c")])`,
-          `return r.map((x) => (x === null || x === undefined) ? "null" : "ok")`,
+          `return r.map((x: any) => (x === null || x === undefined) ? "null" : "ok")`,
         ].join("\n")
         const { runID } = yield* runtime.start({
           script,
@@ -459,8 +459,8 @@ describe("WorkflowRuntime lifecycle cap", () => {
         const outcome = yield* runtime.wait({ runID })
         expect(outcome.status).toBe("completed")
         const r = (outcome as { result: string[] }).result
-        expect(r.filter((x) => x === "ok").length).toBe(2)
-        expect(r.filter((x) => x === "null").length).toBe(1)
+        expect(r.filter((x: any) => x === "ok").length).toBe(2)
+        expect(r.filter((x: any) => x === "null").length).toBe(1)
       }),
       { git: true, config: providerCfg },
     ),
@@ -636,8 +636,8 @@ describe("WorkflowRuntime list + resume", () => {
 
         // PRIMARY (and discriminating): exactly one re-launch happened — locked: 1
         // true + 1 false; unlocked: 2 true (double-launch).
-        expect(results.filter((r) => r.resumed).length).toBe(1)
-        expect(results.filter((r) => !r.resumed).length).toBe(1)
+        expect(results.filter((r: any) => r.resumed).length).toBe(1)
+        expect(results.filter((r: any) => !r.resumed).length).toBe(1)
 
         // The single relaunched pass replays cleanly to completion.
         const out = yield* runtime.wait({ runID })
@@ -690,7 +690,7 @@ describe("WorkflowRuntime agent() label + phase opts", () => {
         // agent() defaults agentType to "general" and shares the parent session, so
         // the child is the lone non-"main" actor in that session.
         const actors = yield* registry.listBySession(parent.id)
-        const child = actors.find((a) => a.actorID !== "main")
+        const child = actors.find((a: any) => a.actorID !== "main")
         expect(child?.description).toBe("[Implement] impl:foo")
       }),
       { git: true, config: providerCfg },
@@ -731,7 +731,7 @@ describe("WorkflowRuntime replay journal", () => {
         expect(r.resumed).toBe(true)
         const out2 = yield* runtime.wait({ runID: first.runID })
         expect(out2.status).toBe("completed")
-        expect((out2 as { result: string[] }).result.filter((x) => x === "done").length).toBe(3)
+        expect((out2 as { result: string[] }).result.filter((x: any) => x === "done").length).toBe(3)
         const st2 = yield* runtime.status({ runID: first.runID })
         expect(st2.agentCount).toBe(0) // ZERO new spawns on the resumed pass
       }),
@@ -766,9 +766,9 @@ describe("WorkflowRuntime replay journal", () => {
         const { Global } = yield* Effect.promise(() => import("../../src/global"))
         const p = `${Global.Path.data}/workflow/${first.runID}.jsonl`
         const lines = (yield* Effect.promise(() => Bun.file(p).text())).split("\n").filter(Boolean)
-        const agentLines = lines.filter((l) => l.includes('"t":"agent"'))
+        const agentLines = lines.filter((l: any) => l.includes('"t":"agent"'))
         const dropKey = JSON.parse(agentLines[agentLines.length - 1]).key
-        const kept = lines.filter((l) => !l.includes(`"${dropKey}"`))
+        const kept = lines.filter((l: any) => !l.includes(`"${dropKey}"`))
         yield* Effect.promise(() => fs.writeFile(p, kept.join("\n") + "\n"))
 
         // Resume: queue exactly ONE response (for the one dropped unit). The other
@@ -777,7 +777,7 @@ describe("WorkflowRuntime replay journal", () => {
         yield* runtime.resume({ runID: first.runID })
         const out = yield* runtime.wait({ runID: first.runID })
         expect(out.status).toBe("completed")
-        expect((out as { result: string[] }).result.filter((x) => x === "done").length).toBe(3)
+        expect((out as { result: string[] }).result.filter((x: any) => x === "done").length).toBe(3)
         const st = yield* runtime.status({ runID: first.runID })
         expect(st.agentCount).toBe(1) // exactly the one uncached unit re-spawned
       }),
@@ -839,7 +839,7 @@ describe("WorkflowRuntime replay journal", () => {
         expect(r.resumed).toBe(true)
         const out2 = yield* runtime.wait({ runID: first.runID })
         expect(out2.status).toBe("completed")
-        expect((out2 as { result: string[] }).result.filter((x) => x === "done").length).toBe(2)
+        expect((out2 as { result: string[] }).result.filter((x: any) => x === "done").length).toBe(2)
         const st2 = yield* runtime.status({ runID: first.runID })
         expect(st2.agentCount).toBe(2) // fresh re-spawn, NOT a 0-spawn replay
 
@@ -973,7 +973,7 @@ describe("WorkflowRuntime agent failure event (Gap 3)", () => {
         yield* Effect.sleep("100 millis")
         // Exactly 2 over-cap events (the cap-exceeding spawn attempts); zero
         // other-reason events since the 2 in-cap agents both succeeded.
-        const overCap = events.filter((r) => r === "over-cap")
+        const overCap = events.filter((r: any) => r === "over-cap")
         expect(overCap.length).toBe(2)
         expect(events.length).toBe(2) // no other reasons leaked in
       }),

@@ -110,7 +110,7 @@ export function getCooldownInfo(providerID: string, modelID?: string): CooldownE
 
 export function getActiveCooldowns(): CooldownEntry[] {
   const now = Date.now()
-  return Array.from(cooldowns.values()).filter((entry) => now < entry.cooldownUntil)
+  return Array.from(cooldowns.values()).filter((entry: any) => now < entry.cooldownUntil)
 }
 
 export function clearCooldown(providerID: string, modelID?: string): void {

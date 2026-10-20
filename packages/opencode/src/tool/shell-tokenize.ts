@@ -230,7 +230,7 @@ export function tokenize(script: string): Effect.Effect<Argv[], ParseError> {
     if (!heredocResult.ok) return Effect.fail(heredocResult.error)
     const { stripped, bodies } = heredocResult
 
-    const segments = splitTopLevelLines(preprocessComments(stripped)).filter((seg) => seg.text.trim() !== "")
+    const segments = splitTopLevelLines(preprocessComments(stripped)).filter((seg: any) => seg.text.trim() !== "")
     const out: Argv[] = []
     for (const seg of segments) {
       const unclosed = scanUnclosedQuote(seg.text)

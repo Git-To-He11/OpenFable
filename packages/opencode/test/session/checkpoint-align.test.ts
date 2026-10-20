@@ -11,11 +11,11 @@ type Msg = {
 
 const u = (id: string, partTypes: string[] = ["text"]): Msg => ({
   info: { role: "user", id },
-  parts: partTypes.map((t) => ({ type: t })),
+  parts: partTypes.map((t: any) => ({ type: t })),
 })
 const a = (id: string, partTypes: string[] = ["text"]): Msg => ({
   info: { role: "assistant", id },
-  parts: partTypes.map((t) => ({ type: t })),
+  parts: partTypes.map((t: any) => ({ type: t })),
 })
 
 describe("alignToNonToolResultUser", () => {

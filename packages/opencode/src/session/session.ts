@@ -881,7 +881,7 @@ export function* listGlobal(input?: {
     return query.orderBy(desc(SessionTable.time_updated), desc(SessionTable.id)).limit(limit).all()
   })
 
-  const ids = [...new Set(rows.map((row) => row.project_id))]
+  const ids = [...new Set(rows.map((row: any) => row.project_id))]
   const projects = new Map<string, ProjectInfo>()
 
   if (ids.length > 0) {

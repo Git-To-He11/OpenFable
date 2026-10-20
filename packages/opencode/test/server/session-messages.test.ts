@@ -92,7 +92,7 @@ describe("session messages endpoint", () => {
           const a = await app.request(`/session/${session.id}/message?limit=2`)
           expect(a.status).toBe(200)
           const aBody = (await a.json()) as MessageV2.WithParts[]
-          expect(aBody.map((item) => item.info.id)).toEqual(ids.slice(-2))
+          expect(aBody.map((item: any) => item.info.id)).toEqual(ids.slice(-2))
           const cursor = a.headers.get("x-next-cursor")
           expect(cursor).toBeTruthy()
           expect(a.headers.get("link")).toContain('rel="next"')
@@ -100,7 +100,7 @@ describe("session messages endpoint", () => {
           const b = await app.request(`/session/${session.id}/message?limit=2&before=${encodeURIComponent(cursor!)}`)
           expect(b.status).toBe(200)
           const bBody = (await b.json()) as MessageV2.WithParts[]
-          expect(bBody.map((item) => item.info.id)).toEqual(ids.slice(-4, -2))
+          expect(bBody.map((item: any) => item.info.id)).toEqual(ids.slice(-4, -2))
 
           await svc.remove(session.id)
         },
@@ -121,7 +121,7 @@ describe("session messages endpoint", () => {
           const res = await app.request(`/session/${session.id}/message`)
           expect(res.status).toBe(200)
           const body = (await res.json()) as MessageV2.WithParts[]
-          expect(body.map((item) => item.info.id)).toEqual(ids)
+          expect(body.map((item: any) => item.info.id)).toEqual(ids)
 
           await svc.remove(session.id)
         },
@@ -170,26 +170,26 @@ describe("session messages endpoint", () => {
           const def = await app.request(`/session/${session.id}/message`)
           expect(def.status).toBe(200)
           const defBody = (await def.json()) as MessageV2.WithParts[]
-          expect(defBody.map((m) => m.info.id)).toEqual([...main, ...more])
+          expect(defBody.map((m: any) => m.info.id)).toEqual([...main, ...more])
 
           // ?agent_id=<id> — that subagent's slice only.
           const sub = await app.request(`/session/${session.id}/message?agent_id=checkpoint-writer-1`)
           expect(sub.status).toBe(200)
           const subBody = (await sub.json()) as MessageV2.WithParts[]
-          expect(subBody.map((m) => m.info.id)).toEqual(writer)
+          expect(subBody.map((m: any) => m.info.id)).toEqual(writer)
 
           // ?agent_id=* — all slices, preserves the legacy "no filter" behavior
           // for callers that explicitly opt in.
           const all = await app.request(`/session/${session.id}/message?agent_id=*`)
           expect(all.status).toBe(200)
           const allBody = (await all.json()) as MessageV2.WithParts[]
-          expect(allBody.map((m) => m.info.id)).toEqual([...main, ...writer, ...more])
+          expect(allBody.map((m: any) => m.info.id)).toEqual([...main, ...writer, ...more])
 
           // Same defaulting on the cursor-paginated path.
           const limited = await app.request(`/session/${session.id}/message?limit=10`)
           expect(limited.status).toBe(200)
           const limitedBody = (await limited.json()) as MessageV2.WithParts[]
-          expect(limitedBody.map((m) => m.info.id)).toEqual([...main, ...more])
+          expect(limitedBody.map((m: any) => m.info.id)).toEqual([...main, ...more])
 
           await svc.remove(session.id)
         },

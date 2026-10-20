@@ -304,7 +304,7 @@ export const layer: Layer.Layer<Service, never, AccountRepo.Service | HttpClient
     })
 
     const token = Effect.fn("Account.token")((accountID: AccountID) =>
-      resolveAccess(accountID).pipe(Effect.map(Option.map((r) => r.accessToken))),
+      resolveAccess(accountID).pipe(Effect.map(Option.map((r: any) => r.accessToken))),
     )
 
     const activeOrg = Effect.fn("Account.activeOrg")(function* () {
@@ -315,7 +315,7 @@ export const layer: Layer.Layer<Service, never, AccountRepo.Service | HttpClient
       if (!account.active_org_id) return Option.none<ActiveOrg>()
 
       const accountOrgs = yield* orgs(account.id)
-      const org = accountOrgs.find((item) => item.id === account.active_org_id)
+      const org = accountOrgs.find((item: any) => item.id === account.active_org_id)
       if (!org) return Option.none<ActiveOrg>()
 
       return Option.some({ account, org })
@@ -328,7 +328,7 @@ export const layer: Layer.Layer<Service, never, AccountRepo.Service | HttpClient
         (account) =>
           orgs(account.id).pipe(
             Effect.catch(() => Effect.succeed([] as readonly Org[])),
-            Effect.map((orgs) => ({ account, orgs })),
+            Effect.map((orgs: any) => ({ account, orgs })),
           ),
         { concurrency: 3 },
       )

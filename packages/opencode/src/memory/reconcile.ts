@@ -113,7 +113,7 @@ export async function reconcileMemory(
         .select({ path: MemoryFtsTable.path, fingerprint: MemoryFtsTable.fingerprint })
         .from(MemoryFtsTable)
         .all(),
-    ).map((r) => [r.path, r.fingerprint]),
+    ).map((r: any) => [r.path, r.fingerprint]),
   )
 
   let pruned = 0

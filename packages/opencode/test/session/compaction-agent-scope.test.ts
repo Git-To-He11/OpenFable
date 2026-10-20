@@ -92,7 +92,7 @@ describe("compaction scope is (session_id, agent_id)", () => {
         expect(writerMsgs).toHaveLength(1)
         expect(writerMsgs[0].info.role).toBe("user")
         expect(writerMsgs[0].info.agentID).toBe("writer-1")
-        const boundaryPart = writerMsgs[0].parts.find((p) => p.type === "compaction")
+        const boundaryPart = writerMsgs[0].parts.find((p: any) => p.type === "compaction")
         expect(boundaryPart).toBeDefined()
         expect((boundaryPart as MessageV2.CompactionPart).auto).toBe(true)
 
@@ -102,14 +102,14 @@ describe("compaction scope is (session_id, agent_id)", () => {
           MessageV2.filterCompactedEffect(session.id, { agentID: "main" }),
         )
         expect(mainMsgs).toHaveLength(3)
-        expect(mainMsgs.map((m) => (m.parts[0] as MessageV2.TextPart).text)).toEqual([
+        expect(mainMsgs.map((m: any) => (m.parts[0] as MessageV2.TextPart).text)).toEqual([
           "main-1",
           "main-2",
           "main-3",
         ])
         for (const m of mainMsgs) {
           expect(m.info.agentID).toBe("main")
-          expect(m.parts.some((p) => p.type === "compaction")).toBe(false)
+          expect(m.parts.some((p: any) => p.type === "compaction")).toBe(false)
         }
 
         await svc.remove(session.id)
@@ -140,8 +140,8 @@ describe("compaction scope is (session_id, agent_id)", () => {
         const subMsgs = await run(
           SessionNs.Service.use((s) => s.messages({ sessionID: session.id, agentID: "sub-1" })),
         )
-        const boundaryInSub = subMsgs.find((m) =>
-          m.parts.some((p) => p.type === "compaction"),
+        const boundaryInSub = subMsgs.find((m: any) =>
+          m.parts.some((p: any) => p.type === "compaction"),
         )
         expect(boundaryInSub).toBeDefined()
         expect(boundaryInSub!.info.agentID).toBe("sub-1")
@@ -152,8 +152,8 @@ describe("compaction scope is (session_id, agent_id)", () => {
         const mainMsgs = await run(
           SessionNs.Service.use((s) => s.messages({ sessionID: session.id })),
         )
-        const boundaryInMain = mainMsgs.find((m) =>
-          m.parts.some((p) => p.type === "compaction"),
+        const boundaryInMain = mainMsgs.find((m: any) =>
+          m.parts.some((p: any) => p.type === "compaction"),
         )
         expect(boundaryInMain).toBeUndefined()
 
@@ -186,12 +186,12 @@ describe("compaction scope is (session_id, agent_id)", () => {
           MessageV2.filterCompactedEffect(session.id, { agentID: "writer-2" }),
         )
         expect(w2Msgs).toHaveLength(2)
-        expect(w2Msgs.map((m) => (m.parts[0] as MessageV2.TextPart).text)).toEqual([
+        expect(w2Msgs.map((m: any) => (m.parts[0] as MessageV2.TextPart).text)).toEqual([
           "writer-2-a",
           "writer-2-b",
         ])
         for (const m of w2Msgs) {
-          expect(m.parts.some((p) => p.type === "compaction")).toBe(false)
+          expect(m.parts.some((p: any) => p.type === "compaction")).toBe(false)
         }
 
         // writer-1 is compacted: its slice now starts at the boundary.
@@ -199,7 +199,7 @@ describe("compaction scope is (session_id, agent_id)", () => {
           MessageV2.filterCompactedEffect(session.id, { agentID: "writer-1" }),
         )
         expect(w1Msgs).toHaveLength(1)
-        expect(w1Msgs[0].parts.some((p) => p.type === "compaction")).toBe(true)
+        expect(w1Msgs[0].parts.some((p: any) => p.type === "compaction")).toBe(true)
         expect(w1Msgs[0].info.agentID).toBe("writer-1")
 
         await svc.remove(session.id)

@@ -63,7 +63,7 @@ function extractAnnotations(line: string): Effect.Effect<ReadonlyArray<Annotatio
   const payload = line.slice(5).trim()
   if (!payload || payload === "[DONE]") return Effect.succeed(undefined)
   return decodeFrame(payload).pipe(
-    Effect.map((frame) => {
+    Effect.map((frame: any) => {
       const choice = frame.choices?.[0]
       const list = choice?.delta?.annotations ?? choice?.message?.annotations
       return list && list.length > 0 ? list : undefined
@@ -100,7 +100,7 @@ export const call = (
       Stream.decodeText(),
       Stream.splitLines,
       Stream.mapEffect(extractAnnotations),
-      Stream.filter((value): value is ReadonlyArray<Annotation> => value !== undefined),
+      Stream.filter((value: any): value is ReadonlyArray<Annotation> => value !== undefined),
       Stream.runHead,
       Effect.catchIf(
         (err) => err.reason._tag === "StatusCodeError" && err.reason.response.status === 409,

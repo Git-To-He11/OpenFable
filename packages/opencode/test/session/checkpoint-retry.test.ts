@@ -76,7 +76,7 @@ describe("runValidatorsForCkpt", () => {
       expectedRevisions: [],
       projectID: ProjectID.global,
     })
-    const rules = new Set(violations.map((v) => v.rule))
+    const rules = new Set(violations.map((v: any) => v.rule))
     expect(rules.has("subsection-missing")).toBe(true)
   })
 })
@@ -91,7 +91,7 @@ describe("runTaskProgressValidators", () => {
     await fs.mkdir(taskDir, { recursive: true })
     await fs.writeFile(path.join(taskDir, "progress.md"), `## ckpt #1\n- Next: continue\n`)
     const violations = await runTaskProgressValidators(sessionID)
-    const rules = new Set(violations.map((v) => v.rule))
+    const rules = new Set(violations.map((v: any) => v.rule))
     expect(rules.has("next-filler")).toBe(true)
     await fs.rm(taskDir, { recursive: true, force: true })
   })
@@ -134,7 +134,7 @@ describe("runValidatorsForCkpt budget", () => {
       projectID: ProjectID.global,
       budgets: { checkpoint: 2000, memory: 8000, progress_per_task: 6000 },
     })
-    expect(violations.some((v) => v.severity === "extract-required" && v.file === "checkpoint.md")).toBe(true)
+    expect(violations.some((v: any) => v.severity === "extract-required" && v.file === "checkpoint.md")).toBe(true)
   })
 })
 

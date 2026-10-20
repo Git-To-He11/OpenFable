@@ -18,7 +18,7 @@ export function ensureProcessMetadata(fallback: "main" | "worker") {
 
 export function sanitizedProcessEnv(overrides?: Record<string, string>) {
   const env = Object.fromEntries(
-    Object.entries(process.env).filter((entry): entry is [string, string] => entry[1] !== undefined),
+    Object.entries(process.env).filter((entry: any): entry is [string, string] => entry[1] !== undefined),
   )
   return overrides ? Object.assign(env, overrides) : env
 }

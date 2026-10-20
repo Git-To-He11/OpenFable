@@ -6,16 +6,16 @@ describe("recallHintLines", () => {
     const lines = recallHintLines(undefined)
     expect(lines).toContain(`- task({ operation: "list" })`)
     expect(lines).toContain(`- actor({ operation: "status", actor_id: "<id>" })`)
-    expect(lines.some((l) => l.includes(`memory({ operation: "search"`))).toBe(true)
+    expect(lines.some((l: any) => l.includes(`memory({ operation: "search"`))).toBe(true)
   })
 
   test("shell mode for task+actor: shell forms, no JSON for those tools", () => {
     const lines = recallHintLines({ invocation_style: "shell" })
     expect(lines).toContain("- task list")
     expect(lines).toContain("- actor status <actor_id>")
-    expect(lines.some((l) => l.includes(`task({ operation`))).toBe(false)
-    expect(lines.some((l) => l.includes(`actor({ operation`))).toBe(false)
-    expect(lines.some((l) => l.includes(`memory({ operation: "search"`))).toBe(true)
+    expect(lines.some((l: any) => l.includes(`task({ operation`))).toBe(false)
+    expect(lines.some((l: any) => l.includes(`actor({ operation`))).toBe(false)
+    expect(lines.some((l: any) => l.includes(`memory({ operation: "search"`))).toBe(true)
   })
 
   test("per-tool: task shell, actor json", () => {

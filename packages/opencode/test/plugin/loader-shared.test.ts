@@ -553,7 +553,7 @@ describe("plugin.loader.shared", () => {
     try {
       await load(tmp.path)
 
-      const pkgs = install.mock.calls.map((call) => call[0])
+      const pkgs = install.mock.calls.map((call: any) => call[0])
       expect(pkgs).toContain("regular-plugin@1.0.0")
       expect(pkgs).not.toContain("opencode-openai-codex-auth@1.0.0")
       expect(pkgs).not.toContain("opencode-copilot-auth@1.0.0")
@@ -1066,7 +1066,7 @@ export default {
     const calls: Array<[string, boolean]> = []
 
     const loaded = await PluginLoader.loadExternal({
-      items: [tmp.extra.aSpec, tmp.extra.bSpec].map((spec) => ({
+      items: [tmp.extra.aSpec, tmp.extra.bSpec].map((spec: any) => ({
         spec,
         scope: "local" as const,
         source: tmp.path,
@@ -1091,7 +1091,7 @@ export default {
       [tmp.extra.aSpec, true],
       [tmp.extra.bSpec, true],
     ])
-    expect(loaded.map((item) => item.spec)).toEqual([tmp.extra.aSpec, tmp.extra.bSpec])
+    expect(loaded.map((item: any) => item.spec)).toEqual([tmp.extra.aSpec, tmp.extra.bSpec])
   })
 
   test("retries file plugins when finish returns undefined", async () => {

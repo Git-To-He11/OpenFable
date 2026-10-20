@@ -95,7 +95,7 @@ export async function colors(): Promise<{
       }
 
       // Return immediately if we have all 16 palette colors
-      if (paletteColors.filter((c) => c !== undefined).length === 16) {
+      if (paletteColors.filter((c: any) => c !== undefined).length === 16) {
         cleanup()
         resolve({ background, foreground, colors: paletteColors })
       }

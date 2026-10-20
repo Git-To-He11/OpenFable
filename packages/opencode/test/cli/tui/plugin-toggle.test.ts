@@ -60,7 +60,7 @@ test("toggles plugin runtime state by exported id", async () => {
     await TuiPluginRuntime.init({ api, config })
 
     await expect(fs.readFile(tmp.extra.marker, "utf8")).rejects.toThrow()
-    expect(TuiPluginRuntime.list().find((item) => item.id === "demo.toggle")).toEqual({
+    expect(TuiPluginRuntime.list().find((item: any) => item.id === "demo.toggle")).toEqual({
       id: "demo.toggle",
       source: "file",
       spec: tmp.extra.spec,
@@ -140,7 +140,7 @@ test("kv plugin_enabled overrides tui config on startup", async () => {
     await TuiPluginRuntime.init({ api, config })
 
     await expect(fs.readFile(tmp.extra.marker, "utf8")).resolves.toBe("on")
-    expect(TuiPluginRuntime.list().find((item) => item.id === "demo.startup")).toEqual({
+    expect(TuiPluginRuntime.list().find((item: any) => item.id === "demo.startup")).toEqual({
       id: "demo.startup",
       source: "file",
       spec: tmp.extra.spec,

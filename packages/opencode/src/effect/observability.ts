@@ -41,7 +41,7 @@ export function resource(): { serviceName: string; serviceVersion: string; attri
     if (!value) return {}
     try {
       return Object.fromEntries(
-        value.split(",").map((entry) => {
+        value.split(",").map((entry: any) => {
           const index = entry.indexOf("=")
           if (index < 1) throw new Error("Invalid OTEL_RESOURCE_ATTRIBUTES entry")
           return [decodeURIComponent(entry.slice(0, index)), decodeURIComponent(entry.slice(index + 1))]

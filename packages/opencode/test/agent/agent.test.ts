@@ -34,7 +34,7 @@ test("returns default native agents when no config", async () => {
     directory: tmp.path,
     fn: async () => {
       const agents = await load(tmp.path, (svc) => svc.list())
-      const names = agents.map((a) => a.name)
+      const names = agents.map((a: any) => a.name)
       expect(names).toContain("build")
       expect(names).toContain("plan")
       expect(names).toContain("general")
@@ -189,7 +189,7 @@ test("agent disable removes agent from list", async () => {
       const explore = await load(tmp.path, (svc) => svc.get("explore"))
       expect(explore).toBeUndefined()
       const agents = await load(tmp.path, (svc) => svc.list())
-      const names = agents.map((a) => a.name)
+      const names = agents.map((a: any) => a.name)
       expect(names).not.toContain("explore")
     },
   })
@@ -402,7 +402,7 @@ test("Agent.list keeps the default agent first, then native primaries, then the 
   await Instance.provide({
     directory: tmp.path,
     fn: async () => {
-      const names = (await load(tmp.path, (svc) => svc.list())).map((a) => a.name)
+      const names = (await load(tmp.path, (svc) => svc.list())).map((a: any) => a.name)
       // default_agent comes first
       expect(names[0]).toBe("plan")
       expect(names[1]).toBe("build")
@@ -740,17 +740,17 @@ test("bounded computation agents are exactly title, summary, compaction, checkpo
     fn: async () => {
       const agents = await load(tmp.path, (svc) => svc.list())
       const boundedComputations = agents
-        .filter((a) => a.native === true && a.hidden === true)
-        .map((a) => a.name)
+        .filter((a: any) => a.native === true && a.hidden === true)
+        .map((a: any) => a.name)
         .sort()
       expect(boundedComputations).toEqual(["checkpoint-writer", "compaction", "distill", "dream", "summary", "title"])
 
       // Spot-check a few durable agents are NOT classified as bounded.
-      const build = agents.find((a) => a.name === "build")
+      const build = agents.find((a: any) => a.name === "build")
       expect(build?.native).toBe(true)
       expect(build?.hidden).toBeFalsy()
 
-      const plan = agents.find((a) => a.name === "plan")
+      const plan = agents.find((a: any) => a.name === "plan")
       expect(plan?.native).toBe(true)
       expect(plan?.hidden).toBeFalsy()
     },
@@ -855,7 +855,7 @@ itTool.live("compose's tool list contains apply_patch on GPT-5+ but not on Claud
         providerID: ProviderID.make("openai"),
         agent: compose!,
       })
-      const gptIDs = gptTools.map((t) => t.id)
+      const gptIDs = gptTools.map((t: any) => t.id)
       expect(gptIDs).toContain("apply_patch")
       expect(gptIDs).not.toContain("edit")
       expect(gptIDs).not.toContain("write")
@@ -865,7 +865,7 @@ itTool.live("compose's tool list contains apply_patch on GPT-5+ but not on Claud
         providerID: ProviderID.make("anthropic"),
         agent: compose!,
       })
-      const claudeIDs = claudeTools.map((t) => t.id)
+      const claudeIDs = claudeTools.map((t: any) => t.id)
       expect(claudeIDs).toContain("edit")
       expect(claudeIDs).toContain("write")
       expect(claudeIDs).not.toContain("apply_patch")

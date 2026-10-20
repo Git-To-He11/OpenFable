@@ -110,7 +110,7 @@ describe("length + tool safety contract", () => {
               expect(JSON.stringify(stub.captures[1].messages)).toContain("Hello")
 
               // Terminates on the stop response.
-              expect(final.parts.some((part) => part.type === "text" && part.text === "done.")).toBe(true)
+              expect(final.parts.some((part: any) => part.type === "text" && part.text === "done.")).toBe(true)
             }),
           ),
       })

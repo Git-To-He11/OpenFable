@@ -89,14 +89,14 @@ export class EpisodicMemory {
     const rows = this.db.$client
       .query(`SELECT * FROM episodic_memory WHERE session_id = ? ORDER BY created_at DESC`)
       .all(sessionID) as any[]
-    return rows.map((r) => this.rowToEpisode(r))
+    return rows.map((r: any) => this.rowToEpisode(r))
   }
 
   getByTag(tag: string): Episode[] {
     const rows = this.db.$client
       .query(`SELECT * FROM episodic_memory WHERE tags LIKE ? ORDER BY created_at DESC`)
       .all(`%${tag}%`) as any[]
-    return rows.map((r) => this.rowToEpisode(r))
+    return rows.map((r: any) => this.rowToEpisode(r))
   }
 
   search(query: string, limit: number = 10): Episode[] {
@@ -107,7 +107,7 @@ export class EpisodicMemory {
          ORDER BY created_at DESC LIMIT ?`,
       )
       .all(`%${query}%`, `%${query}%`, `%${query}%`, limit) as any[]
-    return rows.map((r) => this.rowToEpisode(r))
+    return rows.map((r: any) => this.rowToEpisode(r))
   }
 
   update(id: string, updates: Partial<Pick<Episode, "resolution" | "summary" | "tags" | "links" | "hash">>): void {
@@ -130,7 +130,7 @@ export class EpisodicMemory {
     const rows = this.db.$client
       .query(`SELECT * FROM episodic_memory ORDER BY created_at DESC LIMIT ?`)
       .all(count) as any[]
-    return rows.map((r) => this.rowToEpisode(r))
+    return rows.map((r: any) => this.rowToEpisode(r))
   }
 
   private rowToEpisode(row: any): Episode {

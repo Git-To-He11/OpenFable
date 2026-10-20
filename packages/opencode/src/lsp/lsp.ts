@@ -202,7 +202,7 @@ export const layer = Layer.effect(
 
           log.info("enabled LSP servers", {
             serverIds: Object.values(servers)
-              .map((server) => server.id)
+              .map((server: any) => server.id)
               .join(", "),
           })
         }
@@ -216,7 +216,7 @@ export const layer = Layer.effect(
 
         yield* Effect.addFinalizer(() =>
           Effect.promise(async () => {
-            await Promise.all(s.clients.map((client) => client.shutdown()))
+            await Promise.all(s.clients.map((client: any) => client.shutdown()))
           }),
         )
 
@@ -267,7 +267,7 @@ export const layer = Layer.effect(
 
           if (!client) return undefined
 
-          const existing = s.clients.find((x) => x.root === root && x.serverID === server.id)
+          const existing = s.clients.find((x: any) => x.root === root && x.serverID === server.id)
           if (existing) {
             await Process.stop(handle.process)
             return existing
@@ -284,7 +284,7 @@ export const layer = Layer.effect(
           if (!root) continue
           if (s.broken.has(root + server.id)) continue
 
-          const match = s.clients.find((x) => x.root === root && x.serverID === server.id)
+          const match = s.clients.find((x: any) => x.root === root && x.serverID === server.id)
           if (match) {
             result.push(match)
             continue
@@ -320,12 +320,12 @@ export const layer = Layer.effect(
 
     const run = Effect.fnUntraced(function* <T>(file: string, fn: (client: LSPClient.Info) => Promise<T>) {
       const clients = yield* getClients(file)
-      return yield* Effect.promise(() => Promise.all(clients.map((x) => fn(x))))
+      return yield* Effect.promise(() => Promise.all(clients.map((x: any) => fn(x))))
     })
 
     const runAll = Effect.fnUntraced(function* <T>(fn: (client: LSPClient.Info) => Promise<T>) {
       const s = yield* InstanceState.get(state)
-      return yield* Effect.promise(() => Promise.all(s.clients.map((x) => fn(x))))
+      return yield* Effect.promise(() => Promise.all(s.clients.map((x: any) => fn(x))))
     })
 
     const init = Effect.fn("LSP.init")(function* () {
@@ -452,7 +452,7 @@ export const layer = Layer.effect(
       const results = yield* runAll((client) =>
         client.connection
           .sendRequest<Symbol[]>("workspace/symbol", { query })
-          .then((result) => result.filter((x) => kinds.includes(x.kind)).slice(0, 10))
+          .then((result) => result.filter((x: any) => kinds.includes(x.kind)).slice(0, 10))
           .catch(() => [] as Symbol[]),
       )
       return results.flat()

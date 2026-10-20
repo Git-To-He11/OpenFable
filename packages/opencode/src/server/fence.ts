@@ -18,14 +18,14 @@ export function load(ids?: string[]) {
     return db.select().from(EventSequenceTable).where(inArray(EventSequenceTable.aggregate_id, ids)).all()
   })
 
-  return Object.fromEntries(rows.map((row) => [row.aggregate_id, row.seq])) as State
+  return Object.fromEntries(rows.map((row: any) => [row.aggregate_id, row.seq])) as State
 }
 
 export function diff(prev: State, next: State) {
   const ids = new Set([...Object.keys(prev), ...Object.keys(next)])
   return Object.fromEntries(
     [...ids]
-      .map((id) => [id, next[id] ?? -1] as const)
+      .map((id: any) => [id, next[id] ?? -1] as const)
       .filter(([id, seq]) => {
         return (prev[id] ?? -1) !== seq
       }),

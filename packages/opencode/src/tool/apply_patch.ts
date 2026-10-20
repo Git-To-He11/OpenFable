@@ -177,7 +177,7 @@ export const ApplyPatchTool = Tool.define(
       }
 
       // Build per-file metadata for UI rendering (used for both permission and result)
-      const files = fileChanges.map((change) => ({
+      const files = fileChanges.map((change: any) => ({
         filePath: change.filePath,
         relativePath: path.relative(Instance.worktree, change.movePath ?? change.filePath).replaceAll("\\", "/"),
         type: change.type,
@@ -197,14 +197,14 @@ export const ApplyPatchTool = Tool.define(
       // memory writes — the askEditUnlessMemory deferral used by write.ts/edit.ts
       // is structurally already satisfied here. Left as a direct ctx.ask.
       if (permissionChanges.length > 0) {
-        const relativePaths = permissionChanges.map((c) => path.relative(Instance.worktree, c.filePath).replaceAll("\\", "/"))
+        const relativePaths = permissionChanges.map((c: any) => path.relative(Instance.worktree, c.filePath).replaceAll("\\", "/"))
         yield* ctx.ask({
           permission: "edit",
           patterns: relativePaths,
           always: ["*"],
           metadata: {
             filepath: relativePaths.join(", "),
-            diff: permissionChanges.map((change) => change.diff).join("\n") + "\n",
+            diff: permissionChanges.map((change: any) => change.diff).join("\n") + "\n",
             files: files.filter(
               (file) => !AppFileSystem.contains(path.join(Global.Path.data, "memory"), file.movePath ?? file.filePath),
             ),
@@ -267,7 +267,7 @@ export const ApplyPatchTool = Tool.define(
       const diagnostics = yield* lsp.diagnostics()
 
       // Generate output summary
-      const summaryLines = fileChanges.map((change) => {
+      const summaryLines = fileChanges.map((change: any) => {
         if (change.type === "add") {
           return `A ${path.relative(Instance.worktree, change.filePath).replaceAll("\\", "/")}`
         }

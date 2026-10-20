@@ -48,16 +48,16 @@ export function adjustBoundaryForApiInvariants(
     tailToolResults.push(...getToolResultIds(messages[i]))
     for (const useId of getToolUseIds(messages[i])) tailToolUses.add(useId)
   }
-  let orphans = tailToolResults.filter((id) => !tailToolUses.has(id))
+  let orphans = tailToolResults.filter((id: any) => !tailToolUses.has(id))
 
   for (let i = idx - 1; i >= 0 && orphans.length > 0; i--) {
     const m = messages[i]
     if (m.role !== "assistant") continue
     const useIds = getToolUseIds(m)
-    const matched = useIds.filter((id) => orphans.includes(id))
+    const matched = useIds.filter((id: any) => orphans.includes(id))
     if (matched.length > 0) {
       idx = i
-      orphans = orphans.filter((id) => !matched.includes(id))
+      orphans = orphans.filter((id: any) => !matched.includes(id))
     }
   }
 

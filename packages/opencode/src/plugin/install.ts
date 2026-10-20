@@ -158,7 +158,7 @@ function packageTargets(pkg: { json: Record<string, unknown>; dir: string; pkg: 
     targets.push({ kind: "tui", opts: tui.opts })
   }
 
-  if (!targets.some((item) => item.kind === "tui") && readPackageThemes(spec, pkg).length) {
+  if (!targets.some((item: any) => item.kind === "tui") && readPackageThemes(spec, pkg).length) {
     targets.push({ kind: "tui" })
   }
 
@@ -191,7 +191,7 @@ function patchPluginList(
     i,
     spec: pluginSpec(item),
   }))
-  const dup = rows.filter((item) => {
+  const dup = rows.filter((item: any) => {
     if (!item.spec) return false
     if (item.spec === spec) return true
     if (item.spec.startsWith("file://")) return false
@@ -242,8 +242,8 @@ function patchPluginList(
   }
 
   const del = dup
-    .map((item) => item.i)
-    .filter((i) => i !== keep.i)
+    .map((item: any) => item.i)
+    .filter((i: any) => i !== keep.i)
     .sort((a, b) => b - a)
 
   for (const i of del) {

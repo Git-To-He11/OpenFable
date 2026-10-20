@@ -264,7 +264,7 @@ describe("workflows routes — live runtime", () => {
 
         // #then — the live run is visible over HTTP with its real fields: this is
         // the exact data path the TUI /workflows list reads (counter from a real spawn).
-        const row = rows.find((r) => r.runID === runID)
+        const row = rows.find((r: any) => r.runID === runID)
         expect(row).toBeDefined()
         expect(row!.status).toBe("completed")
         expect(row!.succeeded).toBeGreaterThanOrEqual(1)

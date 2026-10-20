@@ -332,7 +332,7 @@ export const TuiRoutes = lazy(() =>
       validator(
         "json",
         z.union(
-          Object.values(TuiEvent).map((def) => {
+          Object.values(TuiEvent).map((def: any) => {
             return z
               .object({
                 type: z.literal(def.type),
@@ -346,7 +346,7 @@ export const TuiRoutes = lazy(() =>
       ),
       async (c) => {
         const evt = c.req.valid("json")
-        await Bus.publish(Object.values(TuiEvent).find((def) => def.type === evt.type)!, evt.properties)
+        await Bus.publish(Object.values(TuiEvent).find((def: any) => def.type === evt.type)!, evt.properties)
         return c.json(true)
       },
     )

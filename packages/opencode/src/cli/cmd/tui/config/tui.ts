@@ -83,9 +83,9 @@ async function mergeFile(acc: Acc, file: string, ctx: { directory: string }) {
   const scope = pluginScope(file, ctx)
   const plugins = ConfigPlugin.deduplicatePluginOrigins([
     ...(acc.result.plugin_origins ?? []),
-    ...data.plugin.map((spec) => ({ spec, scope, source: file })),
+    ...data.plugin.map((spec: any) => ({ spec, scope, source: file })),
   ])
-  acc.result.plugin = plugins.map((item) => item.spec)
+  acc.result.plugin = plugins.map((item: any) => item.spec)
   acc.result.plugin_origins = plugins
 }
 
@@ -121,7 +121,7 @@ const loadState = Effect.fn("TuiConfig.loadState")(function* (ctx: { directory: 
   // 4. `.openfable` directories (and OPENFABLE_CONFIG_DIR) discovered while
   // walking up the tree. Also returned below so callers can install plugin
   // dependencies from each location.
-  const dirs = unique(directories).filter((dir) => dir.endsWith(".openfable") || dir === Flag.OPENFABLE_CONFIG_DIR)
+  const dirs = unique(directories).filter((dir: any) => dir.endsWith(".openfable") || dir === Flag.OPENFABLE_CONFIG_DIR)
 
   for (const dir of dirs) {
     if (!dir.endsWith(".openfable") && dir !== Flag.OPENFABLE_CONFIG_DIR) continue

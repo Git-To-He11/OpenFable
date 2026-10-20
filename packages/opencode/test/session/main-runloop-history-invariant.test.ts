@@ -171,7 +171,7 @@ describe("main runLoop history monotonic-growth invariant", () => {
 
               expect(stub.captures.length).toBe(2)
               expect(JSON.stringify(stub.captures[1].messages)).toContain("output token limit")
-              expect(final.parts.some((part) => part.type === "text" && part.text === "done.")).toBe(true)
+              expect(final.parts.some((part: any) => part.type === "text" && part.text === "done.")).toBe(true)
             }),
           ),
       })

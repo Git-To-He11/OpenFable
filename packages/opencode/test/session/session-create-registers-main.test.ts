@@ -62,7 +62,7 @@ describe("Session.create registers main actor (F50)", () => {
         ActorRegistry.Service.use((svc) => svc.listBySession(session.id)),
       )
 
-      const main = actors.find((a) => a.actorID === "main")
+      const main = actors.find((a: any) => a.actorID === "main")
       expect(main).toBeDefined()
       expect(main!.mode).toBe("main")
     })

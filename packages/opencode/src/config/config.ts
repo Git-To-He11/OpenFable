@@ -481,7 +481,7 @@ export interface Interface {
 export class Service extends Context.Service<Service, Interface>()("@openfable/Config") {}
 
 function globalConfigFile() {
-  const candidates = ["openfable.jsonc", "openfable.json", "config.json"].map((file) =>
+  const candidates = ["openfable.jsonc", "openfable.json", "config.json"].map((file: any) =>
     path.join(Global.Path.config, file),
   )
   for (const file of candidates) {
@@ -659,9 +659,9 @@ export const layer = Layer.effect(
           // keeping the winning source/scope metadata for downstream installs, writes, and diagnostics.
           const plugins = ConfigPlugin.deduplicatePluginOrigins([
             ...(result.plugin_origins ?? []),
-            ...list.map((spec) => ({ spec, source, scope: hit })),
+            ...list.map((spec: any) => ({ spec, source, scope: hit })),
           ])
-          result.plugin = plugins.map((item) => item.spec)
+          result.plugin = plugins.map((item: any) => item.spec)
           result.plugin_origins = plugins
         })
 
@@ -669,7 +669,7 @@ export const layer = Layer.effect(
           if (!next.mcp) return
           result.mcp_origins = {
             ...(result.mcp_origins ?? {}),
-            ...Object.fromEntries(Object.keys(next.mcp).map((name) => [name, { type, source }])),
+            ...Object.fromEntries(Object.keys(next.mcp).map((name: any) => [name, { type, source }])),
           }
         }
 

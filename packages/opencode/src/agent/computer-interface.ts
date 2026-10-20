@@ -68,7 +68,7 @@ export class AgentComputerInterface {
         async listDir(dirPath: string): Promise<string[]> {
           const resolved = path.resolve(workDir, dirPath)
           const entries = await fs.promises.readdir(resolved, { withFileTypes: true })
-          return entries.map((e) => e.name + (e.isDirectory() ? "/" : ""))
+          return entries.map((e: any) => e.name + (e.isDirectory() ? "/" : ""))
         },
         async exists(filePath: string): Promise<boolean> {
           const resolved = path.resolve(workDir, filePath)
@@ -213,7 +213,7 @@ export class AgentComputerInterface {
       execute: async (args, ctx) => {
         if (args.length === 0) return { output: "Usage: grep <pattern> [path]", success: false }
         const results = await ctx.search.grep(args[0], args[1] || ".")
-        const output = results.map((r) => `${r.file}:${r.line}: ${r.content}`).join("\n")
+        const output = results.map((r: any) => `${r.file}:${r.line}: ${r.content}`).join("\n")
         return { output: output || "No matches found", success: true, metadata: { matchCount: results.length } }
       },
     })
@@ -225,7 +225,7 @@ export class AgentComputerInterface {
       execute: async (args, ctx) => {
         if (args.length === 0) return { output: "Usage: find-def <symbol>", success: false }
         const results = await ctx.search.findDefinition(args[0])
-        const output = results.map((r) => `${r.file}:${r.line} (${r.kind})`).join("\n")
+        const output = results.map((r: any) => `${r.file}:${r.line} (${r.kind})`).join("\n")
         return { output: output || "No definition found", success: true }
       },
     })
@@ -237,7 +237,7 @@ export class AgentComputerInterface {
       execute: async (args, ctx) => {
         if (args.length === 0) return { output: "Usage: find-refs <symbol>", success: false }
         const results = await ctx.search.findReferences(args[0])
-        const output = results.map((r) => `${r.file}:${r.line}: ${r.content}`).join("\n")
+        const output = results.map((r: any) => `${r.file}:${r.line}: ${r.content}`).join("\n")
         return { output: output || "No references found", success: true }
       },
     })

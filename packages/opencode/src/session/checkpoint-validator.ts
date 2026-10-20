@@ -41,7 +41,7 @@ function checkTopicAndSections(
   requiredSections: readonly string[],
 ): Violation[] {
   const violations: Violation[] = []
-  const firstNonEmptyLine = body.split("\n").find((l) => l.trim().length > 0) ?? ""
+  const firstNonEmptyLine = body.split("\n").find((l: any) => l.trim().length > 0) ?? ""
 
   if (/^# Checkpoint #\d+/.test(firstNonEmptyLine)) {
     violations.push({
@@ -72,7 +72,7 @@ function checkTopicAndSections(
     }
   }
 
-  const sectionPositions = requiredSections.map((s) => ({ section: s, idx: body.indexOf(s) }))
+  const sectionPositions = requiredSections.map((s: any) => ({ section: s, idx: body.indexOf(s) }))
   for (const pos of sectionPositions) {
     if (pos.idx === -1) {
       violations.push({
@@ -83,7 +83,7 @@ function checkTopicAndSections(
       })
     }
   }
-  const presentInOrder = sectionPositions.filter((p) => p.idx !== -1)
+  const presentInOrder = sectionPositions.filter((p: any) => p.idx !== -1)
   for (let i = 1; i < presentInOrder.length; i++) {
     if (presentInOrder[i].idx < presentInOrder[i - 1].idx) {
       violations.push({
@@ -130,7 +130,7 @@ export function extractDiscoveredEntries(body: string): { title: string; block: 
  * grep-friendly ≤80-char title line.
  */
 export function extractTitlesFromLearning(md: string): string[] {
-  return extractDiscoveredEntries(md).map((e) => e.title)
+  return extractDiscoveredEntries(md).map((e: any) => e.title)
 }
 
 export function validateLearning(
@@ -199,7 +199,7 @@ export function validateProgress(body: string, filename: string): Violation[] {
   const nextLines = body.match(/^\s*-?\s*Next:\s*(.+)$/gm) ?? []
   for (const line of nextLines) {
     const value = line.replace(/^\s*-?\s*Next:\s*/, "")
-    if (NEXT_FILLER_PATTERNS.some((re) => re.test(value))) {
+    if (NEXT_FILLER_PATTERNS.some((re: any) => re.test(value))) {
       violations.push({
         file: filename,
         rule: "next-filler",

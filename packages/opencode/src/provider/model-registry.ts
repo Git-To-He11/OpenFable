@@ -64,25 +64,25 @@ export function queryModels(query: RegistryQuery): ModelEntry[] {
   let results = getAllModels()
 
   if (query.providerID) {
-    results = results.filter((m) => m.providerID === query.providerID)
+    results = results.filter((m: any) => m.providerID === query.providerID)
   }
   if (query.maxInputCost !== undefined) {
-    results = results.filter((m) => m.cost.input <= query.maxInputCost!)
+    results = results.filter((m: any) => m.cost.input <= query.maxInputCost!)
   }
   if (query.maxOutputCost !== undefined) {
-    results = results.filter((m) => m.cost.output <= query.maxOutputCost!)
+    results = results.filter((m: any) => m.cost.output <= query.maxOutputCost!)
   }
   if (query.minContextWindow !== undefined) {
-    results = results.filter((m) => m.contextWindow >= query.minContextWindow!)
+    results = results.filter((m: any) => m.contextWindow >= query.minContextWindow!)
   }
   if (query.requiresTools) {
-    results = results.filter((m) => m.capabilities.tools)
+    results = results.filter((m: any) => m.capabilities.tools)
   }
   if (query.requiresVision) {
-    results = results.filter((m) => m.capabilities.vision)
+    results = results.filter((m: any) => m.capabilities.vision)
   }
   if (query.status) {
-    results = results.filter((m) => m.status === query.status)
+    results = results.filter((m: any) => m.status === query.status)
   }
 
   return results
@@ -113,7 +113,7 @@ export function findBestForTask(requirements: {
   if (candidates.length === 0) return undefined
 
   const maxCost = requirements.maxCostPerMillionTokens ?? Infinity
-  const filtered = candidates.filter((m) => {
+  const filtered = candidates.filter((m: any) => {
     const costPerMillion = m.cost.input + m.cost.output
     return costPerMillion <= maxCost
   })

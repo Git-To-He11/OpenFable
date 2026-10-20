@@ -56,7 +56,7 @@ export const layer = Layer.effect(
 
     const all = Effect.fn("McpAuth.all")(function* () {
       return yield* fs.readJson(filepath).pipe(
-        Effect.map((data) => data as Record<string, Entry>),
+        Effect.map((data: any) => data as Record<string, Entry>),
         Effect.catch(() => Effect.succeed({} as Record<string, Entry>)),
       )
     })

@@ -83,7 +83,7 @@ const logoutEffect = Effect.fn("logout")(function* (email?: string) {
   if (accounts.length === 0) return yield* println("Not logged in")
 
   if (email) {
-    const match = accounts.find((a) => a.email === email)
+    const match = accounts.find((a: any) => a.email === email)
     if (!match) return yield* println("Account not found: " + email)
     yield* service.remove(match.id)
     yield* Prompt.outro("Logged out from " + email)
@@ -95,7 +95,7 @@ const logoutEffect = Effect.fn("logout")(function* (email?: string) {
 
   yield* Prompt.intro("Log out")
 
-  const opts = accounts.map((a) => {
+  const opts = accounts.map((a: any) => {
     const isActive = Option.isSome(activeID) && activeID.value === a.id
     return {
       value: a,
@@ -125,7 +125,7 @@ const switchEffect = Effect.fn("switch")(function* () {
   const active = yield* service.active()
 
   const opts = groups.flatMap((group) =>
-    group.orgs.map((org) => {
+    group.orgs.map((org: any) => {
       const isActive = isActiveOrgChoice(active, { accountID: group.account.id, orgID: org.id })
       return {
         value: { orgID: org.id, accountID: group.account.id, label: org.name },
@@ -150,7 +150,7 @@ const orgsEffect = Effect.fn("orgs")(function* () {
 
   const groups = yield* service.orgsByAccount()
   if (groups.length === 0) return yield* println("No accounts found")
-  if (!groups.some((group) => group.orgs.length > 0)) return yield* println("No orgs found")
+  if (!groups.some((group: any) => group.orgs.length > 0)) return yield* println("No orgs found")
 
   const active = yield* service.active()
 

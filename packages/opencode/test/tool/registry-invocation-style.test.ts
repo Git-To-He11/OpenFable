@@ -29,7 +29,7 @@ describe("ToolRegistry.tools: invocation style resolution", () => {
           modelID: ModelID.make("opencode/claude-sonnet-4-6"),
           agent: general,
         })
-        const task = tools.find((t) => t.id === "task")
+        const task = tools.find((t: any) => t.id === "task")
         expect(task).toBeDefined()
         // JSON mode → parameters is an object wrapping an `operation` discriminated
         // union (discriminator "action"). Confirm `operation` is present and `script`
@@ -56,7 +56,7 @@ describe("ToolRegistry.tools: invocation style resolution", () => {
               modelID: ModelID.make("opencode/claude-sonnet-4-6"),
               agent: general,
             })
-            const task = tools.find((t) => t.id === "task")
+            const task = tools.find((t: any) => t.id === "task")
             expect(task).toBeDefined()
             // Task has shell field (Task 13 added it). Shell mode is active: parameters has `script`.
             const schema = task!.parameters as any
@@ -80,7 +80,7 @@ describe("ToolRegistry.tools: invocation style resolution", () => {
             modelID: ModelID.make("opencode/claude-sonnet-4-6"),
             agent: general,
           })
-          const read = tools.find((t) => t.id === "read")
+          const read = tools.find((t: any) => t.id === "read")
           expect(read).toBeDefined()
           const schema = read!.parameters as any
           // Original `read` parameters has filePath; shell wrap would expose `script`
@@ -106,7 +106,7 @@ describe("ToolRegistry.tools: shell mode end-to-end on task", () => {
             modelID: ModelID.make("opencode/claude-sonnet-4-6"),
             agent: general,
           })
-          const task = tools.find((t) => t.id === "task")!
+          const task = tools.find((t: any) => t.id === "task")!
           // Sanity: parameters is shellInputSchema (just `script`)
           const parsed = task.parameters.parse({ script: "task list" })
           expect(parsed).toEqual({ script: "task list" })

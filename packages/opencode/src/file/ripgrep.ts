@@ -357,7 +357,7 @@ export const layer: Layer.Layer<Service, never, AppFileSystem.Service | ChildPro
                 const stderr = yield* Stream.mkString(Stream.decodeText(handle.stderr)).pipe(Effect.forkScoped)
                 const stdout = yield* Stream.decodeText(handle.stdout).pipe(
                   Stream.splitLines,
-                  Stream.filter((line) => line.length > 0),
+                  Stream.filter((line: any) => line.length > 0),
                   Stream.runForEach((line) => Effect.sync(() => Queue.offerUnsafe(queue, clean(line)))),
                   Effect.forkScoped,
                 )
@@ -390,12 +390,12 @@ export const layer: Layer.Layer<Service, never, AppFileSystem.Service | ChildPro
               [
                 Stream.decodeText(handle.stdout).pipe(
                   Stream.splitLines,
-                  Stream.filter((line) => line.length > 0),
+                  Stream.filter((line: any) => line.length > 0),
                   Stream.mapEffect(parse),
-                  Stream.filter((item): item is Match => item.type === "match"),
-                  Stream.map((item) => row(item.data)),
+                  Stream.filter((item: any): item is Match => item.type === "match"),
+                  Stream.map((item: any) => row(item.data)),
                   Stream.runCollect,
-                  Effect.map((chunk) => [...chunk]),
+                  Effect.map((chunk: any) => [...chunk]),
                 ),
                 Stream.mkString(Stream.decodeText(handle.stderr)),
                 handle.exitCode,
@@ -454,7 +454,7 @@ export const layer: Layer.Layer<Service, never, AppFileSystem.Service | ChildPro
         const lines: string[] = []
         const queue: Array<{ node: Node; path: string }> = Array.from(root.children.values())
           .sort((a, b) => a.name.localeCompare(b.name))
-          .map((node) => ({ node, path: node.name }))
+          .map((node: any) => ({ node, path: node.name }))
 
         let used = 0
         for (let i = 0; i < queue.length && used < limit; i++) {
@@ -464,7 +464,7 @@ export const layer: Layer.Layer<Service, never, AppFileSystem.Service | ChildPro
           queue.push(
             ...Array.from(item.node.children.values())
               .sort((a, b) => a.name.localeCompare(b.name))
-              .map((node) => ({ node, path: `${item.path}/${node.name}` })),
+              .map((node: any) => ({ node, path: `${item.path}/${node.name}` })),
           )
         }
 

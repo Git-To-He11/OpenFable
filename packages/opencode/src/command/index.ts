@@ -223,7 +223,7 @@ export const layer = Layer.effect(
                   Effect.map(
                     (template) =>
                       template?.messages
-                        .map((message) => (message.content.type === "text" ? message.content.text : ""))
+                        .map((message: any) => (message.content.type === "text" ? message.content.text : ""))
                         .join("\n") || "",
                   ),
                 ),

@@ -10,7 +10,7 @@ export const log = {
 
 export const select = <Value>(opts: Parameters<typeof prompts.select<Value>>[0]) =>
   Effect.tryPromise(() => prompts.select(opts)).pipe(
-    Effect.map((result) => {
+    Effect.map((result: any) => {
       if (prompts.isCancel(result)) return Option.none<Value>()
       return Option.some(result)
     }),

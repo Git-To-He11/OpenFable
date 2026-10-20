@@ -1,7 +1,7 @@
 import type { Provider } from "@openfable/sdk/v2"
 
 export function index(list: Provider[] | undefined) {
-  return new Map((list ?? []).map((item) => [item.id, item] as const))
+  return new Map((list ?? []).map((item: any) => [item.id, item] as const))
 }
 
 export function get(list: Provider[] | ReadonlyMap<string, Provider> | undefined, providerID: string, modelID: string) {
@@ -9,7 +9,7 @@ export function get(list: Provider[] | ReadonlyMap<string, Provider> | undefined
     list instanceof Map
       ? list.get(providerID)
       : Array.isArray(list)
-        ? list.find((item) => item.id === providerID)
+        ? list.find((item: any) => item.id === providerID)
         : undefined
   return provider?.models[modelID]
 }

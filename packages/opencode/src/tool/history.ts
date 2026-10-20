@@ -120,7 +120,7 @@ export const HistoryTool = Tool.define(
             for (const p of m.parts) {
               const head = p.tool_name ? `${p.type} (${p.tool_name})` : p.type
               lines.push(`  ${p.role} · ${head}:`)
-              lines.push(p.text.split("\n").map((l) => `    ${l}`).join("\n"))
+              lines.push(p.text.split("\n").map((l: any) => `    ${l}`).join("\n"))
             }
             lines.push("")
           }

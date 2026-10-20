@@ -191,7 +191,7 @@ export const layer = Layer.effect(
         log.info("evaluated", { permission: request.permission, pattern, action: rule })
         if (rule.action === "deny") {
           return yield* new DeniedError({
-            ruleset: ruleset.filter((rule) => Wildcard.match(request.permission, rule.permission)),
+            ruleset: ruleset.filter((rule: any) => Wildcard.match(request.permission, rule.permission)),
           })
         }
         if (rule.action === "allow") continue
@@ -204,7 +204,7 @@ export const layer = Layer.effect(
       // Event.Asked and creates no Deferred → provably cannot hang.
       if (needsAsk && input.interactive === false) {
         return yield* new DeniedError({
-          ruleset: ruleset.filter((rule) => Wildcard.match(request.permission, rule.permission)),
+          ruleset: ruleset.filter((rule: any) => Wildcard.match(request.permission, rule.permission)),
         })
       }
 

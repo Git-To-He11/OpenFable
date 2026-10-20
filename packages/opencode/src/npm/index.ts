@@ -161,7 +161,7 @@ export const layer = Layer.effect(
       )
       if (!canWrite) return
 
-      const add = input?.add.map((pkg) => [pkg.name, pkg.version].filter(Boolean).join("@")) ?? []
+      const add = input?.add.map((pkg: any) => [pkg.name, pkg.version].filter(Boolean).join("@")) ?? []
       if (
         yield* Effect.gen(function* () {
           const nodeModulesExists = yield* afs.existsSafe(path.join(dir, "node_modules"))
@@ -185,7 +185,7 @@ export const layer = Layer.effect(
           ...Object.keys(pkgAny?.devDependencies || {}),
           ...Object.keys(pkgAny?.peerDependencies || {}),
           ...Object.keys(pkgAny?.optionalDependencies || {}),
-          ...(input?.add || []).map((pkg) => pkg.name),
+          ...(input?.add || []).map((pkg: any) => pkg.name),
         ])
 
         const root = lockAny?.packages?.[""] || {}

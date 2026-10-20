@@ -133,7 +133,7 @@ describe("tool.read external_directory permission", () => {
       const { items, next } = asks()
 
       yield* exec(dir, { filePath: path.join(outer, "secret.txt") }, next)
-      const ext = items.find((item) => item.permission === "external_directory")
+      const ext = items.find((item: any) => item.permission === "external_directory")
       expect(ext).toBeDefined()
       expect(ext!.patterns).toContain(glob(path.join(outer, "*")))
     }),
@@ -153,7 +153,7 @@ describe("tool.read external_directory permission", () => {
           .toLowerCase()
 
         yield* exec(dir, { filePath: alt }, next)
-        const read = items.find((item) => item.permission === "read")
+        const read = items.find((item: any) => item.permission === "read")
         expect(read).toBeDefined()
         expect(read!.patterns).toEqual([full(target)])
       }),
@@ -169,7 +169,7 @@ describe("tool.read external_directory permission", () => {
       const { items, next } = asks()
 
       yield* exec(dir, { filePath: path.join(outer, "external") }, next)
-      const ext = items.find((item) => item.permission === "external_directory")
+      const ext = items.find((item: any) => item.permission === "external_directory")
       expect(ext).toBeDefined()
       expect(ext!.patterns).toContain(glob(path.join(outer, "external", "*")))
     }),
@@ -182,7 +182,7 @@ describe("tool.read external_directory permission", () => {
       const { items, next } = asks()
 
       yield* fail(dir, { filePath: "../outside.txt" }, next)
-      const ext = items.find((item) => item.permission === "external_directory")
+      const ext = items.find((item: any) => item.permission === "external_directory")
       expect(ext).toBeDefined()
     }),
   )
@@ -195,7 +195,7 @@ describe("tool.read external_directory permission", () => {
       const { items, next } = asks()
 
       yield* exec(dir, { filePath: path.join(dir, "internal.txt") }, next)
-      const ext = items.find((item) => item.permission === "external_directory")
+      const ext = items.find((item: any) => item.permission === "external_directory")
       expect(ext).toBeUndefined()
     }),
   )

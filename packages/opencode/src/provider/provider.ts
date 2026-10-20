@@ -166,7 +166,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
     opencode: Effect.fnUntraced(function* (input: Info) {
       const env = yield* dep.env()
       const hasKey = iife(() => {
-        if (input.env.some((item) => env[item])) return true
+        if (input.env.some((item: any) => env[item])) return true
         return false
       })
       const authInfo = yield* dep.auth(input.id)
@@ -334,7 +334,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
           // Skip region prefixing if model already has a cross-region inference profile prefix
           // Models from models.dev may already include prefixes like us., eu., global., etc.
           const crossRegionPrefixes = ["global.", "us.", "eu.", "jp.", "apac.", "au."]
-          if (crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))) {
+          if (crossRegionPrefixes.some((prefix: any) => modelID.startsWith(prefix))) {
             return sdk.languageModel(modelID)
           }
 
@@ -356,7 +356,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
                 "nova-2",
                 "claude",
                 "deepseek",
-              ].some((m) => modelID.includes(m))
+              ].some((m: any) => modelID.includes(m))
               const isGovCloud = region.startsWith("us-gov")
               if (modelRequiresPrefix && !isGovCloud) {
                 modelID = `${regionPrefix}.${modelID}`
@@ -372,8 +372,8 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
                 "eu-central-1",
                 "eu-south-1",
                 "eu-south-2",
-              ].some((r) => region.includes(r))
-              const modelRequiresPrefix = ["claude", "nova-lite", "nova-micro", "llama3", "pixtral"].some((m) =>
+              ].some((r: any) => region.includes(r))
+              const modelRequiresPrefix = ["claude", "nova-lite", "nova-micro", "llama3", "pixtral"].some((m: any) =>
                 modelID.includes(m),
               )
               if (regionRequiresPrefix && modelRequiresPrefix) {
@@ -386,13 +386,13 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
               const isTokyoRegion = region === "ap-northeast-1"
               if (
                 isAustraliaRegion &&
-                ["anthropic.claude-sonnet-4-5", "anthropic.claude-haiku"].some((m) => modelID.includes(m))
+                ["anthropic.claude-sonnet-4-5", "anthropic.claude-haiku"].some((m: any) => modelID.includes(m))
               ) {
                 regionPrefix = "au"
                 modelID = `${regionPrefix}.${modelID}`
               } else if (isTokyoRegion) {
                 // Tokyo region uses jp. prefix for cross-region inference
-                const modelRequiresPrefix = ["claude", "nova-lite", "nova-micro", "nova-pro"].some((m) =>
+                const modelRequiresPrefix = ["claude", "nova-lite", "nova-micro", "nova-pro"].some((m: any) =>
                   modelID.includes(m),
                 )
                 if (modelRequiresPrefix) {
@@ -401,7 +401,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
                 }
               } else {
                 // Other APAC regions use apac. prefix
-                const modelRequiresPrefix = ["claude", "nova-lite", "nova-micro", "nova-pro"].some((m) =>
+                const modelRequiresPrefix = ["claude", "nova-lite", "nova-micro", "nova-pro"].some((m: any) =>
                   modelID.includes(m),
                 )
                 if (modelRequiresPrefix) {
@@ -753,12 +753,12 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         const missing = [
           !accountId ? "CLOUDFLARE_ACCOUNT_ID" : undefined,
           !gateway ? "CLOUDFLARE_GATEWAY_ID" : undefined,
-        ].filter((x): x is string => Boolean(x))
+        ].filter((x: any): x is string => Boolean(x))
         return {
           autoload: false,
           async getModel() {
             throw new Error(
-              `${missing.join(" and ")} missing. Set with: ${missing.map((x) => `export ${x}=<value>`).join(" && ")}`,
+              `${missing.join(" and ")} missing. Set with: ${missing.map((x: any) => `export ${x}=<value>`).join(" && ")}`,
             )
           },
         }
@@ -806,7 +806,7 @@ function custom(dep: CustomDep): Record<string, CustomLoader> {
         accountId,
         gateway,
         apiKey: apiToken,
-        ...(Object.values(opts).some((v) => v !== undefined) ? { options: opts } : {}),
+        ...(Object.values(opts).some((v: any) => v !== undefined) ? { options: opts } : {}),
       })
       const unified = createUnified()
 
@@ -1264,7 +1264,7 @@ const layer: Layer.Layer<
           for (const [id, provider] of Object.entries(database)) {
             const providerID = ProviderID.make(id)
             if (disabled.has(providerID)) continue
-            const apiKey = provider.env.map((item) => envs[item]).find(Boolean)
+            const apiKey = provider.env.map((item: any) => envs[item]).find(Boolean)
             if (!apiKey) continue
             mergeProvider(providerID, {
               source: "env",
@@ -1567,7 +1567,7 @@ const layer: Layer.Layer<
         const importSpec = installedPath.startsWith("file://") ? installedPath : pathToFileURL(installedPath).href
         const mod = await import(importSpec)
 
-        const fn = mod[Object.keys(mod).find((key) => key.startsWith("create"))!]
+        const fn = mod[Object.keys(mod).find((key: any) => key.startsWith("create"))!]
         const loaded = fn({
           name: model.providerID,
           ...options,
@@ -1589,14 +1589,14 @@ const layer: Layer.Layer<
       if (!provider) {
         const available = Object.keys(s.providers)
         const matches = fuzzysort.go(providerID, available, { limit: 3, threshold: -10000 })
-        throw new ModelNotFoundError({ providerID, modelID, suggestions: matches.map((m) => m.target) })
+        throw new ModelNotFoundError({ providerID, modelID, suggestions: matches.map((m: any) => m.target) })
       }
 
       const info = provider.models[modelID]
       if (!info) {
         const available = Object.keys(provider.models)
         const matches = fuzzysort.go(modelID, available, { limit: 3, threshold: -10000 })
-        throw new ModelNotFoundError({ providerID, modelID, suggestions: matches.map((m) => m.target) })
+        throw new ModelNotFoundError({ providerID, modelID, suggestions: matches.map((m: any) => m.target) })
       }
       return info
     })
@@ -1666,7 +1666,7 @@ const layer: Layer.Layer<
         }
         const names = Object.keys(cfg.model_groups ?? {})
         const matches = fuzzysort.go(ref, names, { limit: 3, threshold: -10000 })
-        throw new ModelGroupNotFoundError({ group: ref, suggestions: matches.map((m) => m.target) })
+        throw new ModelGroupNotFoundError({ group: ref, suggestions: matches.map((m: any) => m.target) })
       }
 
       const def = typeof group === "string" ? group : group.default
@@ -1707,7 +1707,7 @@ const layer: Layer.Layer<
 
       const s = yield* InstanceState.get(state)
       const recent = yield* fs.readJson(path.join(Global.Path.state, "model.json")).pipe(
-        Effect.map((x): { providerID: ProviderID; modelID: ModelID }[] => {
+        Effect.map((x: any): { providerID: ProviderID; modelID: ModelID }[] => {
           if (!isRecord(x) || !Array.isArray(x.recent)) return []
           return x.recent.flatMap((item) => {
             if (!isRecord(item)) return []
@@ -1735,11 +1735,11 @@ const layer: Layer.Layer<
       }
       // Fallback: use any free model from opencode provider
       if (openfableProvider) {
-        const freeModel = Object.values(openfableProvider.models).find((m) => m.cost?.input === 0)
+        const freeModel = Object.values(openfableProvider.models).find((m: any) => m.cost?.input === 0)
         if (freeModel) return { providerID: openfableProvider.id, modelID: freeModel.id }
       }
 
-      const provider = Object.values(s.providers).find((p) => !cfg.provider || Object.keys(cfg.provider).includes(p.id))
+      const provider = Object.values(s.providers).find((p: any) => !cfg.provider || Object.keys(cfg.provider).includes(p.id))
       if (!provider) throw new Error("no providers found")
       const [model] = sort(Object.values(provider.models))
       if (!model) throw new Error("no models found")

@@ -433,7 +433,7 @@ export const WhitespaceNormalizedReplacer: Replacer = function* (content, find) 
         // Find the actual substring in the original line that matches
         const words = find.trim().split(/\s+/)
         if (words.length > 0) {
-          const pattern = words.map((word) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\s+")
+          const pattern = words.map((word: any) => word.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("\\s+")
           try {
             const regex = new RegExp(pattern)
             const match = line.match(regex)
@@ -463,17 +463,17 @@ export const WhitespaceNormalizedReplacer: Replacer = function* (content, find) 
 export const IndentationFlexibleReplacer: Replacer = function* (content, find) {
   const removeIndentation = (text: string) => {
     const lines = text.split("\n")
-    const nonEmptyLines = lines.filter((line) => line.trim().length > 0)
+    const nonEmptyLines = lines.filter((line: any) => line.trim().length > 0)
     if (nonEmptyLines.length === 0) return text
 
     const minIndent = Math.min(
-      ...nonEmptyLines.map((line) => {
+      ...nonEmptyLines.map((line: any) => {
         const match = line.match(/^(\s*)/)
         return match ? match[1].length : 0
       }),
     )
 
-    return lines.map((line) => (line.trim().length === 0 ? line : line.slice(minIndent))).join("\n")
+    return lines.map((line: any) => (line.trim().length === 0 ? line : line.slice(minIndent))).join("\n")
   }
 
   const normalizedFind = removeIndentation(find)
@@ -655,7 +655,7 @@ export function trimDiff(diff: string): string {
     }
   }
   if (min === Infinity || min === 0) return diff
-  const trimmedLines = lines.map((line) => {
+  const trimmedLines = lines.map((line: any) => {
     if (
       (line.startsWith("+") || line.startsWith("-") || line.startsWith(" ")) &&
       !line.startsWith("---") &&

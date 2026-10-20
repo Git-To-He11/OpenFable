@@ -72,12 +72,12 @@ const sensitive = ["authorization", "token", "api_key", "apikey", "key", "secret
 function stringRecord(input: unknown) {
   if (!isRecord(input)) return undefined
   return Object.fromEntries(
-    Object.entries(input).filter((entry): entry is [string, string] => typeof entry[1] === "string"),
+    Object.entries(input).filter((entry: any): entry is [string, string] => typeof entry[1] === "string"),
   )
 }
 
 function isSensitive(input: string) {
-  return sensitive.some((item) => input.toLowerCase().includes(item))
+  return sensitive.some((item: any) => input.toLowerCase().includes(item))
 }
 
 function oauth(input: unknown) {

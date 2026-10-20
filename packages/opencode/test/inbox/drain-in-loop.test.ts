@@ -164,7 +164,7 @@ describe("Inbox.drain in loop (Plan 2 / Task 7)", () => {
         Session.Service.use((sessions) => sessions.messages({ sessionID: session.id, agentID: "actor-3" })),
       )
       const lastUser = msgs.findLast((m) => m.info.role === "user")
-      const syntheticTextParts = lastUser?.parts.filter((p) => p.type === "text" && p.synthetic) ?? []
+      const syntheticTextParts = lastUser?.parts.filter((p: any) => p.type === "text" && p.synthetic) ?? []
       expect(syntheticTextParts.length).toBe(3)
 
       // Second drain: inbox is now empty

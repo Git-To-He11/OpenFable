@@ -44,7 +44,7 @@ describe("project.initGit endpoint", () => {
       // v5: a freshly-initialised git repo has a UUID, not the "global" sentinel.
       expect(body.id).not.toBe("global")
       expect(reloadSpy).toHaveBeenCalledTimes(1)
-      expect(seen.some((evt) => evt.directory === tmp.path && evt.payload.type === "server.instance.disposed")).toBe(
+      expect(seen.some((evt: any) => evt.directory === tmp.path && evt.payload.type === "server.instance.disposed")).toBe(
         true,
       )
       expect(await Filesystem.exists(path.join(tmp.path, ".git", "openfable"))).toBe(false)
@@ -99,7 +99,7 @@ describe("project.initGit endpoint", () => {
         worktree: tmp.path,
       })
       expect(
-        seen.filter((evt) => evt.directory === tmp.path && evt.payload.type === "server.instance.disposed").length,
+        seen.filter((evt: any) => evt.directory === tmp.path && evt.payload.type === "server.instance.disposed").length,
       ).toBe(0)
       expect(reloadSpy).toHaveBeenCalledTimes(0)
 

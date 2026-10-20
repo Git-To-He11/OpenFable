@@ -200,8 +200,8 @@ describe("Workspace.sessionRestore", () => {
       expect(posts[1]?.body.directory).toBe(dir)
       expect(posts[0]?.body.events).toHaveLength(10)
       expect(posts[1]?.body.events).toHaveLength(4)
-      expect(posts.flatMap((item) => item.body.events.map((event) => event.seq))).toEqual([
-        ...setup.rows.map((row) => row.seq),
+      expect(posts.flatMap((item) => item.body.events.map((event: any) => event.seq))).toEqual([
+        ...setup.rows.map((row: any) => row.seq),
         setup.rows.at(-1)!.seq + 1,
       ])
       expect(posts[1]?.body.events.at(-1)).toMatchObject({
@@ -219,9 +219,9 @@ describe("Workspace.sessionRestore", () => {
       const restore = seen.filter(
         (evt) => evt.workspace === setup.space.id && evt.payload.type === Workspace.Event.Restore.type,
       )
-      expect(restore.map((evt) => evt.payload.properties.step)).toEqual([0, 1, 2])
-      expect(restore.map((evt) => evt.payload.properties.total)).toEqual([2, 2, 2])
-      expect(restore.map((evt) => evt.payload.properties.sessionID)).toEqual([
+      expect(restore.map((evt: any) => evt.payload.properties.step)).toEqual([0, 1, 2])
+      expect(restore.map((evt: any) => evt.payload.properties.total)).toEqual([2, 2, 2])
+      expect(restore.map((evt: any) => evt.payload.properties.sessionID)).toEqual([
         setup.session.id,
         setup.session.id,
         setup.session.id,
@@ -273,7 +273,7 @@ describe("Workspace.sessionRestore", () => {
       const restore = seen.filter(
         (evt) => evt.workspace === setup.space.id && evt.payload.type === Workspace.Event.Restore.type,
       )
-      expect(restore.map((evt) => evt.payload.properties.step)).toEqual([0, 1, 2])
+      expect(restore.map((evt: any) => evt.payload.properties.step)).toEqual([0, 1, 2])
     } finally {
       GlobalBus.off("event", on)
     }

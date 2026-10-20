@@ -124,7 +124,7 @@ describe("History.backfill", () => {
         yield* backfillAll()
 
         const rows = Database.use((db) => db.select().from(HistoryFtsTable).all())
-        expect(rows.map((r) => r.part_id).sort()).toEqual(["p1", "p2"])
+        expect(rows.map((r: any) => r.part_id).sort()).toEqual(["p1", "p2"])
       }),
     ),
   )
@@ -142,7 +142,7 @@ describe("History.backfill", () => {
         yield* backfillAll()
 
         const rows = Database.use((db) => db.select().from(HistoryFtsTable).all())
-        expect(rows.map((r) => r.part_id).sort()).toEqual(["p1", "p2"])
+        expect(rows.map((r: any) => r.part_id).sort()).toEqual(["p1", "p2"])
       }),
     ),
   )

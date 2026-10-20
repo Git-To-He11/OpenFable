@@ -62,7 +62,7 @@ const make = Effect.gen(function* () {
     getState: (graphId) => Effect.sync(() => engine.getState(graphId)),
     pause: (graphId) => Effect.sync(() => engine.pause(graphId)),
     resume: (graphId) => Effect.sync(() => engine.resume(graphId)),
-    list: () => Effect.sync(() => engine.listGraphs().map((g) => g.id)),
+    list: () => Effect.sync(() => engine.listGraphs().map((g: any) => g.id)),
   })
 })
 

@@ -80,7 +80,7 @@ const toPlatformError = (
   command: ChildProcess.Command,
 ): PlatformError.PlatformError => {
   const cmd = flatten(command)
-    .commands.map((x) => `${x.command} ${x.args.join(" ")}`)
+    .commands.map((x: any) => `${x.command} ${x.args.join(" ")}`)
     .join(" | ")
   return PlatformError.systemError({
     _tag: toTag(err),

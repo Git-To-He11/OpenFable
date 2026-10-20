@@ -115,7 +115,7 @@ async function cleanup(dir: string) {
       // Match session logs (<iso>.log), dev rotations (dev.log.<stamp>) and
       // size rotations (<name>.log.<stamp>). Skip the active file so it is
       // never deleted out from under the open write stream.
-      .filter((name) => name.includes(".log") && path.join(dir, name) !== logpath)
+      .filter((name: any) => name.includes(".log") && path.join(dir, name) !== logpath)
       .map(async (name) => {
         const stat = await fs.stat(path.join(dir, name)).catch(() => null)
         return stat?.isFile() ? { name, size: stat.size } : null
@@ -127,13 +127,13 @@ async function cleanup(dir: string) {
 
   let total = files.reduce((sum, f) => sum + f.size, 0)
   let remaining = files.length
-  const doomed = files.filter((f) => {
+  const doomed = files.filter((f: any) => {
     if (remaining <= keep && total <= MAX_TOTAL_SIZE) return false
     total -= f.size
     remaining -= 1
     return true
   })
-  await Promise.all(doomed.map((f) => fs.unlink(path.join(dir, f.name)).catch(() => {})))
+  await Promise.all(doomed.map((f: any) => fs.unlink(path.join(dir, f.name)).catch(() => {})))
 }
 
 function formatError(error: Error, depth = 0): string {

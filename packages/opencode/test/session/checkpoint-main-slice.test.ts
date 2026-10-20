@@ -65,7 +65,7 @@ const recordingActor = Layer.effect(
     // and returns an empty prefix so the fork capture path completes.
     const capture: typeof prefixCaptureRef.current = (input) =>
       Effect.sync(() => {
-        captures.prefixMsgs = (input.msgs as Array<{ info: { id: string; agentID?: string } }>).map((m) => ({
+        captures.prefixMsgs = (input.msgs as Array<{ info: { id: string; agentID?: string } }>).map((m: any) => ({
           id: m.info.id,
           agentID: m.info.agentID,
         }))
@@ -247,11 +247,11 @@ describe("SessionCheckpoint.tryStartCheckpointWriter main-slice", () => {
         // pulls in subagent rows, this assertion fails — the prefix-cache
         // parity invariant from the spec relies on parent's runLoop and
         // tryStartCheckpointWriter consuming the same main slice.
-        const seenIDs = capturedPrefixMsgs?.map((m) => m.id) ?? []
+        const seenIDs = capturedPrefixMsgs?.map((m: any) => m.id) ?? []
         for (const id of seenIDs) expect(mainSet.has(id)).toBe(true)
         expect(seenIDs).not.toContain(subUser.id)
         expect(seenIDs).not.toContain(subAsst.id)
-        const seenAgents = new Set(capturedPrefixMsgs?.map((m) => m.agentID ?? "main"))
+        const seenAgents = new Set(capturedPrefixMsgs?.map((m: any) => m.agentID ?? "main"))
         expect(seenAgents).toEqual(new Set(["main"]))
       }),
     ),

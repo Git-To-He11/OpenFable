@@ -167,8 +167,8 @@ describe("SessionPrune.prune main-slice protect window", () => {
           // main slice's "last 2 turns" includes the main user + main
           // asst, so the tool stays inside the protect window.
           const reloaded = yield* ssn.messages({ sessionID: info.id, agentID: "main" })
-          const mainAsstReloaded = reloaded.find((m) => m.info.id === mainAsstID)
-          const toolPart = mainAsstReloaded?.parts.find((p) => p.id === toolPartID && p.type === "tool")
+          const mainAsstReloaded = reloaded.find((m: any) => m.info.id === mainAsstID)
+          const toolPart = mainAsstReloaded?.parts.find((p: any) => p.id === toolPartID && p.type === "tool")
           expect(toolPart).toBeDefined()
           if (toolPart?.type === "tool" && toolPart.state.status === "completed") {
             expect(toolPart.state.time.compacted).toBeUndefined()
@@ -261,7 +261,7 @@ describe("SessionPrune.prune main-slice protect window", () => {
           // unfiltered path they would all be stripped to "".
           for (let i = 1; i < 5; i++) {
             const id = mainImagePartIDs[i]
-            const found = reloaded.flatMap((m) => m.parts).find((p) => p.id === id)
+            const found = reloaded.flatMap((m) => m.parts).find((p: any) => p.id === id)
             expect(found).toBeDefined()
             expect((found as { url: string }).url).toMatch(/^data:image/)
           }

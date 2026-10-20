@@ -363,15 +363,15 @@ describe("Fork-agent inbox compat (Plan 4 / Task 5)", () => {
         const forkMsgs = yield* session.messages({ sessionID: parent.id, agentID: forkActorID })
         const mainMsgs = yield* session.messages({ sessionID: parent.id, agentID: "main" })
 
-        const forkSynthetic = forkMsgs.filter((m) => m.parts.some((p) => p.type === "text" && p.synthetic))
-        const mainSynthetic = mainMsgs.filter((m) => m.parts.some((p) => p.type === "text" && p.synthetic))
+        const forkSynthetic = forkMsgs.filter((m: any) => m.parts.some((p: any) => p.type === "text" && p.synthetic))
+        const mainSynthetic = mainMsgs.filter((m: any) => m.parts.some((p: any) => p.type === "text" && p.synthetic))
 
         // Fork slice must contain the synthetic message with inbox content.
         expect(forkSynthetic.length).toBeGreaterThan(0)
         const syntheticText = forkSynthetic
           .flatMap((m) => m.parts)
-          .filter((p): p is Extract<MessageV2.Part, { type: "text" }> => p.type === "text" && (p as any).synthetic)
-          .map((p) => p.text)
+          .filter((p: any): p is Extract<MessageV2.Part, { type: "text" }> => p.type === "text" && (p as any).synthetic)
+          .map((p: any) => p.text)
           .join("")
         expect(syntheticText).toContain("inbox-message-for-fork")
 

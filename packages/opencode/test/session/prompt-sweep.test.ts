@@ -63,7 +63,7 @@ describe("sweepOrphanAssistants", () => {
         yield* svc.sweepOrphanAssistants(session.id)
 
         const after = yield* sessions.messages({ sessionID: session.id })
-        const updated = after.find((m) => m.info.id === assistant.id)
+        const updated = after.find((m: any) => m.info.id === assistant.id)
         expect(updated).toBeDefined()
         const info = updated!.info as MessageV2.Assistant
         expect(info.role).toBe("assistant")
@@ -98,7 +98,7 @@ describe("sweepOrphanAssistants", () => {
         yield* svc.sweepOrphanAssistants(session.id)
 
         const after = yield* sessions.messages({ sessionID: session.id })
-        const updated = after.find((m) => m.info.id === assistant.id)
+        const updated = after.find((m: any) => m.info.id === assistant.id)
         expect(updated).toBeDefined()
         const info = updated!.info as MessageV2.Assistant
         expect(info.time.completed).toBeUndefined()
@@ -134,7 +134,7 @@ describe("sweepOrphanAssistants", () => {
         yield* svc.sweepOrphanAssistants(session.id)
 
         const after = yield* sessions.messages({ sessionID: session.id })
-        const updated = after.find((m) => m.info.id === assistant.id)
+        const updated = after.find((m: any) => m.info.id === assistant.id)
         expect(updated).toBeDefined()
         const info = updated!.info as MessageV2.Assistant
         expect(info.time.completed).toBe(originalCompleted)

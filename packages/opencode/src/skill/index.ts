@@ -213,7 +213,7 @@ const discoverSkills = Effect.fnUntraced(function* (
   }
 
   if (!Flag.OPENFABLE_DISABLE_EXTERNAL_SKILLS) {
-    const externalDirs = EXTERNAL_DIRS.filter((dir) => {
+    const externalDirs = EXTERNAL_DIRS.filter((dir: any) => {
       if (dir === ".claude" && Flag.OPENFABLE_DISABLE_CLAUDE_CODE_SKILLS) return false
       if (dir === ".codex" && Flag.OPENFABLE_DISABLE_CODEX_SKILLS) return false
       if (dir === ".opencode" && Flag.OPENFABLE_DISABLE_OPENCODE_SKILLS) return false
@@ -318,11 +318,11 @@ export const layer = Layer.effect(
     const available = Effect.fn("Skill.available")(function* (agent?: Agent.Info) {
       const s = yield* InstanceState.get(state)
       let list: Info[] = Object.values(s.skills)
-        .filter((sk) => !sk.hidden)
+        .filter((sk: any) => !sk.hidden)
 
       list = list.toSorted((a, b) => a.name.localeCompare(b.name))
       if (!agent) return list
-      return list.filter((skill) => Permission.evaluate("skill", skill.name, agent.permission).action !== "deny")
+      return list.filter((skill: any) => Permission.evaluate("skill", skill.name, agent.permission).action !== "deny")
     })
 
     const reload = Effect.fn("Skill.reload")(function* () {
@@ -363,7 +363,7 @@ export function fmt(list: Info[], opts: { verbose: boolean }) {
     "## Available Skills",
     ...list
       .toSorted((a, b) => a.name.localeCompare(b.name))
-      .map((skill) => `- **${skill.name}**: ${skill.description}`),
+      .map((skill: any) => `- **${skill.name}**: ${skill.description}`),
   ].join("\n")
 }
 

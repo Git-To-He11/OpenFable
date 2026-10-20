@@ -131,7 +131,7 @@ describe("WorkflowRuntime worktree isolation", () => {
           `  () => agent("WF_TASK_ONE", { isolation: "worktree" }),`,
           `  () => agent("WF_TASK_TWO", { isolation: "worktree" }),`,
           `])`,
-          `return r.map((x) => x && x._worktree ? x._worktree.directory : null)`,
+          `return r.map((x: any) => x && x._worktree ? x._worktree.directory : null)`,
         ].join("\n")
         const { runID } = yield* runtime.start({ script, sessionID: parent.id, parentActorID: "main", model: ref })
         const outcome = yield* runtime.wait({ runID })

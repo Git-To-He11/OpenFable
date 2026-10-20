@@ -47,8 +47,8 @@ function fromEventRow(row: TaskEventRow): TaskEvent {
 function nextChildId(parentId: string | undefined, siblings: string[]): string {
   const prefix = parentId ? `${parentId}.` : "T"
   const used = siblings
-    .filter((s) => (parentId ? s.startsWith(prefix) : /^T\d+$/.test(s)))
-    .map((s) => {
+    .filter((s: any) => (parentId ? s.startsWith(prefix) : /^T\d+$/.test(s)))
+    .map((s: any) => {
       const tail = s.slice(prefix.length)
       return /^\d+$/.test(tail) ? Number(tail) : 0
     })
@@ -141,7 +141,7 @@ export const layer: Layer.Layer<Service, never, Bus.Service | Config.Service> = 
       )
       const id = nextChildId(
         input.parent_id,
-        siblings.map((s) => s.id),
+        siblings.map((s: any) => s.id),
       )
 
       const row: TaskRow = {

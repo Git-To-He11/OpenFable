@@ -6,7 +6,7 @@ type PluginSpec = string | [string, Record<string, unknown>]
 
 export function mockTuiRuntime(dir: string, plugin: PluginSpec[], opts?: { plugin_enabled?: Record<string, boolean> }) {
   process.env.OPENFABLE_PLUGIN_META_FILE = path.join(dir, "plugin-meta.json")
-  const plugin_origins = plugin.map((spec) => ({
+  const plugin_origins = plugin.map((spec: any) => ({
     spec,
     scope: "local" as const,
     source: path.join(dir, "tui.json"),

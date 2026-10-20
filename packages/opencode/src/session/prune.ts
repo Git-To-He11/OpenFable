@@ -99,7 +99,7 @@ export function resolveThresholds(raw: readonly string[], windowSize: number, re
     )
   }
 
-  const parsed = raw.map((s) => ({ raw: s, value: parseThreshold(s, windowSize) }))
+  const parsed = raw.map((s: any) => ({ raw: s, value: parseThreshold(s, windowSize) }))
 
   const result: number[] = []
   let cappedAlready = false

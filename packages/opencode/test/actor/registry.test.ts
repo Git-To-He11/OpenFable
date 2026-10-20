@@ -321,7 +321,7 @@ describe("ActorRegistry", () => {
 
         const tasks = await rt.runPromise(ActorRegistry.Service.use((svc) => svc.listBySession(parent.id)))
         expect(tasks.length).toBe(3) // "main" (auto-registered) + id1 + id2
-        const ids = tasks.map((t) => t.actorID)
+        const ids = tasks.map((t: any) => t.actorID)
         expect(ids).toContain("main")
         expect(ids).toContain(id1)
         expect(ids).toContain(id2)
@@ -391,7 +391,7 @@ describe("ActorRegistry", () => {
         )
 
         const active = await rt.runPromise(ActorRegistry.Service.use((svc) => svc.listActive()))
-        const activeIds = active.map((t) => t.actorID)
+        const activeIds = active.map((t: any) => t.actorID)
 
         expect(activeIds).toContain(idPending)
         expect(activeIds).toContain(idRunning)

@@ -56,7 +56,7 @@ export const layer = Layer.effect(
         }
 
         async function getFormatter(ext: string) {
-          const matching = Object.values(formatters).filter((item) => item.extensions.includes(ext))
+          const matching = Object.values(formatters).filter((item: any) => item.extensions.includes(ext))
           const checks = await Promise.all(
             matching.map(async (item) => {
               log.info("checking", { name: item.name, ext })
@@ -70,7 +70,7 @@ export const layer = Layer.effect(
               }
             }),
           )
-          return checks.filter((x) => x.cmd).map((x) => ({ item: x.item, cmd: x.cmd! }))
+          return checks.filter((x: any) => x.cmd).map((x: any) => ({ item: x.item, cmd: x.cmd! }))
         }
 
         function formatFile(filepath: string) {
@@ -81,7 +81,7 @@ export const layer = Layer.effect(
             for (const { item, cmd } of yield* Effect.promise(() => getFormatter(ext))) {
               if (cmd === false) continue
               log.info("running", { command: cmd })
-              const replaced = cmd.map((x) => x.replace("$FILE", filepath))
+              const replaced = cmd.map((x: any) => x.replace("$FILE", filepath))
               const dir = yield* InstanceState.directory
               const code = yield* spawner
                 .spawn(

@@ -76,7 +76,7 @@ describe("tool.assertExternalDirectory", () => {
       },
     })
 
-    const req = requests.find((r) => r.permission === "external_directory")
+    const req = requests.find((r: any) => r.permission === "external_directory")
     expect(req).toBeDefined()
     expect(req!.patterns).toEqual([expected])
     expect(req!.always).toEqual([expected])
@@ -96,7 +96,7 @@ describe("tool.assertExternalDirectory", () => {
       },
     })
 
-    const req = requests.find((r) => r.permission === "external_directory")
+    const req = requests.find((r: any) => r.permission === "external_directory")
     expect(req).toBeDefined()
     expect(req!.patterns).toEqual([expected])
     expect(req!.always).toEqual([expected])
@@ -149,7 +149,7 @@ describe("tool.assertExternalDirectory", () => {
       },
     })
 
-    expect(requests.find((r) => r.permission === "external_directory")).toBeDefined()
+    expect(requests.find((r: any) => r.permission === "external_directory")).toBeDefined()
   })
 
   if (process.platform === "win32") {
@@ -176,7 +176,7 @@ describe("tool.assertExternalDirectory", () => {
         },
       })
 
-      const req = requests.find((r) => r.permission === "external_directory")
+      const req = requests.find((r: any) => r.permission === "external_directory")
       const expected = glob(path.join(outerTmp.path, "*"))
       expect(req).toBeDefined()
       expect(req!.patterns).toEqual([expected])
@@ -197,7 +197,7 @@ describe("tool.assertExternalDirectory", () => {
         },
       })
 
-      const req = requests.find((r) => r.permission === "external_directory")
+      const req = requests.find((r: any) => r.permission === "external_directory")
       const expected = path.join(root, "*")
       expect(req).toBeDefined()
       expect(req!.patterns).toEqual([expected])

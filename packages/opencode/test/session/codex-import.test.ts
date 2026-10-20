@@ -125,7 +125,7 @@ describe("codex-import parse", () => {
     expect(result.messages).toHaveLength(2)
 
     const assistant = result.messages[1]
-    const toolParts = assistant.parts.filter((p) => p.part.type === "tool")
+    const toolParts = assistant.parts.filter((p: any) => p.part.type === "tool")
     expect(toolParts).toHaveLength(1)
 
     const tool = toolParts[0].part
@@ -152,7 +152,7 @@ describe("codex-import parse", () => {
 
     const result = parse(text, SID)!
     const assistant = result.messages[1]
-    const toolParts = assistant.parts.filter((p) => p.part.type === "tool")
+    const toolParts = assistant.parts.filter((p: any) => p.part.type === "tool")
     expect(toolParts).toHaveLength(1)
     if (toolParts[0].part.type === "tool") {
       expect(toolParts[0].part.tool).toBe("apply_patch")
@@ -171,7 +171,7 @@ describe("codex-import parse", () => {
 
     const result = parse(text, SID)!
     const assistant = result.messages[1]
-    const reasoningParts = assistant.parts.filter((p) => p.part.type === "reasoning")
+    const reasoningParts = assistant.parts.filter((p: any) => p.part.type === "reasoning")
     expect(reasoningParts).toHaveLength(1)
     if (reasoningParts[0].part.type === "reasoning") {
       expect(reasoningParts[0].part.text).toBe("I thought about it carefully")
@@ -295,13 +295,13 @@ describe("codex-import parse", () => {
     ].join("\n")
 
     const result = parse(text, SID)!
-    const assistant = result.messages.find((m) => m.info.role === "assistant")!
-    const reasoningParts = assistant.parts.filter((p) => p.part.type === "reasoning")
+    const assistant = result.messages.find((m: any) => m.info.role === "assistant")!
+    const reasoningParts = assistant.parts.filter((p: any) => p.part.type === "reasoning")
     expect(reasoningParts).toHaveLength(1)
     if (reasoningParts[0].part.type === "reasoning") {
       expect(reasoningParts[0].part.text).toBe("Reasoning before any assistant text")
     }
-    const textParts = assistant.parts.filter((p) => p.part.type === "text")
+    const textParts = assistant.parts.filter((p: any) => p.part.type === "text")
     expect(textParts).toHaveLength(1)
   })
 
@@ -317,8 +317,8 @@ describe("codex-import parse", () => {
     ].join("\n")
 
     const result = parse(text, SID)!
-    const assistant = result.messages.find((m) => m.info.role === "assistant")!
-    const toolParts = assistant.parts.filter((p) => p.part.type === "tool")
+    const assistant = result.messages.find((m: any) => m.info.role === "assistant")!
+    const toolParts = assistant.parts.filter((p: any) => p.part.type === "tool")
     expect(toolParts).toHaveLength(1)
     if (toolParts[0].part.type === "tool") {
       expect(toolParts[0].part.tool).toBe("exec_command")

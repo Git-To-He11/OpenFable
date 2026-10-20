@@ -73,7 +73,7 @@ export class UnifiedProvider {
   }
 
   listByCapability(capability: keyof Pick<UnifiedModel, "supportsTools" | "supportsStreaming" | "supportsVision">): UnifiedModel[] {
-    return this.listModels().filter((m) => m[capability])
+    return this.listModels().filter((m: any) => m[capability])
   }
 
   listByCost(): UnifiedModel[] {
@@ -93,11 +93,11 @@ export class UnifiedProvider {
   }): UnifiedModel | null {
     let candidates = this.listModels()
 
-    if (requirements.needsTools) candidates = candidates.filter((m) => m.supportsTools)
-    if (requirements.needsVision) candidates = candidates.filter((m) => m.supportsVision)
-    if (requirements.maxCost) candidates = candidates.filter((m) => m.inputCostPerToken <= requirements.maxCost!)
-    if (requirements.maxLatency) candidates = candidates.filter((m) => m.latencyMs <= requirements.maxLatency!)
-    if (requirements.minContextWindow) candidates = candidates.filter((m) => m.contextWindow >= requirements.minContextWindow!)
+    if (requirements.needsTools) candidates = candidates.filter((m: any) => m.supportsTools)
+    if (requirements.needsVision) candidates = candidates.filter((m: any) => m.supportsVision)
+    if (requirements.maxCost) candidates = candidates.filter((m: any) => m.inputCostPerToken <= requirements.maxCost!)
+    if (requirements.maxLatency) candidates = candidates.filter((m: any) => m.latencyMs <= requirements.maxLatency!)
+    if (requirements.minContextWindow) candidates = candidates.filter((m: any) => m.contextWindow >= requirements.minContextWindow!)
 
     if (candidates.length === 0) return null
 
@@ -174,7 +174,7 @@ export class UnifiedProvider {
       }
     }
 
-    throw new Error(`All models failed: ${errors.map((e) => e.message).join(", ")}`)
+    throw new Error(`All models failed: ${errors.map((e: any) => e.message).join(", ")}`)
   }
 
   estimateCost(modelId: string, inputTokens: number, outputTokens: number): number {
@@ -208,7 +208,7 @@ export class UnifiedProvider {
     const body = {
       model: request.model,
       messages: request.messages,
-      tools: request.tools?.map((t) => ({
+      tools: request.tools?.map((t: any) => ({
         type: "function",
         function: { name: t.name, description: t.description, parameters: t.parameters },
       })),
@@ -250,15 +250,15 @@ export class UnifiedProvider {
     config: ProviderConfig,
   ): Promise<Omit<UnifiedResponse, "latencyMs" | "cached">> {
     const url = `${config.baseUrl || "https://api.anthropic.com/v1"}/messages`
-    const systemMsg = request.messages.find((m) => m.role === "system")
-    const otherMsgs = request.messages.filter((m) => m.role !== "system")
+    const systemMsg = request.messages.find((m: any) => m.role === "system")
+    const otherMsgs = request.messages.filter((m: any) => m.role !== "system")
 
     const body = {
       model: request.model,
       max_tokens: request.maxTokens ?? 4096,
       system: systemMsg?.content,
-      messages: otherMsgs.map((m) => ({ role: m.role, content: m.content })),
-      tools: request.tools?.map((t) => ({
+      messages: otherMsgs.map((m: any) => ({ role: m.role, content: m.content })),
+      tools: request.tools?.map((t: any) => ({
         name: t.name,
         description: t.description,
         input_schema: t.parameters,

@@ -32,7 +32,7 @@ export class OpenAIDialect implements ToolCallDialect {
   name = "openai"
 
   encodeTools(tools: ToolSpec[]): any {
-    return tools.map((t) => ({
+    return tools.map((t: any) => ({
       type: "function",
       function: {
         name: t.name,
@@ -81,7 +81,7 @@ export class AnthropicDialect implements ToolCallDialect {
   name = "anthropic"
 
   encodeTools(tools: ToolSpec[]): any {
-    return tools.map((t) => ({
+    return tools.map((t: any) => ({
       name: t.name,
       description: t.description,
       input_schema: t.parameters,
@@ -127,11 +127,11 @@ export class HermesDialect implements ToolCallDialect {
   name = "hermes"
 
   encodeTools(tools: ToolSpec[]): any {
-    const toolDefs = tools.map((t) => {
+    const toolDefs = tools.map((t: any) => {
       const props = Object.entries(t.parameters.properties)
         .map(([k, v]) => `    "${k}": {"type": "${v.type}"${v.description ? `, "description": "${v.description}"` : ""}}`)
         .join(",\n")
-      return `  "${t.name}": {\n    "description": "${t.description}",\n    "parameters": {\n      "type": "object",\n      "properties": {\n${props}\n      },\n      "required": [${(t.parameters.required ?? []).map((r) => `"${r}"`).join(", ")}]\n    }\n  }`
+      return `  "${t.name}": {\n    "description": "${t.description}",\n    "parameters": {\n      "type": "object",\n      "properties": {\n${props}\n      },\n      "required": [${(t.parameters.required ?? []).map((r: any) => `"${r}"`).join(", ")}]\n    }\n  }`
     })
 
     return `</tool_call>\n{\n  "tools": {\n${toolDefs.join(",\n")}\n  }\n}\n<tool_call>`
@@ -174,7 +174,7 @@ export class XMLDialect implements ToolCallDialect {
   name = "xml"
 
   encodeTools(tools: ToolSpec[]): any {
-    const defs = tools.map((t) => {
+    const defs = tools.map((t: any) => {
       const params = Object.entries(t.parameters.properties)
         .map(([k, v]) => `  <param name="${k}" type="${v.type}">${v.description ?? ""}</param>`)
         .join("\n")

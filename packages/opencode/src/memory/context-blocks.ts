@@ -136,7 +136,7 @@ export class SelfEditingContext {
     if (total <= this.maxTokens) return
 
     const unpinned = Array.from(this.blocks.values())
-      .filter((b) => !b.pinned)
+      .filter((b: any) => !b.pinned)
       .sort((a, b) => a.lastModified - b.lastModified)
 
     for (const block of unpinned) {

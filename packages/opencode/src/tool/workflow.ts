@@ -94,7 +94,7 @@ export const WorkflowTool = Tool.define<typeof parameters, Metadata, Config.Serv
         const script = input.name ? BuiltinWorkflow.get(input.name)?.script : input.script
         if (!script) {
           const known = BuiltinWorkflow.list()
-            .map((w) => w.name)
+            .map((w: any) => w.name)
             .join(", ")
           return yield* Effect.fail(
             new Error(

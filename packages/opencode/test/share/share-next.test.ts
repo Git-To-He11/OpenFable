@@ -209,7 +209,7 @@ describe("ShareNext", () => {
           }).pipe(Effect.provide(live(client)))
 
           expect(share(session.id)).toBeUndefined()
-          expect(seen.map((req) => [req.method, req.url])).toEqual([
+          expect(seen.map((req: any) => [req.method, req.url])).toEqual([
             ["POST", "https://legacy-share.example.com/api/share"],
             ["DELETE", "https://legacy-share.example.com/api/share/shr_abc"],
           ])

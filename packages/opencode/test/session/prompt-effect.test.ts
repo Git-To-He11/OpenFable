@@ -98,7 +98,7 @@ function withSh<A, E, R>(fx: () => Effect.Effect<A, E, R>) {
 }
 
 function toolPart(parts: MessageV2.Part[]) {
-  return parts.find((part): part is MessageV2.ToolPart => part.type === "tool")
+  return parts.find((part: any): part is MessageV2.ToolPart => part.type === "tool")
 }
 
 type CompletedToolPart = MessageV2.ToolPart & { state: MessageV2.ToolStateCompleted }
@@ -411,8 +411,8 @@ it.live("loop calls LLM and returns assistant message", () =>
 
       const result = yield* prompt.loop({ sessionID: chat.id })
       expect(result.info.role).toBe("assistant")
-      const parts = result.parts.filter((p) => p.type === "text")
-      expect(parts.some((p) => p.type === "text" && p.text === "world")).toBe(true)
+      const parts = result.parts.filter((p: any) => p.type === "text")
+      expect(parts.some((p: any) => p.type === "text" && p.text === "world")).toBe(true)
       expect(yield* llm.hits).toHaveLength(1)
     }),
     { git: true, config: providerCfg },
@@ -440,7 +440,7 @@ it.live("static loop returns assistant text through local provider", () =>
 
       const result = yield* prompt.loop({ sessionID: session.id })
       expect(result.info.role).toBe("assistant")
-      expect(result.parts.some((part) => part.type === "text" && part.text === "world")).toBe(true)
+      expect(result.parts.some((part: any) => part.type === "text" && part.text === "world")).toBe(true)
       expect(yield* llm.hits).toHaveLength(1)
       expect(yield* llm.pending).toBe(0)
     }),
@@ -469,7 +469,7 @@ it.live("static loop consumes queued replies across turns", () =>
 
       const first = yield* prompt.loop({ sessionID: session.id })
       expect(first.info.role).toBe("assistant")
-      expect(first.parts.some((part) => part.type === "text" && part.text === "world one")).toBe(true)
+      expect(first.parts.some((part: any) => part.type === "text" && part.text === "world one")).toBe(true)
 
       yield* prompt.prompt({
         sessionID: session.id,
@@ -482,7 +482,7 @@ it.live("static loop consumes queued replies across turns", () =>
 
       const second = yield* prompt.loop({ sessionID: session.id })
       expect(second.info.role).toBe("assistant")
-      expect(second.parts.some((part) => part.type === "text" && part.text === "world two")).toBe(true)
+      expect(second.parts.some((part: any) => part.type === "text" && part.text === "world two")).toBe(true)
 
       expect(yield* llm.hits).toHaveLength(2)
       expect(yield* llm.pending).toBe(0)
@@ -513,7 +513,7 @@ it.live("loop continues when finish is tool-calls", () =>
       expect(yield* llm.calls).toBe(2)
       expect(result.info.role).toBe("assistant")
       if (result.info.role === "assistant") {
-        expect(result.parts.some((part) => part.type === "text" && part.text === "second")).toBe(true)
+        expect(result.parts.some((part: any) => part.type === "text" && part.text === "second")).toBe(true)
         expect(result.info.finish).toBe("stop")
       }
     }),
@@ -557,7 +557,7 @@ it.live("glob tool keeps instance context during prompt runs", () =>
 
         expect(tool.state.output).toContain(file)
         expect(tool.state.output).not.toContain("No context found for instance")
-        expect(result.parts.some((part) => part.type === "text" && part.text === "done")).toBe(true)
+        expect(result.parts.some((part: any) => part.type === "text" && part.text === "done")).toBe(true)
       }),
     { git: true, config: providerCfg },
   ),
@@ -585,7 +585,7 @@ it.live("loop continues when finish is stop but assistant has tool parts", () =>
       expect(yield* llm.calls).toBe(2)
       expect(result.info.role).toBe("assistant")
       if (result.info.role === "assistant") {
-        expect(result.parts.some((part) => part.type === "text" && part.text === "second")).toBe(true)
+        expect(result.parts.some((part: any) => part.type === "text" && part.text === "second")).toBe(true)
         expect(result.info.finish).toBe("stop")
       }
     }),
@@ -613,7 +613,7 @@ it.live("failed subtask preserves metadata on error tool state", () =>
       expect(yield* llm.calls).toBe(2)
 
       const msgs = yield* MessageV2.filterCompactedEffect(chat.id)
-      const taskMsg = msgs.find((item) => item.info.role === "assistant" && item.info.agent === "general")
+      const taskMsg = msgs.find((item: any) => item.info.role === "assistant" && item.info.agent === "general")
       expect(taskMsg?.info.role).toBe("assistant")
       if (!taskMsg || taskMsg.info.role !== "assistant") return
 
@@ -695,8 +695,8 @@ it.live(
           const end = Date.now() + 5_000
           while (Date.now() < end) {
             const msgs = await Effect.runPromise(MessageV2.filterCompactedEffect(chat.id))
-            const taskMsg = msgs.find((item) => item.info.role === "assistant" && item.info.agent === "general")
-            const tool = taskMsg?.parts.find((part): part is MessageV2.ToolPart => part.type === "tool")
+            const taskMsg = msgs.find((item: any) => item.info.role === "assistant" && item.info.agent === "general")
+            const tool = taskMsg?.parts.find((part: any): part is MessageV2.ToolPart => part.type === "tool")
             if (tool?.state.status === "running" && tool.state.metadata?.sessionId) return tool
             await new Promise((done) => setTimeout(done, 20))
           }
@@ -880,7 +880,7 @@ it.live(
           expect(Exit.isSuccess(exit)).toBe(true)
 
           const msgs = yield* MessageV2.filterCompactedEffect(chat.id)
-          const taskMsg = msgs.find((item) => item.info.role === "assistant" && item.info.agent === "general")
+          const taskMsg = msgs.find((item: any) => item.info.role === "assistant" && item.info.agent === "general")
           expect(taskMsg?.info.role).toBe("assistant")
           if (!taskMsg || taskMsg.info.role !== "assistant") return
 
@@ -1009,7 +1009,7 @@ it.live(
           const end = Date.now() + 5000
           while (Date.now() < end) {
             const msgs = await Effect.runPromise(sessions.messages({ sessionID: chat.id }))
-            if (msgs.some((msg) => msg.info.role === "user" && msg.info.id === id)) return
+            if (msgs.some((msg: any) => msg.info.role === "user" && msg.info.id === id)) return
             await new Promise((done) => setTimeout(done, 20))
           }
           throw new Error("timed out waiting for second prompt to save")
@@ -1023,12 +1023,12 @@ it.live(
         expect(yield* llm.calls).toBe(2)
 
         const msgs = yield* sessions.messages({ sessionID: chat.id })
-        const assistants = msgs.filter((msg) => msg.info.role === "assistant")
+        const assistants = msgs.filter((msg: any) => msg.info.role === "assistant")
         expect(assistants).toHaveLength(2)
         const last = assistants.at(-1)
         if (!last || last.info.role !== "assistant") throw new Error("expected second assistant")
         expect(last.info.parentID).toBe(id)
-        expect(last.parts.some((part) => part.type === "text" && part.text === "second")).toBe(true)
+        expect(last.parts.some((part: any) => part.type === "text" && part.text === "second")).toBe(true)
 
         const inputs = yield* llm.inputs
         expect(inputs).toHaveLength(2)
@@ -1229,7 +1229,7 @@ unix(
               const start = Date.now()
               while (Date.now() - start < 5000) {
                 const msgs = await MessageV2.filterCompacted(MessageV2.stream(chat.id))
-                const taskMsg = msgs.find((item) => item.info.role === "assistant")
+                const taskMsg = msgs.find((item: any) => item.info.role === "assistant")
                 const tool = taskMsg ? toolPart(taskMsg.parts) : undefined
                 if (tool?.state.status === "running" && tool.state.metadata?.output.includes("first")) return
                 await new Promise((done) => setTimeout(done, 20))
@@ -1275,7 +1275,7 @@ it.live(
         expect(Exit.isSuccess(exit)).toBe(true)
         if (Exit.isSuccess(exit)) {
           expect(exit.value.info.role).toBe("assistant")
-          expect(exit.value.parts.some((part) => part.type === "text" && part.text === "after-shell")).toBe(true)
+          expect(exit.value.parts.some((part: any) => part.type === "text" && part.text === "after-shell")).toBe(true)
         }
         expect(yield* llm.calls).toBe(1)
       }),

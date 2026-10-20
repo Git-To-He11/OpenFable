@@ -277,7 +277,7 @@ async function loadFixture(providerID: string, modelID: string) {
 }
 
 function createEventStream(chunks: unknown[], includeDone = false) {
-  const lines = chunks.map((chunk) => `data: ${typeof chunk === "string" ? chunk : JSON.stringify(chunk)}`)
+  const lines = chunks.map((chunk: any) => `data: ${typeof chunk === "string" ? chunk : JSON.stringify(chunk)}`)
   if (includeDone) {
     lines.push("data: [DONE]")
   }
@@ -556,7 +556,7 @@ describe("session.llm.stream", () => {
 
         const capture = await request
         const tools = capture.body.tools as Array<{ function?: { name?: string } }> | undefined
-        expect(tools?.some((item) => item.function?.name === "question")).toBe(true)
+        expect(tools?.some((item: any) => item.function?.name === "question")).toBe(true)
       },
     })
   })

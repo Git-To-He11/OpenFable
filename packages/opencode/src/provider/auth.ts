@@ -139,10 +139,10 @@ export const layer: Layer.Layer<Service, never, Auth.Service | Plugin.Service> =
       const hooks = (yield* InstanceState.get(state)).hooks
       return decode(
         Record.map(hooks, (item) =>
-          item.methods.map((method) => ({
+          item.methods.map((method: any) => ({
             type: method.type,
             label: method.label,
-            prompts: method.prompts?.map((prompt) => {
+            prompts: method.prompts?.map((prompt: any) => {
               if (prompt.type === "select") {
                 return {
                   type: "select" as const,

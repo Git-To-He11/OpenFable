@@ -1,4 +1,4 @@
-declare module "bun:sqlite" {
+declare module "node:sqlite" {
   interface DatabaseSync {
     query(sql: string): {
       all(...params: any[]): any[]

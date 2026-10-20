@@ -27,7 +27,7 @@ const work = Effect.fnUntraced(function* (fs: AppFileSystem.Interface, cwd: stri
 })
 
 const nums = (list: Git.Stat[]) =>
-  new Map(list.map((item) => [item.file, { additions: item.additions, deletions: item.deletions }] as const))
+  new Map(list.map((item: any) => [item.file, { additions: item.additions, deletions: item.deletions }] as const))
 
 const merge = (...lists: Git.Item[][]) => {
   const out = new Map<string, Git.Item>()
@@ -95,7 +95,7 @@ const compare = Effect.fnUntraced(function* (
     ref,
     merge(
       list,
-      extra.filter((item) => item.code === "??"),
+      extra.filter((item: any) => item.code === "??"),
     ),
     nums(stats),
   )
@@ -174,7 +174,7 @@ export const layer: Layer.Layer<Service, never, AppFileSystem.Service | Git.Serv
         log.info("initialized", { branch: value.current, default_branch: value.root?.name })
 
         yield* bus.subscribe(FileWatcher.Event.Updated).pipe(
-          Stream.filter((evt) => evt.properties.file.endsWith("HEAD")),
+          Stream.filter((evt: any) => evt.properties.file.endsWith("HEAD")),
           Stream.runForEach((_evt) =>
             Effect.gen(function* () {
               const next = yield* get()

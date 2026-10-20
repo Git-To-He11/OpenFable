@@ -15,7 +15,7 @@ function canonical(value: unknown): unknown {
   return Object.fromEntries(
     Object.keys(value as Record<string, unknown>)
       .sort()
-      .map((k) => [k, canonical((value as Record<string, unknown>)[k])]),
+      .map((k: any) => [k, canonical((value as Record<string, unknown>)[k])]),
   )
 }
 
@@ -257,7 +257,7 @@ const appendJournalSync = (runID: string, events: JournalEvent[]) =>
   Effect.sync(() => {
     if (events.length === 0) return
     mkdirSync(scriptDir(), { recursive: true })
-    appendFileSync(journalPath(runID), events.map((e) => JSON.stringify(e) + "\n").join(""))
+    appendFileSync(journalPath(runID), events.map((e: any) => JSON.stringify(e) + "\n").join(""))
   })
 
 const loadJournal = (runID: string): Effect.Effect<JournalLoad> =>

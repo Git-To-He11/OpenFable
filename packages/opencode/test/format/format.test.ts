@@ -26,7 +26,7 @@ describe("Format", () => {
         Format.Service.use((fmt) =>
           Effect.gen(function* () {
             const statuses = yield* fmt.status()
-            const gofmt = statuses.find((item) => item.name === "gofmt")
+            const gofmt = statuses.find((item: any) => item.name === "gofmt")
             expect(gofmt).toBeDefined()
             expect(gofmt!.extensions).toContain(".go")
           }),
@@ -45,8 +45,8 @@ describe("Format", () => {
         Format.Service.use((fmt) =>
           Effect.gen(function* () {
             const statuses = yield* fmt.status()
-            const gofmt = statuses.find((item) => item.name === "gofmt")
-            const mix = statuses.find((item) => item.name === "mix")
+            const gofmt = statuses.find((item: any) => item.name === "gofmt")
+            const mix = statuses.find((item: any) => item.name === "mix")
             expect(gofmt).toBeDefined()
             expect(gofmt!.extensions).toContain(".go")
             expect(mix).toBeDefined()
@@ -68,8 +68,8 @@ describe("Format", () => {
         Format.Service.use((fmt) =>
           Effect.gen(function* () {
             const statuses = yield* fmt.status()
-            const gofmt = statuses.find((item) => item.name === "gofmt")
-            const mix = statuses.find((item) => item.name === "mix")
+            const gofmt = statuses.find((item: any) => item.name === "gofmt")
+            const mix = statuses.find((item: any) => item.name === "mix")
             expect(gofmt).toBeUndefined()
             expect(mix).toBeDefined()
           }),
@@ -90,8 +90,8 @@ describe("Format", () => {
         Format.Service.use((fmt) =>
           Effect.gen(function* () {
             const statuses = yield* fmt.status()
-            expect(statuses.find((item) => item.name === "ruff")).toBeUndefined()
-            expect(statuses.find((item) => item.name === "uv")).toBeUndefined()
+            expect(statuses.find((item: any) => item.name === "ruff")).toBeUndefined()
+            expect(statuses.find((item: any) => item.name === "uv")).toBeUndefined()
           }),
         ),
       {
@@ -110,8 +110,8 @@ describe("Format", () => {
         Format.Service.use((fmt) =>
           Effect.gen(function* () {
             const statuses = yield* fmt.status()
-            expect(statuses.find((item) => item.name === "ruff")).toBeUndefined()
-            expect(statuses.find((item) => item.name === "uv")).toBeUndefined()
+            expect(statuses.find((item: any) => item.name === "ruff")).toBeUndefined()
+            expect(statuses.find((item: any) => item.name === "uv")).toBeUndefined()
           }),
         ),
       {
@@ -138,7 +138,7 @@ describe("Format", () => {
       })
 
       expect(a).toEqual([])
-      expect(b.find((item) => item.name === "gofmt")).toBeDefined()
+      expect(b.find((item: any) => item.name === "gofmt")).toBeDefined()
     }),
   )
 

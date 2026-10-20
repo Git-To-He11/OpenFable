@@ -18,7 +18,7 @@ const wait = async (fn: () => boolean, ms = 5000) => {
 }
 
 const pick = (log: Array<{ type: "created" | "exited" | "deleted"; id: PtyID }>, id: PtyID) => {
-  return log.filter((evt) => evt.id === id).map((evt) => evt.type)
+  return log.filter((evt: any) => evt.id === id).map((evt: any) => evt.type)
 }
 
 describe("pty", () => {

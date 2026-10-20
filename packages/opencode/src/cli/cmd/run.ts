@@ -291,7 +291,7 @@ export const RunCommand = cmd({
   },
   handler: async (args) => {
     let message = [...args.message, ...(args["--"] || [])]
-      .map((arg) => (arg.includes(" ") ? `"${arg.replace(/"/g, '\\"')}"` : arg))
+      .map((arg: any) => (arg.includes(" ") ? `"${arg.replace(/"/g, '\\"')}"` : arg))
       .join(" ")
 
     const directory = (() => {
@@ -365,7 +365,7 @@ export const RunCommand = cmd({
     }
 
     async function session(sdk: OpencodeClient) {
-      const baseID = args.continue ? (await sdk.session.list()).data?.find((s) => !s.parentID)?.id : args.session
+      const baseID = args.continue ? (await sdk.session.list()).data?.find((s: any) => !s.parentID)?.id : args.session
 
       if (baseID && args.fork) {
         const forked = await sdk.session.fork({ sessionID: baseID })
@@ -580,7 +580,7 @@ export const RunCommand = cmd({
             return undefined
           }
 
-          const agent = modes.find((a) => a.name === name)
+          const agent = modes.find((a: any) => a.name === name)
           if (!agent) {
             UI.println(
               UI.Style.TEXT_WARNING_BOLD + "!",

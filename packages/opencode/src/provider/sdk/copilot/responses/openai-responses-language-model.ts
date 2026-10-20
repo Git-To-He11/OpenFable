@@ -218,7 +218,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
     }
 
     function hasOpenAITool(id: string) {
-      return tools?.find((tool) => tool.type === "provider" && tool.id === id) != null
+      return tools?.find((tool: any) => tool.type === "provider" && tool.id === id) != null
     }
 
     // when logprobs are requested, automatically include them:
@@ -686,7 +686,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
             result: {
               queries: part.queries,
               results:
-                part.results?.map((result) => ({
+                part.results?.map((result: any) => ({
                   attributes: result.attributes as Record<string, JSONValue>,
                   fileId: result.file_id,
                   filename: result.filename,
@@ -1056,7 +1056,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                   result: {
                     queries: value.item.queries,
                     results:
-                      value.item.results?.map((result) => ({
+                      value.item.results?.map((result: any) => ({
                         attributes: result.attributes as Record<string, JSONValue>,
                         fileId: result.file_id,
                         filename: result.filename,

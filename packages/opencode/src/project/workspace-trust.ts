@@ -33,7 +33,7 @@ export async function checkTrust(directory: string): Promise<TrustLevel> {
     os.homedir(),
   ].filter(Boolean) as string[]
 
-  const isHome = homeCandidates.some((h) => path.resolve(h) === normalized)
+  const isHome = homeCandidates.some((h: any) => path.resolve(h) === normalized)
   const isRoot = path.parse(normalized).root === normalized
   if (isHome || isRoot) return "dangerous"
 
@@ -62,6 +62,6 @@ export async function revokeTrust(directory: string) {
   const normalized = path.resolve(directory)
   await Flock.withLock(LOCK_NAME, async () => {
     const trustedPaths = await readStore()
-    await writeStore(trustedPaths.filter((p) => p !== normalized))
+    await writeStore(trustedPaths.filter((p: any) => p !== normalized))
   })
 }

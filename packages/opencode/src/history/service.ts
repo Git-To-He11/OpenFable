@@ -134,7 +134,7 @@ export const layer = Layer.effect(
         LIMIT ?
       `
       const rows = Database.Client().$client.query(sqlText).all(ftsQuery, ...params, limit) as Row[]
-      return rows.map((r) => ({
+      return rows.map((r: any) => ({
         part_id: r.part_id,
         session_id: r.session_id,
         message_id: r.message_id,
@@ -202,7 +202,7 @@ export const layer = Layer.effect(
             and(
               eq(PartTable.session_id, anchor.session_id),
               sql`${PartTable.message_id} IN (${sql.join(
-                messages.map((m) => sql`${m.id}`),
+                messages.map((m: any) => sql`${m.id}`),
                 sql`, `,
               )})`,
             ),
@@ -218,10 +218,10 @@ export const layer = Layer.effect(
         byMessage.set(p.message_id, list)
       }
 
-      const out: MessageContext[] = messages.map((m) => {
+      const out: MessageContext[] = messages.map((m: any) => {
         const role: "user" | "assistant" =
           (m.data as { role?: "user" | "assistant" })?.role === "user" ? "user" : "assistant"
-        const partsHere = (byMessage.get(m.id) ?? []).map((p) => {
+        const partsHere = (byMessage.get(m.id) ?? []).map((p: any) => {
           const d = p.data as {
             type: string
             text?: string

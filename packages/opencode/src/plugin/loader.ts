@@ -187,7 +187,7 @@ export namespace PluginLoader {
   // caller finishes preparing dependencies. This supports local plugins that depend on an install
   // step happening elsewhere before their entrypoint becomes loadable.
   export async function loadExternal<R = Loaded>(input: Input<R>): Promise<R[]> {
-    const candidates = input.items.map((origin) => ({ origin, plan: plan(origin.spec) }))
+    const candidates = input.items.map((origin: any) => ({ origin, plan: plan(origin.spec) }))
     const list: Array<Promise<R | undefined>> = []
     for (const candidate of candidates) {
       list.push(attempt(candidate, input.kind, false, input.finish, input.missing, input.report))

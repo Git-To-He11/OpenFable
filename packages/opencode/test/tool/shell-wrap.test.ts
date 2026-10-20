@@ -30,8 +30,8 @@ function makeRecordingTool(record: { calls: z.infer<typeof params>[] }): Tool.De
         Effect.succeed(
           script
             .split("\n")
-            .filter((l) => l.trim() !== "")
-            .map((line) => {
+            .filter((l: any) => l.trim() !== "")
+            .map((line: any) => {
               const tokens = line.trim().split(/\s+/)
               return { operation: tokens[1], value: tokens[2] } as z.infer<typeof params>
             }),
@@ -116,7 +116,7 @@ describe("shellWrap: multi-command", () => {
         stubCtx(),
       ),
     )
-    expect(record.calls.map((c) => c.operation)).toEqual(["create", "boom"])
+    expect(record.calls.map((c: any) => c.operation)).toEqual(["create", "boom"])
     expect(result.output).toContain('<command index="2" operation=')
     expect(result.output).toContain('failed="true"')
     expect(result.output).toContain("tool boom on B")
@@ -218,8 +218,8 @@ describe("shellWrap: nested discriminator (task-style)", () => {
           Effect.succeed(
             script
               .split("\n")
-              .filter((l) => l.trim() !== "")
-              .map((line) => {
+              .filter((l: any) => l.trim() !== "")
+              .map((line: any) => {
                 const tokens = line.trim().split(/\s+/)
                 return { operation: { action: tokens[1], summary: tokens[2] } } as z.infer<typeof nestedParams>
               }),

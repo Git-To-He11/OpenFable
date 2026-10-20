@@ -57,7 +57,7 @@ export function parse(key: string): Info[] {
   if (!key || key === "none") return []
   if (typeof key !== "string") return []
 
-  return key.split(",").map((combo) => {
+  return key.split(",").map((combo: any) => {
     // Handle <leader> syntax by replacing with leader+
     const normalized = combo.replace(/<leader>/g, "leader+")
     const parts = normalized.toLowerCase().split("+")

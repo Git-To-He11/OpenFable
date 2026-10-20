@@ -71,7 +71,7 @@ async function getContextLimit(
       return []
     })
 
-  const provider = providers.find((p) => p.id === providerID)
+  const provider = providers.find((p: any) => p.id === providerID)
   const model = provider?.models[modelID]
   return model?.limit.context ?? null
 }
@@ -457,7 +457,7 @@ export class Agent implements ACPAgent {
 
         if (!message || message.info.role !== "assistant") return
 
-        const part = message.parts.find((p) => p.id === props.partID)
+        const part = message.parts.find((p: any) => p.id === props.partID)
         if (!part) return
 
         if (part.type === "text" && props.field === "text" && part.ignored !== true) {
@@ -627,7 +627,7 @@ export class Agent implements ACPAgent {
           providerID: ProviderID.make(lastUser.model.providerID),
           modelID: ModelID.make(lastUser.model.modelID),
         })
-        if (result.modes?.availableModes.some((m) => m.id === lastUser.agent)) {
+        if (result.modes?.availableModes.some((m: any) => m.id === lastUser.agent)) {
           result.modes.currentModeId = lastUser.agent
           this.sessionManager.setMode(sessionId, lastUser.agent)
         }
@@ -673,10 +673,10 @@ export class Agent implements ACPAgent {
         .then((x) => x.data ?? [])
 
       const sorted = sessions.toSorted((a, b) => b.time.updated - a.time.updated)
-      const filtered = cursor ? sorted.filter((s) => s.time.updated < cursor) : sorted
+      const filtered = cursor ? sorted.filter((s: any) => s.time.updated < cursor) : sorted
       const page = filtered.slice(0, limit)
 
-      const entries: SessionInfo[] = page.map((session) => ({
+      const entries: SessionInfo[] = page.map((session: any) => ({
         sessionId: session.id,
         cwd: session.directory,
         title: session.title,
@@ -1090,8 +1090,8 @@ export class Agent implements ACPAgent {
       .then((resp) => resp.data!)
 
     return agents
-      .filter((agent) => agent.mode !== "subagent" && !agent.hidden)
-      .map((agent) => ({
+      .filter((agent: any) => agent.mode !== "subagent" && !agent.hidden)
+      .map((agent: any) => ({
         id: agent.name,
         name: agent.name,
         description: agent.description,
@@ -1108,7 +1108,7 @@ export class Agent implements ACPAgent {
       (await (async () => {
         if (!availableModes.length) return undefined
         const defaultAgentName = await AppRuntime.runPromise(AgentModule.Service.use((svc) => svc.defaultAgent()))
-        const resolvedModeId = availableModes.find((mode) => mode.name === defaultAgentName)?.id ?? availableModes[0].id
+        const resolvedModeId = availableModes.find((mode: any) => mode.name === defaultAgentName)?.id ?? availableModes[0].id
         this.sessionManager.setMode(sessionId, resolvedModeId)
         return resolvedModeId
       })())
@@ -1147,11 +1147,11 @@ export class Agent implements ACPAgent {
       )
       .then((resp) => resp.data!)
 
-    const availableCommands = commands.map((command) => ({
+    const availableCommands = commands.map((command: any) => ({
       name: command.name,
       description: command.description ?? "",
     }))
-    const names = new Set(availableCommands.map((c) => c.name))
+    const names = new Set(availableCommands.map((c: any) => c.name))
     if (!names.has("compact"))
       availableCommands.push({
         name: "compact",
@@ -1253,7 +1253,7 @@ export class Agent implements ACPAgent {
   async setSessionMode(params: SetSessionModeRequest): Promise<SetSessionModeResponse | void> {
     const session = this.sessionManager.get(params.sessionId)
     const availableModes = await this.loadAvailableModes(session.cwd)
-    if (!availableModes.some((mode) => mode.id === params.modeId)) {
+    if (!availableModes.some((mode: any) => mode.id === params.modeId)) {
       throw new Error(`Agent not found: ${params.modeId}`)
     }
     this.sessionManager.setMode(params.sessionId, params.modeId)
@@ -1274,7 +1274,7 @@ export class Agent implements ACPAgent {
     } else if (params.configId === "mode") {
       if (typeof params.value !== "string") throw RequestError.invalidParams("mode value must be a string")
       const availableModes = await this.loadAvailableModes(session.cwd)
-      if (!availableModes.some((mode) => mode.id === params.value)) {
+      if (!availableModes.some((mode: any) => mode.id === params.value)) {
         throw RequestError.invalidParams(JSON.stringify({ error: `Mode not found: ${params.value}` }))
       }
       this.sessionManager.setMode(session.id, params.value)
@@ -1387,8 +1387,8 @@ export class Agent implements ACPAgent {
 
     const cmd = (() => {
       const text = parts
-        .filter((p): p is { type: "text"; text: string } => p.type === "text")
-        .map((p) => p.text)
+        .filter((p: any): p is { type: "text"; text: string } => p.type === "text")
+        .map((p: any) => p.text)
         .join("")
         .trim()
 
@@ -1437,7 +1437,7 @@ export class Agent implements ACPAgent {
 
     const command = await this.config.sdk.command
       .list({ directory }, { throwOnError: true })
-      .then((x) => x.data!.find((c) => c.name === cmd.name))
+      .then((x) => x.data!.find((c: any) => c.name === cmd.name))
     if (command) {
       const response = await this.sdk.session.command({
         sessionID,
@@ -1564,13 +1564,13 @@ async function defaultModel(config: ACPConfig, cwd?: string): Promise<{ provider
     })
 
   if (specified && providers.length) {
-    const provider = providers.find((p) => p.id === specified.providerID)
+    const provider = providers.find((p: any) => p.id === specified.providerID)
     if (provider && provider.models[specified.modelID]) return specified
   }
 
   if (specified && !providers.length) return specified
 
-  const openfableProvider = providers.find((p) => p.id === "openfable")
+  const openfableProvider = providers.find((p: any) => p.id === "openfable")
   if (openfableProvider) {
     if (openfableProvider.models["big-pickle"]) {
       return { providerID: ProviderID.openfable, modelID: ModelID.make("big-pickle") }
@@ -1660,7 +1660,7 @@ function modelVariantsFromProviders(
   providers: Array<{ id: string; models: Record<string, { variants?: Record<string, any> }> }>,
   model: { providerID: ProviderID; modelID: ModelID },
 ): string[] {
-  const provider = providers.find((entry) => entry.id === model.providerID)
+  const provider = providers.find((entry: any) => entry.id === model.providerID)
   if (!provider) return []
   const modelInfo = provider.models[model.modelID]
   if (!modelInfo?.variants) return []
@@ -1681,8 +1681,8 @@ function buildAvailableModels(
         name: `${provider.name}/${model.name}`,
       }
       if (!includeVariants || !model.variants) return [base]
-      const variants = Object.keys(model.variants).filter((variant) => variant !== DEFAULT_VARIANT_VALUE)
-      const variantOptions = variants.map((variant) => ({
+      const variants = Object.keys(model.variants).filter((variant: any) => variant !== DEFAULT_VARIANT_VALUE)
+      const variantOptions = variants.map((variant: any) => ({
         modelId: `${provider.id}/${model.id}/${variant}`,
         name: `${provider.name}/${model.name} (${variant})`,
       }))
@@ -1721,7 +1721,7 @@ function parseModelSelection(
   providers: Array<{ id: string; models: Record<string, { variants?: Record<string, any> }> }>,
 ): { model: { providerID: ProviderID; modelID: ModelID }; variant?: string } {
   const parsed = Provider.parseModel(modelId)
-  const provider = providers.find((p) => p.id === parsed.providerID)
+  const provider = providers.find((p: any) => p.id === parsed.providerID)
   if (!provider) {
     return { model: parsed, variant: undefined }
   }
@@ -1760,7 +1760,7 @@ function buildConfigOptions(input: {
       category: "model",
       type: "select",
       currentValue: input.currentModelId,
-      options: input.availableModels.map((m) => ({ value: m.modelId, name: m.name })),
+      options: input.availableModels.map((m: any) => ({ value: m.modelId, name: m.name })),
     },
   ]
   if (input.modes) {
@@ -1770,7 +1770,7 @@ function buildConfigOptions(input: {
       category: "mode",
       type: "select",
       currentValue: input.modes.currentModeId,
-      options: input.modes.availableModes.map((m) => ({
+      options: input.modes.availableModes.map((m: any) => ({
         value: m.id,
         name: m.name,
         ...(m.description ? { description: m.description } : {}),

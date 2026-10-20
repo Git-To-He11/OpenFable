@@ -196,7 +196,7 @@ function renderCandidate(c: Candidate, label: number): string {
     c.toolCalls.length === 0
       ? "(no tool calls — final answer / text only)"
       : c.toolCalls
-          .map((t) => `  - ${t.toolName}(${JSON.stringify(t.input)})`)
+          .map((t: any) => `  - ${t.toolName}(${JSON.stringify(t.input)})`)
           .join("\n")
   const reasoning = c.reasoning.trim() ? c.reasoning.trim() : "(no reasoning emitted)"
   const text = c.text.trim() ? c.text.trim() : "(no text emitted)"
@@ -325,7 +325,7 @@ export const runMaxStep = (input: MaxStepInput): Effect.Effect<SessionProcessor.
       Array.from({ length: n }, (_, i) => runCandidate(input, i)),
       { concurrency: n },
     )
-    const survivors = results.filter((c): c is Candidate => c !== null)
+    const survivors = results.filter((c: any): c is Candidate => c !== null)
 
     if (survivors.length === 0) {
       log.warn("all candidates failed, falling back to single process")
@@ -361,7 +361,7 @@ export const runMaxStep = (input: MaxStepInput): Effect.Effect<SessionProcessor.
     // processor adds to `cost` and the ModelCall metric only — never to
     // `tokens`. So billing/metrics reflect the true ~Nx spend while context
     // estimation stays honest.
-    const overheadUsages = [...survivors.filter((_, i) => i !== pick).map((c) => c.usage), judgeUsage]
+    const overheadUsages = [...survivors.filter((_, i) => i !== pick).map((c: any) => c.usage), judgeUsage]
     const overhead = overheadUsages.reduce(
       (acc, u) => {
         if (!u) return acc

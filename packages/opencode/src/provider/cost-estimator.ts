@@ -81,8 +81,8 @@ export function compareCosts(
   usage: TokenUsage,
 ): CostComparison {
   const estimates = modelIDs
-    .map((modelID) => estimateCost(providerID, modelID, usage))
-    .filter((e): e is CostEstimate => e !== undefined)
+    .map((modelID: any) => estimateCost(providerID, modelID, usage))
+    .filter((e: any): e is CostEstimate => e !== undefined)
 
   if (estimates.length === 0) {
     return { estimates: [], cheapest: undefined, mostExpensive: undefined }

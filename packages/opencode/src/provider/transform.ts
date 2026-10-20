@@ -72,13 +72,13 @@ function normalizeMessages(
   // and remove empty text/reasoning parts from array content
   if (model.api.npm === "@ai-sdk/anthropic" || model.api.npm === "@ai-sdk/amazon-bedrock") {
     msgs = msgs
-      .map((msg) => {
+      .map((msg: any) => {
         if (typeof msg.content === "string") {
           if (msg.content === "") return undefined
           return msg
         }
         if (!Array.isArray(msg.content)) return msg
-        const filtered = msg.content.filter((part) => {
+        const filtered = msg.content.filter((part: any) => {
           if (part.type === "text" || part.type === "reasoning") {
             return part.text !== ""
           }
@@ -87,16 +87,16 @@ function normalizeMessages(
         if (filtered.length === 0) return undefined
         return { ...msg, content: filtered }
       })
-      .filter((msg): msg is ModelMessage => msg !== undefined && msg.content !== "")
+      .filter((msg: any): msg is ModelMessage => msg !== undefined && msg.content !== "")
   }
 
   if (model.api.id.includes("claude")) {
     const scrub = (id: string) => id.replace(/[^a-zA-Z0-9_-]/g, "_")
-    msgs = msgs.map((msg) => {
+    msgs = msgs.map((msg: any) => {
       if (msg.role === "assistant" && Array.isArray(msg.content)) {
         return {
           ...msg,
-          content: msg.content.map((part) => {
+          content: msg.content.map((part: any) => {
             if (part.type === "tool-call" || part.type === "tool-result") {
               return { ...part, toolCallId: scrub(part.toolCallId) }
             }
@@ -107,7 +107,7 @@ function normalizeMessages(
       if (msg.role === "tool" && Array.isArray(msg.content)) {
         return {
           ...msg,
-          content: msg.content.map((part) => {
+          content: msg.content.map((part: any) => {
             if (part.type === "tool-result") {
               return { ...part, toolCallId: scrub(part.toolCallId) }
             }
@@ -136,10 +136,10 @@ function normalizeMessages(
       const parts = msg.content
       const first = parts.findIndex((part) => part.type === "tool-call")
       if (first === -1) return [msg]
-      if (!parts.slice(first).some((part) => part.type !== "tool-call")) return [msg]
+      if (!parts.slice(first).some((part: any) => part.type !== "tool-call")) return [msg]
       return [
-        { ...msg, content: parts.filter((part) => part.type !== "tool-call") },
-        { ...msg, content: parts.filter((part) => part.type === "tool-call") },
+        { ...msg, content: parts.filter((part: any) => part.type !== "tool-call") },
+        { ...msg, content: parts.filter((part: any) => part.type === "tool-call") },
       ]
     })
   }
@@ -160,7 +160,7 @@ function normalizeMessages(
       const nextMsg = msgs[i + 1]
 
       if (msg.role === "assistant" && Array.isArray(msg.content)) {
-        msg.content = msg.content.map((part) => {
+        msg.content = msg.content.map((part: any) => {
           if (part.type === "tool-call" || part.type === "tool-result") {
             return { ...part, toolCallId: scrub(part.toolCallId) }
           }
@@ -168,7 +168,7 @@ function normalizeMessages(
         })
       }
       if (msg.role === "tool" && Array.isArray(msg.content)) {
-        msg.content = msg.content.map((part) => {
+        msg.content = msg.content.map((part: any) => {
           if (part.type === "tool-result") {
             return { ...part, toolCallId: scrub(part.toolCallId) }
           }
@@ -195,7 +195,7 @@ function normalizeMessages(
 
   if (typeof model.capabilities.interleaved === "object" && model.capabilities.interleaved.field) {
     const field = model.capabilities.interleaved.field
-    return msgs.map((msg) => {
+    return msgs.map((msg: any) => {
       if (msg.role === "assistant" && Array.isArray(msg.content)) {
         const reasoningParts = msg.content.filter((part: any) => part.type === "reasoning")
         const reasoningText = reasoningParts.map((part: any) => part.text).join("")
@@ -289,10 +289,10 @@ function applyCaching(msgs: ModelMessage[], model: Provider.Model): ModelMessage
   // 3. Message before the last user message — stable history boundary
   const targets: ModelMessage[] = []
 
-  const systemMsgs = msgs.filter((msg) => msg.role === "system")
+  const systemMsgs = msgs.filter((msg: any) => msg.role === "system")
   if (systemMsgs.length > 0) targets.push(systemMsgs[systemMsgs.length - 1])
 
-  const nonSystem = msgs.filter((msg) => msg.role !== "system")
+  const nonSystem = msgs.filter((msg: any) => msg.role !== "system")
   const lastUserIdx = nonSystem.findLastIndex((msg) => msg.role === "user")
   if (lastUserIdx >= 1) {
     targets.push(nonSystem[lastUserIdx - 1])
@@ -329,10 +329,10 @@ function applyCaching(msgs: ModelMessage[], model: Provider.Model): ModelMessage
 }
 
 function unsupportedParts(msgs: ModelMessage[], model: Provider.Model): ModelMessage[] {
-  return msgs.map((msg) => {
+  return msgs.map((msg: any) => {
     if (msg.role !== "user" || !Array.isArray(msg.content)) return msg
 
-    const filtered = msg.content.map((part) => {
+    const filtered = msg.content.map((part: any) => {
       if (part.type !== "file" && part.type !== "image") return part
 
       // Check for empty base64 image data
@@ -385,16 +385,16 @@ function limitImages(msgs: ModelMessage[]): ModelMessage[] {
   const total = msgs.reduce(
     (sum, msg) =>
       msg.role === "user" && Array.isArray(msg.content)
-        ? sum + msg.content.filter((part) => part.type === "image").length
+        ? sum + msg.content.filter((part: any) => part.type === "image").length
         : sum,
     0,
   )
   // Drop the oldest excess images so the most recent ones reach the model.
   let toDrop = maxImages === undefined ? 0 : Math.max(0, total - maxImages)
 
-  return msgs.map((msg) => {
+  return msgs.map((msg: any) => {
     if (msg.role !== "user" || !Array.isArray(msg.content)) return msg
-    const content = msg.content.map((part) => {
+    const content = msg.content.map((part: any) => {
       if (part.type !== "image") return part
       if (toDrop > 0) {
         toDrop--
@@ -432,12 +432,12 @@ export function message(msgs: ModelMessage[], model: Provider.Model, options: Re
       return result
     }
 
-    msgs = msgs.map((msg) => {
+    msgs = msgs.map((msg: any) => {
       if (!Array.isArray(msg.content)) return { ...msg, providerOptions: remap(msg.providerOptions) }
       return {
         ...msg,
         providerOptions: remap(msg.providerOptions),
-        content: msg.content.map((part) => {
+        content: msg.content.map((part: any) => {
           if (part.type === "tool-approval-request" || part.type === "tool-approval-response") {
             return { ...part }
           }
@@ -461,7 +461,7 @@ export function temperature(model: Provider.Model) {
   if (id.includes("openfable-v2")) return 1.0
   if (id.includes("kimi-k2")) {
     // kimi-k2-thinking & kimi-k2.5 && kimi-k2p5 && kimi-k2-5
-    if (["thinking", "k2.", "k2p", "k2-5"].some((s) => id.includes(s))) {
+    if (["thinking", "k2.", "k2p", "k2-5"].some((s: any) => id.includes(s))) {
       return 1.0
     }
     return 0.6
@@ -472,7 +472,7 @@ export function temperature(model: Provider.Model) {
 export function topP(model: Provider.Model) {
   const id = model.id.toLowerCase()
   if (id.includes("qwen")) return 1
-  if (["minimax-m2", "gemini", "kimi-k2.5", "kimi-k2p5", "kimi-k2-5"].some((s) => id.includes(s))) {
+  if (["minimax-m2", "gemini", "kimi-k2.5", "kimi-k2p5", "kimi-k2-5"].some((s: any) => id.includes(s))) {
     return 0.95
   }
   return undefined
@@ -481,7 +481,7 @@ export function topP(model: Provider.Model) {
 export function topK(model: Provider.Model) {
   const id = model.id.toLowerCase()
   if (id.includes("minimax-m2")) {
-    if (["m2.", "m25", "m21"].some((s) => id.includes(s))) return 40
+    if (["m2.", "m25", "m21"].some((s: any) => id.includes(s))) return 40
     return 20
   }
   if (id.includes("gemini")) return 64
@@ -492,10 +492,10 @@ const WIDELY_SUPPORTED_EFFORTS = ["low", "medium", "high"]
 const OPENAI_EFFORTS = ["none", "minimal", ...WIDELY_SUPPORTED_EFFORTS, "xhigh"]
 
 function anthropicAdaptiveEfforts(apiId: string): string[] | null {
-  if (["opus-4-7", "opus-4.7", "opus-4-8", "opus-4.8"].some((v) => apiId.includes(v))) {
+  if (["opus-4-7", "opus-4.7", "opus-4-8", "opus-4.8"].some((v: any) => apiId.includes(v))) {
     return ["low", "medium", "high", "xhigh", "max"]
   }
-  if (["opus-4-6", "opus-4.6", "sonnet-4-6", "sonnet-4.6"].some((v) => apiId.includes(v))) {
+  if (["opus-4-6", "opus-4.6", "sonnet-4-6", "sonnet-4.6"].some((v: any) => apiId.includes(v))) {
     return ["low", "medium", "high", "max"]
   }
   return null
@@ -536,13 +536,13 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
   switch (model.api.npm) {
     case "@openrouter/ai-sdk-provider":
       if (!model.id.includes("gpt") && !model.id.includes("gemini-3") && !model.id.includes("claude")) return {}
-      return Object.fromEntries(OPENAI_EFFORTS.map((effort) => [effort, { reasoning: { effort } }]))
+      return Object.fromEntries(OPENAI_EFFORTS.map((effort: any) => [effort, { reasoning: { effort } }]))
 
     case "@ai-sdk/gateway":
       if (model.id.includes("anthropic")) {
         if (adaptiveEfforts) {
           return Object.fromEntries(
-            adaptiveEfforts.map((effort) => [
+            adaptiveEfforts.map((effort: any) => [
               effort,
               {
                 thinking: {
@@ -586,7 +586,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
           }
         }
         return Object.fromEntries(
-          ["low", "high"].map((effort) => [
+          ["low", "high"].map((effort: any) => [
             effort,
             {
               includeThoughts: true,
@@ -595,7 +595,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
           ]),
         )
       }
-      return Object.fromEntries(OPENAI_EFFORTS.map((effort) => [effort, { reasoningEffort: effort }]))
+      return Object.fromEntries(OPENAI_EFFORTS.map((effort: any) => [effort, { reasoningEffort: effort }]))
 
     case "@ai-sdk/github-copilot":
       if (model.id.includes("gemini")) {
@@ -603,7 +603,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         return {}
       }
       if (model.id.includes("claude")) {
-        return Object.fromEntries(WIDELY_SUPPORTED_EFFORTS.map((effort) => [effort, { reasoningEffort: effort }]))
+        return Object.fromEntries(WIDELY_SUPPORTED_EFFORTS.map((effort: any) => [effort, { reasoningEffort: effort }]))
       }
       const copilotEfforts = iife(() => {
         if (id.includes("5.1-codex-max") || id.includes("5.2") || id.includes("5.3"))
@@ -613,7 +613,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         return arr
       })
       return Object.fromEntries(
-        copilotEfforts.map((effort) => [
+        copilotEfforts.map((effort: any) => [
           effort,
           {
             reasoningEffort: effort,
@@ -634,7 +634,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
     case "venice-ai-sdk-provider":
     // https://docs.venice.ai/overview/guides/reasoning-models#reasoning-effort
     case "@ai-sdk/openai-compatible":
-      return Object.fromEntries(WIDELY_SUPPORTED_EFFORTS.map((effort) => [effort, { reasoningEffort: effort }]))
+      return Object.fromEntries(WIDELY_SUPPORTED_EFFORTS.map((effort: any) => [effort, { reasoningEffort: effort }]))
 
     case "@ai-sdk/azure":
       // https://v5.ai-sdk.dev/providers/ai-sdk-providers/azure
@@ -644,7 +644,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         azureEfforts.unshift("minimal")
       }
       return Object.fromEntries(
-        azureEfforts.map((effort) => [
+        azureEfforts.map((effort: any) => [
           effort,
           {
             reasoningEffort: effort,
@@ -674,7 +674,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         return arr
       })
       return Object.fromEntries(
-        openaiEfforts.map((effort) => [
+        openaiEfforts.map((effort: any) => [
           effort,
           {
             reasoningEffort: effort,
@@ -691,18 +691,18 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
 
       if (model.providerID === "github-copilot") {
         if (model.api.id.includes("opus-4.7")) {
-          return Object.fromEntries(["medium"].map((effort) => [effort, { reasoningEffort: effort }]))
+          return Object.fromEntries(["medium"].map((effort: any) => [effort, { reasoningEffort: effort }]))
         }
       }
 
       if (adaptiveEfforts) {
         return Object.fromEntries(
-          adaptiveEfforts.map((effort) => [
+          adaptiveEfforts.map((effort: any) => [
             effort,
             {
               thinking: {
                 type: "adaptive",
-                ...(["opus-4-7", "opus-4.7", "opus-4-8", "opus-4.8"].some((v) => model.api.id.includes(v))
+                ...(["opus-4-7", "opus-4.7", "opus-4-8", "opus-4.8"].some((v: any) => model.api.id.includes(v))
                   ? { display: "summarized" }
                   : {}),
               },
@@ -731,13 +731,13 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
       // https://v5.ai-sdk.dev/providers/ai-sdk-providers/amazon-bedrock
       if (adaptiveEfforts) {
         return Object.fromEntries(
-          adaptiveEfforts.map((effort) => [
+          adaptiveEfforts.map((effort: any) => [
             effort,
             {
               reasoningConfig: {
                 type: "adaptive",
                 maxReasoningEffort: effort,
-                ...(["opus-4-7", "opus-4.7", "opus-4-8", "opus-4.8"].some((v) => model.api.id.includes(v))
+                ...(["opus-4-7", "opus-4.7", "opus-4-8", "opus-4.8"].some((v: any) => model.api.id.includes(v))
                   ? { display: "summarized" }
                   : {}),
               },
@@ -765,7 +765,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
 
       // For Amazon Nova models, use reasoningConfig with maxReasoningEffort
       return Object.fromEntries(
-        WIDELY_SUPPORTED_EFFORTS.map((effort) => [
+        WIDELY_SUPPORTED_EFFORTS.map((effort: any) => [
           effort,
           {
             reasoningConfig: {
@@ -802,7 +802,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
       }
 
       return Object.fromEntries(
-        levels.map((effort) => [
+        levels.map((effort: any) => [
           effort,
           {
             thinkingConfig: {
@@ -825,7 +825,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
       // https://v5.ai-sdk.dev/providers/ai-sdk-providers/groq
       const groqEffort = ["none", ...WIDELY_SUPPORTED_EFFORTS]
       return Object.fromEntries(
-        groqEffort.map((effort) => [
+        groqEffort.map((effort: any) => [
           effort,
           {
             reasoningEffort: effort,
@@ -841,7 +841,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
       if (model.api.id.includes("anthropic")) {
         if (adaptiveEfforts) {
           return Object.fromEntries(
-            adaptiveEfforts.map((effort) => [
+            adaptiveEfforts.map((effort: any) => [
               effort,
               {
                 thinking: {
@@ -884,7 +884,7 @@ export function variants(model: Provider.Model): Record<string, Record<string, a
         }
       }
       if (model.api.id.includes("gpt") || /\bo[1-9]/.test(model.api.id)) {
-        return Object.fromEntries(WIDELY_SUPPORTED_EFFORTS.map((effort) => [effort, { reasoningEffort: effort }]))
+        return Object.fromEntries(WIDELY_SUPPORTED_EFFORTS.map((effort: any) => [effort, { reasoningEffort: effort }]))
       }
       return {}
   }
@@ -929,7 +929,7 @@ export function options(input: {
   }
 
   if (
-    ["zai", "zhipuai"].some((id) => input.model.providerID.includes(id)) &&
+    ["zai", "zhipuai"].some((id: any) => input.model.providerID.includes(id)) &&
     input.model.api.npm === "@ai-sdk/openai-compatible"
   ) {
     result["thinking"] = {
@@ -1174,7 +1174,7 @@ function flattenDiscriminatedUnion(schema: JSONSchema.BaseSchema | JSONSchema7):
   if (discriminator) {
     for (const [key, owners] of Object.entries(propertyOwners)) {
       if (owners.length === variants.length) continue // present in every variant — no annotation
-      const tag = `(only when ${discriminator}=${owners.map((o) => JSON.stringify(o)).join("|")})`
+      const tag = `(only when ${discriminator}=${owners.map((o: any) => JSON.stringify(o)).join("|")})`
       const original = (properties[key] as Record<string, any>).description as string | undefined
       properties[key] = {
         ...properties[key],
@@ -1188,12 +1188,12 @@ function flattenDiscriminatedUnion(schema: JSONSchema.BaseSchema | JSONSchema7):
   // optional fields and forgets what to provide for each action.
   if (discriminator) {
     const proto = (variants[0].properties as Record<string, any>)[discriminator]
-    const enumValues = variants.map((v) => (v.properties as Record<string, any>)[discriminator!]?.const)
+    const enumValues = variants.map((v: any) => (v.properties as Record<string, any>)[discriminator!]?.const)
     const baseDescription = (proto?.description as string | undefined) ?? ""
     const hints = variants
-      .map((v) => {
+      .map((v: any) => {
         const value = (v.properties as Record<string, any>)[discriminator!]?.const
-        const required = ((v.required as string[] | undefined) ?? []).filter((r) => r !== discriminator)
+        const required = ((v.required as string[] | undefined) ?? []).filter((r: any) => r !== discriminator)
         return required.length > 0 ? `${value}: requires ${required.join(", ")}` : `${value}: no extra required fields`
       })
       .join("; ")
@@ -1263,7 +1263,7 @@ export function schema(model: Provider.Model, schema: JSONSchema.BaseSchema | JS
         "if",
         "then",
         "else",
-      ].some((key) => key in node)
+      ].some((key: any) => key in node)
     }
 
     const sanitizeGemini = (obj: any): any => {
@@ -1279,7 +1279,7 @@ export function schema(model: Provider.Model, schema: JSONSchema.BaseSchema | JS
       for (const [key, value] of Object.entries(obj)) {
         if (key === "enum" && Array.isArray(value)) {
           // Convert all enum values to strings
-          result[key] = value.map((v) => String(v))
+          result[key] = value.map((v: any) => String(v))
           // If we have integer type with enum, change type to string
           if (result.type === "integer" || result.type === "number") {
             result.type = "string"

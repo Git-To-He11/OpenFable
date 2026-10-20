@@ -169,8 +169,8 @@ export function buildReflectionMessage(
  * fixing structural errors.
  */
 export function buildExtractionReflection(violations: Violation[]): string {
-  const overBudget = violations.filter((v) => v.severity === "extract-required")
-  const files = overBudget.map((v) => `${v.file} (${v.detail})`).join(", ")
+  const overBudget = violations.filter((v: any) => v.severity === "extract-required")
+  const files = overBudget.map((v: any) => `${v.file} (${v.detail})`).join(", ")
   return `EXTRACTION REQUIRED: The following files exceed their token budget: ${files}.
 
 Extract the LESS-IMPORTANT topic cluster from the over-budget file into a new spillover file:

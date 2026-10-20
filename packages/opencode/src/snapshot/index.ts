@@ -199,7 +199,7 @@ export const layer: Layer.Layer<
           const target = path.join(state.gitdir, "info", "exclude")
           const text = [
             file ? (yield* read(file)).trimEnd() : "",
-            ...list.map((item) => `/${item.replaceAll("\\", "/")}`),
+            ...list.map((item: any) => `/${item.replaceAll("\\", "/")}`),
           ]
             .filter(Boolean)
             .join("\n")
@@ -246,17 +246,17 @@ export const layer: Layer.Layer<
             yield* drop(ignoredFiles)
           }
 
-          const allow = all.filter((item) => !ignored.has(item))
+          const allow = all.filter((item: any) => !ignored.has(item))
           if (!allow.length) return
 
           const large = new Set(
             (yield* Effect.all(
-              allow.map((item) =>
+              allow.map((item: any) =>
                 fs
                   .stat(path.join(state.directory, item))
                   .pipe(Effect.catch(() => Effect.void))
                   .pipe(
-                    Effect.map((stat) => {
+                    Effect.map((stat: any) => {
                       if (!stat || stat.type !== "File") return
                       const size = typeof stat.size === "bigint" ? Number(stat.size) : stat.size
                       return size > limit ? item : undefined
@@ -264,12 +264,12 @@ export const layer: Layer.Layer<
                   ),
               ),
               { concurrency: 8 },
-            )).filter((item): item is string => Boolean(item)),
+            )).filter((item: any): item is string => Boolean(item)),
           )
-          const block = new Set(untracked.filter((item) => large.has(item)))
+          const block = new Set(untracked.filter((item: any) => large.has(item)))
           yield* sync(Array.from(block))
           // Stage only the allowed candidate paths so snapshot updates stay scoped.
-          yield* stage(allow.filter((item) => !block.has(item)))
+          yield* stage(allow.filter((item: any) => !block.has(item)))
         })
 
         const cleanup = Effect.fnUntraced(function* () {
@@ -332,7 +332,7 @@ export const layer: Layer.Layer<
               const files = result.text
                 .trim()
                 .split("\n")
-                .map((x) => x.trim())
+                .map((x: any) => x.trim())
                 .filter(Boolean)
 
               // Hide ignored-file removals from the user-facing patch output.
@@ -341,8 +341,8 @@ export const layer: Layer.Layer<
               return {
                 hash,
                 files: files
-                  .filter((item) => !ignored.has(item))
-                  .map((x) => path.join(state.worktree, x).replaceAll("\\", "/")),
+                  .filter((item: any) => !ignored.has(item))
+                  .map((x: any) => path.join(state.worktree, x).replaceAll("\\", "/")),
               }
             }),
           )
@@ -418,7 +418,7 @@ export const layer: Layer.Layer<
                 while (j < ops.length && run.length < 100) {
                   const next = ops[j]!
                   if (next.hash !== first.hash) break
-                  if (run.some((item) => clash(item.rel, next.rel))) break
+                  if (run.some((item: any) => clash(item.rel, next.rel))) break
                   run.push(next)
                   j += 1
                 }
@@ -430,7 +430,7 @@ export const layer: Layer.Layer<
                 }
 
                 const tree = yield* git(
-                  [...core, ...args(["ls-tree", "--name-only", first.hash, "--", ...run.map((item) => item.rel)])],
+                  [...core, ...args(["ls-tree", "--name-only", first.hash, "--", ...run.map((item: any) => item.rel)])],
                   {
                     cwd: state.worktree,
                   },
@@ -452,14 +452,14 @@ export const layer: Layer.Layer<
                   tree.text
                     .trim()
                     .split("\n")
-                    .map((item) => item.trim())
+                    .map((item: any) => item.trim())
                     .filter(Boolean),
                 )
-                const list = run.filter((item) => have.has(item.rel))
+                const list = run.filter((item: any) => have.has(item.rel))
                 if (list.length) {
                   log.info("reverting", { hash: first.hash, files: list.length })
                   const result = yield* git(
-                    [...core, ...args(["checkout", first.hash, "--", ...list.map((item) => item.file)])],
+                    [...core, ...args(["checkout", first.hash, "--", ...list.map((item: any) => item.file)])],
                     {
                       cwd: state.worktree,
                     },
@@ -531,21 +531,21 @@ export const layer: Layer.Layer<
                 if (row.status === "added") {
                   return [
                     "",
-                    yield* git([...cfg, ...args(["show", `${to}:${row.file}`])]).pipe(Effect.map((item) => item.text)),
+                    yield* git([...cfg, ...args(["show", `${to}:${row.file}`])]).pipe(Effect.map((item: any) => item.text)),
                   ]
                 }
                 if (row.status === "deleted") {
                   return [
                     yield* git([...cfg, ...args(["show", `${from}:${row.file}`])]).pipe(
-                      Effect.map((item) => item.text),
+                      Effect.map((item: any) => item.text),
                     ),
                     "",
                   ]
                 }
                 return yield* Effect.all(
                   [
-                    git([...cfg, ...args(["show", `${from}:${row.file}`])]).pipe(Effect.map((item) => item.text)),
-                    git([...cfg, ...args(["show", `${to}:${row.file}`])]).pipe(Effect.map((item) => item.text)),
+                    git([...cfg, ...args(["show", `${from}:${row.file}`])]).pipe(Effect.map((item: any) => item.text)),
+                    git([...cfg, ...args(["show", `${to}:${row.file}`])]).pipe(Effect.map((item: any) => item.text)),
                   ],
                   { concurrency: 2 },
                 )
@@ -570,7 +570,7 @@ export const layer: Layer.Layer<
                   const proc = ChildProcess.make("git", [...cfg, ...args(["cat-file", "--batch"])], {
                     cwd: state.directory,
                     extendEnv: true,
-                    stdin: Stream.make(new TextEncoder().encode(refs.map((item) => item.ref).join("\n") + "\n")),
+                    stdin: Stream.make(new TextEncoder().encode(refs.map((item: any) => item.ref).join("\n") + "\n")),
                   })
                   const handle = yield* spawner.spawn(proc)
                   const [out, err] = yield* Effect.all(
@@ -692,9 +692,9 @@ export const layer: Layer.Layer<
                 })
 
               // Hide ignored-file removals from the user-facing diff output.
-              const ignored = yield* ignore(rows.map((r) => r.file))
+              const ignored = yield* ignore(rows.map((r: any) => r.file))
               if (ignored.size > 0) {
-                const filtered = rows.filter((r) => !ignored.has(r.file))
+                const filtered = rows.filter((r: any) => !ignored.has(r.file))
                 rows.length = 0
                 rows.push(...filtered)
               }

@@ -10,7 +10,7 @@ import { Npm } from "@/npm"
 export const DEPRECATED_PLUGIN_PACKAGES = ["opencode-openai-codex-auth", "opencode-copilot-auth"]
 
 export function isDeprecatedPlugin(spec: string) {
-  return DEPRECATED_PLUGIN_PACKAGES.some((pkg) => spec.includes(pkg))
+  return DEPRECATED_PLUGIN_PACKAGES.some((pkg: any) => spec.includes(pkg))
 }
 
 function parse(spec: string) {
@@ -242,7 +242,7 @@ export function readPackageThemes(spec: string, pkg: PluginPackage) {
     throw new TypeError(`Plugin ${spec} has invalid oc-themes field`)
   }
 
-  const list = field.map((item) => {
+  const list = field.map((item: any) => {
     if (typeof item !== "string") {
       throw new TypeError(`Plugin ${spec} has invalid oc-themes entry`)
     }

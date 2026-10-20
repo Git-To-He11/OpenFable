@@ -656,13 +656,13 @@ test("gitignore updated between track calls filters from diff", async () => {
 
       // Verify a.txt is NOT in the diff between snapshots
       const diffs = await run(tmp.path, (snapshot) => snapshot.diffFull(before!, after!))
-      expect(diffs.some((x) => x.file === "a.txt")).toBe(false)
+      expect(diffs.some((x: any) => x.file === "a.txt")).toBe(false)
 
       // But .gitignore should be in the diff
-      expect(diffs.some((x) => x.file === ".gitignore")).toBe(true)
+      expect(diffs.some((x: any) => x.file === ".gitignore")).toBe(true)
 
       // b.txt should be in the diff (not gitignored)
-      expect(diffs.some((x) => x.file === "b.txt")).toBe(true)
+      expect(diffs.some((x: any) => x.file === "b.txt")).toBe(true)
     },
   })
 })
@@ -687,8 +687,8 @@ test("git info exclude changes", async () => {
 
       const after = await run(tmp.path, (snapshot) => snapshot.track())
       const diffs = await run(tmp.path, (snapshot) => snapshot.diffFull(before!, after!))
-      expect(diffs.some((x) => x.file === "normal.txt")).toBe(true)
-      expect(diffs.some((x) => x.file === "ignored.txt")).toBe(false)
+      expect(diffs.some((x: any) => x.file === "normal.txt")).toBe(true)
+      expect(diffs.some((x: any) => x.file === "ignored.txt")).toBe(false)
     },
   })
 })
@@ -1065,21 +1065,21 @@ test("diffFull sets status based on git change type", async () => {
       const diffs = await run(tmp.path, (snapshot) => snapshot.diffFull(before!, after!))
       expect(diffs.length).toBe(4)
 
-      const added = diffs.find((d) => d.file === "added.txt")
+      const added = diffs.find((d: any) => d.file === "added.txt")
       expect(added).toBeDefined()
       expect(added!.status).toBe("added")
 
-      const deleted = diffs.find((d) => d.file === "delete.txt")
+      const deleted = diffs.find((d: any) => d.file === "delete.txt")
       expect(deleted).toBeDefined()
       expect(deleted!.status).toBe("deleted")
 
-      const grow = diffs.find((d) => d.file === "grow.txt")
+      const grow = diffs.find((d: any) => d.file === "grow.txt")
       expect(grow).toBeDefined()
       expect(grow!.status).toBe("modified")
       expect(grow!.additions).toBeGreaterThan(0)
       expect(grow!.deletions).toBe(0)
 
-      const trim = diffs.find((d) => d.file === "trim.txt")
+      const trim = diffs.find((d: any) => d.file === "trim.txt")
       expect(trim).toBeDefined()
       expect(trim!.status).toBe("modified")
       expect(trim!.additions).toBe(0)
@@ -1119,10 +1119,10 @@ test("diffFull with a large interleaved mixed diff", async () => {
     directory: tmp.path,
     fn: async () => {
       const ids = Array.from({ length: 60 }, (_, i) => i.toString().padStart(3, "0"))
-      const mod = ids.map((id) => fwd(tmp.path, "mix", `${id}-mod.txt`))
-      const del = ids.map((id) => fwd(tmp.path, "mix", `${id}-del.txt`))
-      const add = ids.map((id) => fwd(tmp.path, "mix", `${id}-add.txt`))
-      const bin = ids.map((id) => fwd(tmp.path, "mix", `${id}-bin.bin`))
+      const mod = ids.map((id: any) => fwd(tmp.path, "mix", `${id}-mod.txt`))
+      const del = ids.map((id: any) => fwd(tmp.path, "mix", `${id}-del.txt`))
+      const add = ids.map((id: any) => fwd(tmp.path, "mix", `${id}-add.txt`))
+      const bin = ids.map((id: any) => fwd(tmp.path, "mix", `${id}-bin.bin`))
 
       await $`mkdir -p ${tmp.path}/mix`.quiet()
       await Promise.all([
@@ -1138,7 +1138,7 @@ test("diffFull with a large interleaved mixed diff", async () => {
         ...mod.map((file, i) => Filesystem.write(file, `after-${ids[i]}-é\n🚀\nline`)),
         ...add.map((file, i) => Filesystem.write(file, `new-${ids[i]}\nこんにちは`)),
         ...bin.map((file, i) => Filesystem.write(file, new Uint8Array([9, i, 8, i % 251]))),
-        ...del.map((file) => fs.rm(file)),
+        ...del.map((file: any) => fs.rm(file)),
       ])
 
       const after = await run(tmp.path, (snapshot) => snapshot.track())
@@ -1147,7 +1147,7 @@ test("diffFull with a large interleaved mixed diff", async () => {
       const diffs = await run(tmp.path, (snapshot) => snapshot.diffFull(before!, after!))
       expect(diffs).toHaveLength(ids.length * 4)
 
-      const map = new Map(diffs.map((item) => [item.file, item]))
+      const map = new Map(diffs.map((item: any) => [item.file, item]))
       for (let i = 0; i < ids.length; i++) {
         const m = map.get(fwd("mix", `${ids[i]}-mod.txt`))
         expect(m).toBeDefined()
@@ -1184,20 +1184,20 @@ test("diffFull preserves git diff order across batch boundaries", async () => {
       const ids = Array.from({ length: 140 }, (_, i) => i.toString().padStart(3, "0"))
 
       await $`mkdir -p ${tmp.path}/order`.quiet()
-      await Promise.all(ids.map((id) => Filesystem.write(`${tmp.path}/order/${id}.txt`, `before-${id}`)))
+      await Promise.all(ids.map((id: any) => Filesystem.write(`${tmp.path}/order/${id}.txt`, `before-${id}`)))
 
       const before = await run(tmp.path, (snapshot) => snapshot.track())
       expect(before).toBeTruthy()
 
-      await Promise.all(ids.map((id) => Filesystem.write(`${tmp.path}/order/${id}.txt`, `after-${id}`)))
+      await Promise.all(ids.map((id: any) => Filesystem.write(`${tmp.path}/order/${id}.txt`, `after-${id}`)))
 
       const after = await run(tmp.path, (snapshot) => snapshot.track())
       expect(after).toBeTruthy()
 
-      const expected = ids.map((id) => `order/${id}.txt`)
+      const expected = ids.map((id: any) => `order/${id}.txt`)
 
       const diffs = await run(tmp.path, (snapshot) => snapshot.diffFull(before!, after!))
-      expect(diffs.map((item) => item.file)).toEqual(expected)
+      expect(diffs.map((item: any) => item.file)).toEqual(expected)
     },
   })
 })
@@ -1296,13 +1296,13 @@ test("diffFull with addition and deletion", async () => {
       const diffs = await run(tmp.path, (snapshot) => snapshot.diffFull(before!, after!))
       expect(diffs.length).toBe(2)
 
-      const addedFileDiff = diffs.find((d) => d.file === "added.txt")
+      const addedFileDiff = diffs.find((d: any) => d.file === "added.txt")
       expect(addedFileDiff).toBeDefined()
       expect(addedFileDiff!.patch).toContain("+added content")
       expect(addedFileDiff!.additions).toBe(1)
       expect(addedFileDiff!.deletions).toBe(0)
 
-      const removedFileDiff = diffs.find((d) => d.file === "a.txt")
+      const removedFileDiff = diffs.find((d: any) => d.file === "a.txt")
       expect(removedFileDiff).toBeDefined()
       expect(removedFileDiff!.patch).toContain(`-${tmp.extra.aContent}`)
       expect(removedFileDiff!.additions).toBe(0)
@@ -1330,22 +1330,22 @@ test("diffFull with multiple additions and deletions", async () => {
       const diffs = await run(tmp.path, (snapshot) => snapshot.diffFull(before!, after!))
       expect(diffs.length).toBe(4)
 
-      const multi1Diff = diffs.find((d) => d.file === "multi1.txt")
+      const multi1Diff = diffs.find((d: any) => d.file === "multi1.txt")
       expect(multi1Diff).toBeDefined()
       expect(multi1Diff!.additions).toBe(3)
       expect(multi1Diff!.deletions).toBe(0)
 
-      const multi2Diff = diffs.find((d) => d.file === "multi2.txt")
+      const multi2Diff = diffs.find((d: any) => d.file === "multi2.txt")
       expect(multi2Diff).toBeDefined()
       expect(multi2Diff!.additions).toBe(1)
       expect(multi2Diff!.deletions).toBe(0)
 
-      const removedADiff = diffs.find((d) => d.file === "a.txt")
+      const removedADiff = diffs.find((d: any) => d.file === "a.txt")
       expect(removedADiff).toBeDefined()
       expect(removedADiff!.additions).toBe(0)
       expect(removedADiff!.deletions).toBe(1)
 
-      const removedBDiff = diffs.find((d) => d.file === "b.txt")
+      const removedBDiff = diffs.find((d: any) => d.file === "b.txt")
       expect(removedBDiff).toBeDefined()
       expect(removedBDiff!.additions).toBe(0)
       expect(removedBDiff!.deletions).toBe(1)

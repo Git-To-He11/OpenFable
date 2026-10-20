@@ -93,7 +93,7 @@ export const ExperimentalRoutes = lazy(() =>
           })
           const info = Option.getOrUndefined(active)
           const orgs = groups.flatMap((group) =>
-            group.orgs.map((org) => ({
+            group.orgs.map((org: any) => ({
               accountID: group.account.id,
               accountEmail: group.account.email,
               accountUrl: group.account.url,
@@ -210,7 +210,7 @@ export const ExperimentalRoutes = lazy(() =>
           }),
         )
         return c.json(
-          tools.map((t) => ({
+          tools.map((t: any) => ({
             id: t.id,
             description: t.description,
             parameters: z.toJSONSchema(t.parameters),

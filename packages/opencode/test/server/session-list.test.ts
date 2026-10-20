@@ -37,7 +37,7 @@ describe("session.list", () => {
         })
 
         const sessions = [...svc.list({ directory: tmp.path })]
-        const ids = sessions.map((s) => s.id)
+        const ids = sessions.map((s: any) => s.id)
 
         expect(ids).toContain(first.id)
         expect(ids).not.toContain(second.id)
@@ -54,7 +54,7 @@ describe("session.list", () => {
         const child = await svc.create({ title: "child-session", parentID: root.id })
 
         const sessions = [...svc.list({ roots: true })]
-        const ids = sessions.map((s) => s.id)
+        const ids = sessions.map((s: any) => s.id)
 
         expect(ids).toContain(root.id)
         expect(ids).not.toContain(child.id)
@@ -85,7 +85,7 @@ describe("session.list", () => {
         await svc.create({ title: "other-session-xyz" })
 
         const sessions = [...svc.list({ search: "unique-search" })]
-        const titles = sessions.map((s) => s.title)
+        const titles = sessions.map((s: any) => s.title)
 
         expect(titles).toContain("unique-search-term-abc")
         expect(titles).not.toContain("other-session-xyz")

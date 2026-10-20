@@ -161,7 +161,7 @@ describe("doStream", () => {
     expect((reasoningParts[2] as { delta: string }).delta).toContain("**Assessing Dayzee's Functionality**")
 
     // reasoning_opaque should be in reasoning-end providerMetadata
-    const reasoningEnd = reasoningParts.find((p) => p.type === "reasoning-end")
+    const reasoningEnd = reasoningParts.find((p: any) => p.type === "reasoning-end")
     expect(reasoningEnd).toMatchObject({
       type: "reasoning-end",
       id: "reasoning-0",
@@ -198,7 +198,7 @@ describe("doStream", () => {
     })
 
     // Check finish
-    const finish = parts.find((p) => p.type === "finish")
+    const finish = parts.find((p: any) => p.type === "finish")
     expect(finish).toMatchObject({
       type: "finish",
       finishReason: { unified: "tool-calls" },
@@ -226,13 +226,13 @@ describe("doStream", () => {
     expect(reasoningStart).toBeLessThan(textStart)
 
     // Check reasoning deltas
-    const reasoningDeltas = parts.filter((p) => p.type === "reasoning-delta")
+    const reasoningDeltas = parts.filter((p: any) => p.type === "reasoning-delta")
     expect(reasoningDeltas).toHaveLength(2)
     expect((reasoningDeltas[0] as { delta: string }).delta).toContain("**Analyzing the Inquiry's Nature**")
     expect((reasoningDeltas[1] as { delta: string }).delta).toContain("**Reconciling User's Input**")
 
     // Check text deltas
-    const textDeltas = parts.filter((p) => p.type === "text-delta")
+    const textDeltas = parts.filter((p: any) => p.type === "text-delta")
     expect(textDeltas).toHaveLength(2)
     expect((textDeltas[0] as { delta: string }).delta).toContain("I am Tidewave")
     expect((textDeltas[1] as { delta: string }).delta).toContain("How can I help you?")
@@ -246,14 +246,14 @@ describe("doStream", () => {
     // In this fixture, reasoning_opaque comes AFTER content has started (in chunk 4)
     // So it arrives too late to be attached to reasoning-end. But it should still
     // be captured and included in the finish event's providerMetadata.
-    const reasoningEnd = parts.find((p) => p.type === "reasoning-end")
+    const reasoningEnd = parts.find((p: any) => p.type === "reasoning-end")
     expect(reasoningEnd).toMatchObject({
       type: "reasoning-end",
       id: "reasoning-0",
     })
 
     // reasoning_opaque should be in the finish event's providerMetadata
-    const finish = parts.find((p) => p.type === "finish")
+    const finish = parts.find((p: any) => p.type === "finish")
     expect(finish).toMatchObject({
       type: "finish",
       finishReason: { unified: "stop" },
@@ -288,13 +288,13 @@ describe("doStream", () => {
     expect(reasoningEndIndex).toBeLessThan(textStartIndex)
 
     // Check reasoning deltas
-    const reasoningDeltas = parts.filter((p) => p.type === "reasoning-delta")
+    const reasoningDeltas = parts.filter((p: any) => p.type === "reasoning-delta")
     expect(reasoningDeltas).toHaveLength(2)
     expect((reasoningDeltas[0] as { delta: string }).delta).toContain("**Understanding the Query's Nature**")
     expect((reasoningDeltas[1] as { delta: string }).delta).toContain("**Framing the Response's Core**")
 
     // reasoning_opaque should be in reasoning-end even though it came with content
-    const reasoningEnd = parts.find((p) => p.type === "reasoning-end")
+    const reasoningEnd = parts.find((p: any) => p.type === "reasoning-end")
     expect(reasoningEnd).toMatchObject({
       type: "reasoning-end",
       id: "reasoning-0",
@@ -306,13 +306,13 @@ describe("doStream", () => {
     })
 
     // Check text deltas
-    const textDeltas = parts.filter((p) => p.type === "text-delta")
+    const textDeltas = parts.filter((p: any) => p.type === "text-delta")
     expect(textDeltas).toHaveLength(2)
     expect((textDeltas[0] as { delta: string }).delta).toContain("Of course. I'm thinking right now.")
     expect((textDeltas[1] as { delta: string }).delta).toContain("What's on your mind?")
 
     // Check finish
-    const finish = parts.find((p) => p.type === "finish")
+    const finish = parts.find((p: any) => p.type === "finish")
     expect(finish).toMatchObject({
       type: "finish",
       finishReason: { unified: "stop" },
@@ -342,12 +342,12 @@ describe("doStream", () => {
     expect(textStartIndex).toBeLessThan(toolStartIndex)
 
     // Check reasoning content
-    const reasoningDeltas = parts.filter((p) => p.type === "reasoning-delta")
+    const reasoningDeltas = parts.filter((p: any) => p.type === "reasoning-delta")
     expect(reasoningDeltas).toHaveLength(1)
     expect((reasoningDeltas[0] as { delta: string }).delta).toContain("**Analyzing the Structure**")
 
     // reasoning_opaque should be in reasoning-end (comes with content in same chunk)
-    const reasoningEnd = parts.find((p) => p.type === "reasoning-end")
+    const reasoningEnd = parts.find((p: any) => p.type === "reasoning-end")
     expect(reasoningEnd).toMatchObject({
       type: "reasoning-end",
       id: "reasoning-0",
@@ -359,7 +359,7 @@ describe("doStream", () => {
     })
 
     // Check text content
-    const textDeltas = parts.filter((p) => p.type === "text-delta")
+    const textDeltas = parts.filter((p: any) => p.type === "text-delta")
     expect(textDeltas).toHaveLength(1)
     expect((textDeltas[0] as { delta: string }).delta).toContain(
       "Okay, I need to check out the project's file structure.",
@@ -385,7 +385,7 @@ describe("doStream", () => {
     )
 
     // Check finish
-    const finish = parts.find((p) => p.type === "finish")
+    const finish = parts.find((p: any) => p.type === "finish")
     expect(finish).toMatchObject({
       type: "finish",
       finishReason: { unified: "tool-calls" },
@@ -416,13 +416,13 @@ describe("doStream", () => {
     expect(reasoningEndIndex).toBeLessThan(toolStartIndex)
 
     // Check reasoning parts
-    const reasoningDeltas = parts.filter((p) => p.type === "reasoning-delta")
+    const reasoningDeltas = parts.filter((p: any) => p.type === "reasoning-delta")
     expect(reasoningDeltas).toHaveLength(2)
     expect((reasoningDeltas[0] as { delta: string }).delta).toContain("**Executing and Analyzing HTML**")
     expect((reasoningDeltas[1] as { delta: string }).delta).toContain("**Testing Project Contexts**")
 
     // reasoning_opaque should be in reasoning-end providerMetadata
-    const reasoningEnd = parts.find((p) => p.type === "reasoning-end")
+    const reasoningEnd = parts.find((p: any) => p.type === "reasoning-end")
     expect(reasoningEnd).toMatchObject({
       type: "reasoning-end",
       id: "reasoning-0",
@@ -434,11 +434,11 @@ describe("doStream", () => {
     })
 
     // No text parts should exist
-    const textParts = parts.filter((p) => p.type === "text-start" || p.type === "text-delta" || p.type === "text-end")
+    const textParts = parts.filter((p: any) => p.type === "text-start" || p.type === "text-delta" || p.type === "text-end")
     expect(textParts).toHaveLength(0)
 
     // Check tool call
-    const toolCall = parts.find((p) => p.type === "tool-call")
+    const toolCall = parts.find((p: any) => p.type === "tool-call")
     expect(toolCall).toMatchObject({
       type: "tool-call",
       toolCallId: "call_MHw3RDhmT1J5Z3B6WlhpVjlveTc",
@@ -446,7 +446,7 @@ describe("doStream", () => {
     })
 
     // Check finish
-    const finish = parts.find((p) => p.type === "finish")
+    const finish = parts.find((p: any) => p.type === "finish")
     expect(finish).toMatchObject({
       type: "finish",
       finishReason: { unified: "tool-calls" },
@@ -469,7 +469,7 @@ describe("doStream", () => {
 
     expect(reasoningParts).toHaveLength(0)
 
-    const toolCall = parts.find((p) => p.type === "tool-call" && p.toolCallId === "call_reasoning_only")
+    const toolCall = parts.find((p: any) => p.type === "tool-call" && p.toolCallId === "call_reasoning_only")
     expect(toolCall).toMatchObject({
       type: "tool-call",
       toolCallId: "call_reasoning_only",
@@ -493,7 +493,7 @@ describe("doStream", () => {
 
     const parts = await convertReadableStreamToArray(stream)
 
-    const metadata = parts.find((p) => p.type === "response-metadata")
+    const metadata = parts.find((p: any) => p.type === "response-metadata")
     expect(metadata).toMatchObject({
       type: "response-metadata",
       id: "chatcmpl-123",
@@ -512,7 +512,7 @@ describe("doStream", () => {
 
     const parts = await convertReadableStreamToArray(stream)
 
-    const streamStart = parts.find((p) => p.type === "stream-start")
+    const streamStart = parts.find((p: any) => p.type === "stream-start")
     expect(streamStart).toEqual({
       type: "stream-start",
       warnings: [],
@@ -530,7 +530,7 @@ describe("doStream", () => {
 
     const parts = await convertReadableStreamToArray(stream)
 
-    const rawChunks = parts.filter((p) => p.type === "raw")
+    const rawChunks = parts.filter((p: any) => p.type === "raw")
     expect(rawChunks.length).toBeGreaterThan(0)
   })
 })

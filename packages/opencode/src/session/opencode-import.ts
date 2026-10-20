@@ -143,7 +143,7 @@ export async function run(opts?: { force?: boolean; dbPath?: string }): Promise<
           continue
         }
 
-        const messageIds = messages.map((m) => m.id as MessageID)
+        const messageIds = messages.map((m: any) => m.id as MessageID)
 
         const parts: OcPart[] = []
         for (let i = 0; i < messageIds.length; i += BATCH) {

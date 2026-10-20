@@ -197,7 +197,7 @@ export const layer: Layer.Layer<
         Database.use((db) =>
           db
             .delete(InboxTable)
-            .where(inArray(InboxTable.id, rows.map((r) => r.id)))
+            .where(inArray(InboxTable.id, rows.map((r: any) => r.id)))
             .run(),
         ),
       )

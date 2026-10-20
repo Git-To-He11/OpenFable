@@ -408,55 +408,55 @@ describe("Bedrock cross-region prefix detection", () => {
 
   test("should detect global. prefix", () => {
     const modelID = "global.anthropic.claude-opus-4-5-20251101-v1:0"
-    const hasPrefix = crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))
+    const hasPrefix = crossRegionPrefixes.some((prefix: any) => modelID.startsWith(prefix))
     expect(hasPrefix).toBe(true)
   })
 
   test("should detect us. prefix", () => {
     const modelID = "us.anthropic.claude-opus-4-5-20251101-v1:0"
-    const hasPrefix = crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))
+    const hasPrefix = crossRegionPrefixes.some((prefix: any) => modelID.startsWith(prefix))
     expect(hasPrefix).toBe(true)
   })
 
   test("should detect eu. prefix", () => {
     const modelID = "eu.anthropic.claude-opus-4-5-20251101-v1:0"
-    const hasPrefix = crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))
+    const hasPrefix = crossRegionPrefixes.some((prefix: any) => modelID.startsWith(prefix))
     expect(hasPrefix).toBe(true)
   })
 
   test("should detect jp. prefix", () => {
     const modelID = "jp.anthropic.claude-sonnet-4-20250514-v1:0"
-    const hasPrefix = crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))
+    const hasPrefix = crossRegionPrefixes.some((prefix: any) => modelID.startsWith(prefix))
     expect(hasPrefix).toBe(true)
   })
 
   test("should detect apac. prefix", () => {
     const modelID = "apac.anthropic.claude-sonnet-4-20250514-v1:0"
-    const hasPrefix = crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))
+    const hasPrefix = crossRegionPrefixes.some((prefix: any) => modelID.startsWith(prefix))
     expect(hasPrefix).toBe(true)
   })
 
   test("should detect au. prefix", () => {
     const modelID = "au.anthropic.claude-sonnet-4-5-20250929-v1:0"
-    const hasPrefix = crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))
+    const hasPrefix = crossRegionPrefixes.some((prefix: any) => modelID.startsWith(prefix))
     expect(hasPrefix).toBe(true)
   })
 
   test("should NOT detect prefix for non-prefixed model", () => {
     const modelID = "anthropic.claude-opus-4-5-20251101-v1:0"
-    const hasPrefix = crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))
+    const hasPrefix = crossRegionPrefixes.some((prefix: any) => modelID.startsWith(prefix))
     expect(hasPrefix).toBe(false)
   })
 
   test("should NOT detect prefix for amazon nova models", () => {
     const modelID = "amazon.nova-pro-v1:0"
-    const hasPrefix = crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))
+    const hasPrefix = crossRegionPrefixes.some((prefix: any) => modelID.startsWith(prefix))
     expect(hasPrefix).toBe(false)
   })
 
   test("should NOT detect prefix for cohere models", () => {
     const modelID = "cohere.command-r-plus-v1:0"
-    const hasPrefix = crossRegionPrefixes.some((prefix) => modelID.startsWith(prefix))
+    const hasPrefix = crossRegionPrefixes.some((prefix: any) => modelID.startsWith(prefix))
     expect(hasPrefix).toBe(false)
   })
 })

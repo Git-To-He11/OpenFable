@@ -69,7 +69,7 @@ Use this skill.
             providerID: "opencode" as any,
             modelID: "gpt-5" as any,
             agent,
-          })).find((tool) => tool.id === SkillTool.id)
+          })).find((tool: any) => tool.id === SkillTool.id)
           if (!tool) throw new Error("Skill tool not found")
 
           const requests: Array<Omit<Permission.Request, "id" | "sessionID" | "tool">> = []

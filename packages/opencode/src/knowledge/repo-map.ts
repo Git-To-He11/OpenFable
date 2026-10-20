@@ -180,7 +180,7 @@ export class RepoMap {
         path: filePath,
         language,
         hash,
-        symbols: symbols.map((s) => s.id),
+        symbols: symbols.map((s: any) => s.id),
         imports,
         exports,
         lines,
@@ -209,7 +209,7 @@ export class RepoMap {
          LIMIT ?`,
       )
       .all(`%${query}%`, `%${query}%`, `%${query}%`, `${query}%`, limit) as any[]
-    return rows.map((r) => this.rowToSymbol(r))
+    return rows.map((r: any) => this.rowToSymbol(r))
   }
 
   getCallGraph(symbolId: string): { calls: RepoSymbol[]; calledBy: RepoSymbol[] } {
@@ -222,7 +222,7 @@ export class RepoMap {
     const callerRows = this.db.$client
       .query(`SELECT * FROM repo_symbols WHERE calls LIKE ?`)
       .all(`%${symbolId}%`) as any[]
-    const calledBy = callerRows.map((r) => this.rowToSymbol(r))
+    const calledBy = callerRows.map((r: any) => this.rowToSymbol(r))
 
     return { calls, calledBy }
   }
@@ -610,7 +610,7 @@ export class RepoMap {
     const importance = this.computeFileImportance(workingFiles)
     const ranked = [...importance.entries()].sort((a, b) => b[1] - a[1])
 
-    const workingSet = new Set(workingFiles.map((f) => path.resolve(this.options.root, f)))
+    const workingSet = new Set(workingFiles.map((f: any) => path.resolve(this.options.root, f)))
     const prioritized = ranked.filter(([fp]) => workingSet.has(fp))
     const rest = ranked.filter(([fp]) => !workingSet.has(fp))
 

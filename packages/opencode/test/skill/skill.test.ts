@@ -70,7 +70,7 @@ Instructions here.
           const skill = yield* Skill.Service
           const list = yield* skill.all()
           expect(list.length).toBe(1)
-          const item = list.find((x) => x.name === "test-skill")
+          const item = list.find((x: any) => x.name === "test-skill")
           expect(item).toBeDefined()
           expect(item!.description).toBe("A test skill for verification.")
           expect(item!.location).toContain(path.join("skill", "test-skill", "SKILL.md"))
@@ -140,8 +140,8 @@ description: Second test skill.
           const skill = yield* Skill.Service
           const list = yield* skill.all()
           expect(list.length).toBe(2)
-          expect(list.find((x) => x.name === "skill-one")).toBeDefined()
-          expect(list.find((x) => x.name === "skill-two")).toBeDefined()
+          expect(list.find((x: any) => x.name === "skill-one")).toBeDefined()
+          expect(list.find((x: any) => x.name === "skill-two")).toBeDefined()
         }),
       { git: true },
     ),
@@ -188,7 +188,7 @@ description: A skill in the .claude/skills directory.
           const skill = yield* Skill.Service
           const list = yield* skill.all()
           expect(list.length).toBe(1)
-          const item = list.find((x) => x.name === "claude-skill")
+          const item = list.find((x: any) => x.name === "claude-skill")
           expect(item).toBeDefined()
           expect(item!.location).toContain(path.join(".claude", "skills", "claude-skill", "SKILL.md"))
         }),
@@ -251,7 +251,7 @@ description: A skill in the .agents/skills directory.
           const skill = yield* Skill.Service
           const list = yield* skill.all()
           expect(list.length).toBe(1)
-          const item = list.find((x) => x.name === "agent-skill")
+          const item = list.find((x: any) => x.name === "agent-skill")
           expect(item).toBeDefined()
           expect(item!.location).toContain(path.join(".agents", "skills", "agent-skill", "SKILL.md"))
         }),
@@ -319,7 +319,7 @@ description: A skill in the .codex/skills directory.
           const skill = yield* Skill.Service
           const list = yield* skill.all()
           expect(list.length).toBe(1)
-          const item = list.find((x) => x.name === "codex-skill")
+          const item = list.find((x: any) => x.name === "codex-skill")
           expect(item).toBeDefined()
           expect(item!.description).toBe("A skill in the .codex/skills directory.")
           expect(item!.location).toContain(path.join(".codex", "skills", "codex-skill", "SKILL.md"))
@@ -400,8 +400,8 @@ description: A skill in the .agents/skills directory.
           const skill = yield* Skill.Service
           const list = yield* skill.all()
           expect(list.length).toBe(2)
-          expect(list.find((x) => x.name === "claude-skill")).toBeDefined()
-          expect(list.find((x) => x.name === "agent-skill")).toBeDefined()
+          expect(list.find((x: any) => x.name === "claude-skill")).toBeDefined()
+          expect(list.find((x: any) => x.name === "agent-skill")).toBeDefined()
         }),
       { git: true },
     ),

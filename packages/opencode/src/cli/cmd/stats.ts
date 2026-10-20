@@ -90,7 +90,7 @@ async function getCurrentProject(): Promise<Project.Info> {
 
 async function getAllSessions(): Promise<Session.Info[]> {
   const rows = Database.use((db) => db.select().from(SessionTable).all())
-  return rows.map((row) => Session.fromRow(row))
+  return rows.map((row: any) => Session.fromRow(row))
 }
 
 export async function aggregateSessionStats(days?: number, projectFilter?: string): Promise<SessionStats> {
@@ -113,14 +113,14 @@ export async function aggregateSessionStats(days?: number, projectFilter?: strin
     return days
   })()
 
-  let filteredSessions = cutoffTime > 0 ? sessions.filter((session) => session.time.updated >= cutoffTime) : sessions
+  let filteredSessions = cutoffTime > 0 ? sessions.filter((session: any) => session.time.updated >= cutoffTime) : sessions
 
   if (projectFilter !== undefined) {
     if (projectFilter === "") {
       const currentProject = await getCurrentProject()
-      filteredSessions = filteredSessions.filter((session) => session.projectID === currentProject.id)
+      filteredSessions = filteredSessions.filter((session: any) => session.projectID === currentProject.id)
     } else {
-      filteredSessions = filteredSessions.filter((session) => session.projectID === projectFilter)
+      filteredSessions = filteredSessions.filter((session: any) => session.projectID === projectFilter)
     }
   }
 

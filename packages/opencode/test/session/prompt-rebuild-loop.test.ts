@@ -70,7 +70,7 @@ describe("filterCompacted with marker positioned at boundary.time + 1", () => {
     // newest-first to mimic stream(). Reverse the input array.
     const newestFirst = [...msgs].reverse()
     const result = filterCompacted(newestFirst)
-    expect(result.map((m) => m.info.id as string)).toEqual(["syn", "a2"])
+    expect(result.map((m: any) => m.info.id as string)).toEqual(["syn", "a2"])
   })
 
   test("session continue: new user prompt after marker preserved", () => {
@@ -87,7 +87,7 @@ describe("filterCompacted with marker positioned at boundary.time + 1", () => {
     ]
     const newestFirst = [...msgs].reverse()
     const result = filterCompacted(newestFirst)
-    expect(result.map((m) => m.info.id as string)).toEqual(["syn", "a2", "u_new"])
+    expect(result.map((m: any) => m.info.id as string)).toEqual(["syn", "a2", "u_new"])
   })
 
   test("multiple ckpts: filterCompacted picks the most recent marker", () => {
@@ -103,6 +103,6 @@ describe("filterCompacted with marker positioned at boundary.time + 1", () => {
     const newestFirst = [...msgs].reverse()
     const result = filterCompacted(newestFirst)
     // From newest: a3, syn2 (break). Reversed → [syn2, a3].
-    expect(result.map((m) => m.info.id as string)).toEqual(["syn2", "a3"])
+    expect(result.map((m: any) => m.info.id as string)).toEqual(["syn2", "a3"])
   })
 })

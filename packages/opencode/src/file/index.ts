@@ -306,7 +306,7 @@ function shouldEncode(mimeType: string) {
 
 const hidden = (item: string) => {
   const normalized = item.replaceAll("\\", "/").replace(/\/+$/, "")
-  return normalized.split("/").some((part) => part.startsWith(".") && part.length > 1)
+  return normalized.split("/").some((part: any) => part.startsWith(".") && part.length > 1)
 }
 
 const sortHiddenLast = (items: string[], prefer: boolean) => {
@@ -387,7 +387,7 @@ export const layer = Layer.effect(
       } else {
         const files = yield* rg.files({ cwd: ctx.directory }).pipe(
           Stream.runCollect,
-          Effect.map((chunk) => [...chunk]),
+          Effect.map((chunk: any) => [...chunk]),
         )
         const seen = new Set<string>()
         for (const file of files) {
@@ -499,7 +499,7 @@ export const layer = Layer.effect(
         }
       }
 
-      return changed.map((item) => {
+      return changed.map((item: any) => {
         const full = path.isAbsolute(item.path) ? item.path : path.join(ctx.directory, item.path)
         return {
           ...item,
@@ -554,7 +554,7 @@ export const layer = Layer.effect(
       }
 
       const content = yield* appFs.readFileString(full).pipe(
-        Effect.map((s) => s.trim()),
+        Effect.map((s: any) => s.trim()),
         Effect.catch(() => Effect.succeed("")),
       )
 
@@ -643,7 +643,7 @@ export const layer = Layer.effect(
       const items = kind === "file" ? cache.files : kind === "directory" ? cache.dirs : [...cache.files, ...cache.dirs]
 
       const searchLimit = kind === "directory" && !preferHidden ? limit * 20 : limit
-      const sorted = fuzzysort.go(query, items, { limit: searchLimit }).map((item) => item.target)
+      const sorted = fuzzysort.go(query, items, { limit: searchLimit }).map((item: any) => item.target)
       const output = kind === "directory" ? sortHiddenLast(sorted, preferHidden).slice(0, limit) : sorted
 
       log.info("search", { query, kind, results: output.length })

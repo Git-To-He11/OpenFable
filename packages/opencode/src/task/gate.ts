@@ -61,7 +61,7 @@ const buildReentryText = (
   return [
     "<system-reminder>",
     headline,
-    ...incomplete.map((t) => `- ${t.id} (${t.status}): ${t.summary}`),
+    ...incomplete.map((t: any) => `- ${t.id} (${t.status}): ${t.summary}`),
     "For EACH: complete the work then `task done <id> <summary>`, or `task abandon <id> <reason>` if it is genuinely not needed.",
     closingLine,
     "</system-reminder>",
@@ -91,7 +91,7 @@ export const decide = Effect.fn("TaskGate.decide")(function* (input: DecideInput
   // a blocked task is one the actor genuinely can't proceed on, so nudging
   // "complete or abandon" would loop unanswerable. Mirrors the original
   // actor/spawn.ts gate filter that this helper preserves.
-  const actionable = tasks.filter((t) => t.status === "open" || t.status === "in_progress")
+  const actionable = tasks.filter((t: any) => t.status === "open" || t.status === "in_progress")
 
   if (actionable.length === 0) {
     return { needReentry: false, capExceeded: false, incompleteTasks: [] } satisfies Decision
@@ -101,7 +101,7 @@ export const decide = Effect.fn("TaskGate.decide")(function* (input: DecideInput
     return {
       needReentry: false,
       capExceeded: true,
-      incompleteTasks: actionable.map((t) => t.id),
+      incompleteTasks: actionable.map((t: any) => t.id),
     } satisfies Decision
   }
 
@@ -109,7 +109,7 @@ export const decide = Effect.fn("TaskGate.decide")(function* (input: DecideInput
     needReentry: true,
     capExceeded: false,
     reentryText: buildReentryText(actionable, input.mode),
-    incompleteTasks: actionable.map((t) => t.id),
+    incompleteTasks: actionable.map((t: any) => t.id),
   } satisfies Decision
 })
 

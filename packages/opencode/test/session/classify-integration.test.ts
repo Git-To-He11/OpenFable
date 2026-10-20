@@ -110,7 +110,7 @@ describe("classifier routing — integration", () => {
               expect(stub.captures.length).toBe(2)
               expect(result.info.role).toBe("assistant")
               if (result.info.role === "assistant") expect(result.info.error).toBeUndefined()
-              expect(result.parts.some((p) => p.type === "text" && p.text === "done.")).toBe(true)
+              expect(result.parts.some((p: any) => p.type === "text" && p.text === "done.")).toBe(true)
             }),
           ),
       })
@@ -282,7 +282,7 @@ describe("classifier routing — integration", () => {
                 expect(result.info.finish).toBe("other")
               }
               expect(
-                result.parts.some((p) => p.type === "text" && p.text === "usable answer despite an odd finish"),
+                result.parts.some((p: any) => p.type === "text" && p.text === "usable answer despite an odd finish"),
               ).toBe(true)
             }),
           ),
@@ -386,7 +386,7 @@ describe("classifier routing — integration", () => {
               // the main path would build the full system prompt. Without this guard
               // a non-shared ActorRegistry instance (isForkAgent=false) would fall to
               // the main gate and also write StructuredOutputError — a false pass.
-              const systemMsg = stub.captures[0]?.messages.find((m) => m.role === "system")
+              const systemMsg = stub.captures[0]?.messages.find((m: any) => m.role === "system")
               expect(JSON.stringify(systemMsg?.content ?? "")).toContain("fork-system-prompt")
 
               // Reaching prompt.ts:2050 in the fork branch: classifier returns a
@@ -457,7 +457,7 @@ describe("classifier routing — integration", () => {
               })
 
               // Prove we went through the FORK branch (see sibling fork test).
-              const systemMsg = stub.captures[0]?.messages.find((m) => m.role === "system")
+              const systemMsg = stub.captures[0]?.messages.find((m: any) => m.role === "system")
               expect(JSON.stringify(systemMsg?.content ?? "")).toContain("fork-system-prompt")
 
               // filtered handled before the fork json_schema gate ⇒ ContentFilterError.

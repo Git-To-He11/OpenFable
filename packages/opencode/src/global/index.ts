@@ -40,7 +40,7 @@ if (version !== CACHE_VERSION) {
   try {
     const contents = await fs.readdir(Path.cache)
     await Promise.all(
-      contents.map((item) =>
+      contents.map((item: any) =>
         fs.rm(path.join(Path.cache, item), {
           recursive: true,
           force: true,

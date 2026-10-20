@@ -16,13 +16,13 @@ export interface Handle {
 const clean = (input?: Fields): Fields =>
   Object.fromEntries(
     Object.entries(input ?? {})
-      .filter((entry) => entry[1] !== undefined && entry[1] !== null)
+      .filter((entry: any) => entry[1] !== undefined && entry[1] !== null)
       .map(([key, value]) => [normalizeKey(key), value]),
   )
 
 const text = (input: unknown): string => {
   // oxlint-disable-next-line no-base-to-string
-  if (Array.isArray(input)) return input.map((item) => String(item)).join(" ")
+  if (Array.isArray(input)) return input.map((item: any) => String(item)).join(" ")
   // oxlint-disable-next-line no-base-to-string
   return input === undefined ? "" : String(input)
 }

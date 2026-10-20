@@ -43,7 +43,7 @@ function stringifyToolContent(content: unknown): string {
   if (typeof content === "string") return content
   if (Array.isArray(content))
     return content
-      .map((b) => (b && typeof b === "object" && "type" in b && b.type === "text" ? (b as any).text : JSON.stringify(b)))
+      .map((b: any) => (b && typeof b === "object" && "type" in b && b.type === "text" ? (b as any).text : JSON.stringify(b)))
       .join("\n")
   return content == null ? "" : JSON.stringify(content)
 }
@@ -53,7 +53,7 @@ type Built = { info: MessageV2.Info; parts: { part: MessageV2.Part; time: number
 function parse(text: string, sessionId: SessionID) {
   const entries = text
     .split("\n")
-    .map((l) => l.trim())
+    .map((l: any) => l.trim())
     .filter(Boolean)
     .flatMap((line) => {
       try {
@@ -96,7 +96,7 @@ function parse(text: string, sessionId: SessionID) {
       const content = msg.content
       const blocks: any[] = typeof content === "string" ? [] : Array.isArray(content) ? content : []
 
-      for (const r of blocks.filter((b) => b?.type === "tool_result")) {
+      for (const r of blocks.filter((b: any) => b?.type === "tool_result")) {
         const ref = toolByCall.get(r.tool_use_id)
         if (!ref) continue
         const out = stringifyToolContent(r.content)
@@ -117,8 +117,8 @@ function parse(text: string, sessionId: SessionID) {
           ? content.trim()
             ? [content]
             : []
-          : blocks.filter((b) => b?.type === "text" && typeof b.text === "string" && b.text.trim()).map((b) => b.text)
-      const imageBlocks = blocks.filter((b) => b?.type === "image" && b.source)
+          : blocks.filter((b: any) => b?.type === "text" && typeof b.text === "string" && b.text.trim()).map((b: any) => b.text)
+      const imageBlocks = blocks.filter((b: any) => b?.type === "image" && b.source)
       if (textBlocks.length === 0 && imageBlocks.length === 0) continue
 
       flushAssistant()
@@ -142,7 +142,7 @@ function parse(text: string, sessionId: SessionID) {
       messages.push({ info, parts })
       lastUserId = id
       if (!title) {
-        const candidate = textBlocks.find((x) => x.trim() && !x.trim().startsWith("<"))
+        const candidate = textBlocks.find((x: any) => x.trim() && !x.trim().startsWith("<"))
         if (candidate) title = candidate.trim().replace(/\s+/g, " ").slice(0, 100)
       }
       continue
@@ -279,7 +279,7 @@ export async function run(opts?: { force?: boolean }) {
       }
       const project = resolveProject(parsed.cwd)
       const now = Date.now()
-      const messageIds = parsed.messages.map((m) => m.info.id)
+      const messageIds = parsed.messages.map((m: any) => m.info.id)
 
       Database.transaction((tx) => {
         tx.insert(ProjectTable)

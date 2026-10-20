@@ -226,7 +226,7 @@ describe("StructuredOutput Integration", () => {
 
             // Get all messages from session
             const messages = yield* sessions.messages({ sessionID: session.id })
-            const userMessage = messages.find((m) => m.info.role === "user")
+            const userMessage = messages.find((m: any) => m.info.role === "user")
 
             // Verify outputFormat was stored on user message
             expect(userMessage).toBeDefined()

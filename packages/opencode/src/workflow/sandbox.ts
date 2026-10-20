@@ -45,7 +45,7 @@ const DEFAULT_PRNG_SEED = 0x9e3779b9
 // rather than become silent nulls that poison downstream .map/.filter.
 const PRELUDE = `
 globalThis.parallel = (thunks) =>
-  Promise.all(thunks.map((t) => Promise.resolve().then(t)));
+  Promise.all(thunks.map((t: any) => Promise.resolve().then(t)));
 globalThis.pipeline = (items, ...stages) =>
   Promise.all(items.map((item, index) =>
     stages.reduce((acc, stage) => acc.then((prev) => stage(prev, item, index)), Promise.resolve(item))));
@@ -236,7 +236,7 @@ function injectHooks(
 ): void {
   for (const [name, fn] of Object.entries(hooks)) {
     const fnHandle = vm.newFunction(name, (...argHandles) => {
-      const args = argHandles.map((h) => vm.dump(h))
+      const args = argHandles.map((h: any) => vm.dump(h))
       const out = fn(...args)
       if (out instanceof Promise) {
         const promise = vm.newPromise()

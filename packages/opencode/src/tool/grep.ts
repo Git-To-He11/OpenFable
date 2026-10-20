@@ -92,7 +92,7 @@ export const GrepTool = Tool.define(
           })
           if (result.items.length === 0) return empty
 
-          const rows = result.items.map((item) => ({
+          const rows = result.items.map((item: any) => ({
             path: AppFileSystem.resolve(
               path.isAbsolute(item.path.text) ? item.path.text : path.join(cwd, item.path.text),
             ),
@@ -101,20 +101,20 @@ export const GrepTool = Tool.define(
           }))
           const times = new Map(
             (yield* Effect.forEach(
-              [...new Set(rows.map((row) => row.path))],
+              [...new Set(rows.map((row: any) => row.path))],
               Effect.fnUntraced(function* (file) {
                 const info = yield* fs.stat(file).pipe(Effect.catch(() => Effect.succeed(undefined)))
                 if (!info || info.type === "Directory") return undefined
                 return [
                   file,
                   info.mtime.pipe(
-                    Option.map((time) => time.getTime()),
+                    Option.map((time: any) => time.getTime()),
                     Option.getOrElse(() => 0),
                   ) ?? 0,
                 ] as const
               }),
               { concurrency: 16 },
-            )).filter((entry): entry is readonly [string, number] => Boolean(entry)),
+            )).filter((entry: any): entry is readonly [string, number] => Boolean(entry)),
           )
           const matches = rows.flatMap((row) => {
             const mtime = times.get(row.path)
@@ -149,7 +149,7 @@ export const GrepTool = Tool.define(
           }
 
           if (outputMode === "files_with_matches") {
-            const uniquePaths = [...new Set(final.map((m) => m.path))]
+            const uniquePaths = [...new Set(final.map((m: any) => m.path))]
             const output = uniquePaths.slice(0, headLimit)
             return {
               title: params.pattern,

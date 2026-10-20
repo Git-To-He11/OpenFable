@@ -184,7 +184,7 @@ export async function run(db: SQLiteBunDatabase<any, any> | NodeSQLiteDatabase<a
   // Migrate sessions (depends on projects)
   // Derive all IDs from directory/file paths, not JSON content, since earlier
   // migrations may have moved sessions to new directories without updating the JSON
-  const sessionProjects = sessionFiles.map((file) => path.basename(path.dirname(file)))
+  const sessionProjects = sessionFiles.map((file: any) => path.basename(path.dirname(file)))
   const sessionIds = new Set<string>()
   const sessionValues: unknown[] = []
   for (let i = 0; i < sessionFiles.length; i += batchSize) {
@@ -310,7 +310,7 @@ export async function run(db: SQLiteBunDatabase<any, any> | NodeSQLiteDatabase<a
   log.info("migrated parts", { count: stats.parts })
 
   // Migrate todos
-  const todoSessions = todoFiles.map((file) => path.basename(file, ".json"))
+  const todoSessions = todoFiles.map((file: any) => path.basename(file, ".json"))
   for (let i = 0; i < todoFiles.length; i += batchSize) {
     const end = Math.min(i + batchSize, todoFiles.length)
     const batch = await read(todoFiles, i, end)
@@ -349,7 +349,7 @@ export async function run(db: SQLiteBunDatabase<any, any> | NodeSQLiteDatabase<a
   }
 
   // Migrate permissions
-  const permProjects = permFiles.map((file) => path.basename(file, ".json"))
+  const permProjects = permFiles.map((file: any) => path.basename(file, ".json"))
   const permValues: unknown[] = []
   for (let i = 0; i < permFiles.length; i += batchSize) {
     const end = Math.min(i + batchSize, permFiles.length)
@@ -374,7 +374,7 @@ export async function run(db: SQLiteBunDatabase<any, any> | NodeSQLiteDatabase<a
   }
 
   // Migrate session shares
-  const shareSessions = shareFiles.map((file) => path.basename(file, ".json"))
+  const shareSessions = shareFiles.map((file: any) => path.basename(file, ".json"))
   const shareValues: unknown[] = []
   for (let i = 0; i < shareFiles.length; i += batchSize) {
     const end = Math.min(i + batchSize, shareFiles.length)

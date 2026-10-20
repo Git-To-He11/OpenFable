@@ -326,8 +326,8 @@ describe("acp.agent event subscription", () => {
 
         expect(
           sessionUpdates
-            .filter((u) => u.sessionId === sessionId)
-            .some((u) => u.update.sessionUpdate === "user_message_chunk"),
+            .filter((u: any) => u.sessionId === sessionId)
+            .some((u: any) => u.update.sessionUpdate === "user_message_chunk"),
         ).toBe(false)
 
         stop()
@@ -559,9 +559,9 @@ describe("acp.agent event subscription", () => {
         await new Promise((r) => setTimeout(r, 20))
 
         const snapshots = sessionUpdates
-          .filter((u) => u.sessionId === sessionId)
-          .filter((u) => isToolCallUpdate(u.update))
-          .map((u) => inProgressText(u.update))
+          .filter((u: any) => u.sessionId === sessionId)
+          .filter((u: any) => isToolCallUpdate(u.update))
+          .map((u: any) => inProgressText(u.update))
 
         expect(snapshots).toEqual(["a", undefined, "ab"])
         stop()
@@ -598,9 +598,9 @@ describe("acp.agent event subscription", () => {
         await new Promise((r) => setTimeout(r, 20))
 
         const types = sessionUpdates
-          .filter((u) => u.sessionId === sessionId)
-          .map((u) => u.update.sessionUpdate)
-          .filter((u) => u === "tool_call" || u === "tool_call_update")
+          .filter((u: any) => u.sessionId === sessionId)
+          .map((u: any) => u.update.sessionUpdate)
+          .filter((u: any) => u === "tool_call" || u === "tool_call_update")
         expect(types).toEqual(["tool_call", "tool_call_update", "tool_call", "tool_call_update"])
 
         const pendings = sessionUpdates.filter(
@@ -661,11 +661,11 @@ describe("acp.agent event subscription", () => {
         await new Promise((r) => setTimeout(r, 20))
 
         const types = sessionUpdates
-          .filter((u) => u.sessionId === sessionId)
-          .map((u) => u.update)
-          .filter((u) => "toolCallId" in u && u.toolCallId === "call_1")
-          .map((u) => u.sessionUpdate)
-          .filter((u) => u === "tool_call" || u === "tool_call_update")
+          .filter((u: any) => u.sessionId === sessionId)
+          .map((u: any) => u.update)
+          .filter((u: any) => "toolCallId" in u && u.toolCallId === "call_1")
+          .map((u: any) => u.sessionUpdate)
+          .filter((u: any) => u === "tool_call" || u === "tool_call_update")
 
         expect(types).toEqual(["tool_call", "tool_call_update", "tool_call_update"])
         stop()
@@ -713,9 +713,9 @@ describe("acp.agent event subscription", () => {
         await new Promise((r) => setTimeout(r, 20))
 
         const snapshots = sessionUpdates
-          .filter((u) => u.sessionId === sessionId)
-          .filter((u) => isToolCallUpdate(u.update))
-          .map((u) => inProgressText(u.update))
+          .filter((u: any) => u.sessionId === sessionId)
+          .filter((u: any) => isToolCallUpdate(u.update))
+          .map((u: any) => inProgressText(u.update))
 
         expect(snapshots).toEqual(["a", "a"])
         stop()

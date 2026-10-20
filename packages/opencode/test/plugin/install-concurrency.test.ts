@@ -57,7 +57,7 @@ function mods(prefix: string, n: number) {
 
 function expectPlugins(list: unknown[] | undefined, expectMods: string[]) {
   expect(Array.isArray(list)).toBe(true)
-  const hit = (list ?? []).filter((item): item is string => typeof item === "string")
+  const hit = (list ?? []).filter((item: any): item is string => typeof item === "string")
   expect(hit.length).toBe(expectMods.length)
   expect(new Set(hit)).toEqual(new Set(expectMods))
 }
@@ -69,7 +69,7 @@ describe("plugin.install.concurrent", () => {
     const all = mods("mod-server", 12)
 
     const out = await Promise.all(
-      all.map((mod) =>
+      all.map((mod: any) =>
         run({
           dir: tmp.path,
           target,
@@ -79,8 +79,8 @@ describe("plugin.install.concurrent", () => {
       ),
     )
 
-    expect(out.map((x) => x.code)).toEqual(Array.from({ length: all.length }, () => 0))
-    expect(out.map((x) => x.stderr.toString()).filter(Boolean)).toEqual([])
+    expect(out.map((x: any) => x.code)).toEqual(Array.from({ length: all.length }, () => 0))
+    expect(out.map((x: any) => x.stderr.toString()).filter(Boolean)).toEqual([])
 
     const cfg = await read(path.join(tmp.path, ".openfable", "openfable.jsonc"))
     expectPlugins(cfg.plugin, all)
@@ -92,7 +92,7 @@ describe("plugin.install.concurrent", () => {
     const all = mods("mod-both", 10)
 
     const out = await Promise.all(
-      all.map((mod) =>
+      all.map((mod: any) =>
         run({
           dir: tmp.path,
           target,
@@ -102,8 +102,8 @@ describe("plugin.install.concurrent", () => {
       ),
     )
 
-    expect(out.map((x) => x.code)).toEqual(Array.from({ length: all.length }, () => 0))
-    expect(out.map((x) => x.stderr.toString()).filter(Boolean)).toEqual([])
+    expect(out.map((x: any) => x.code)).toEqual(Array.from({ length: all.length }, () => 0))
+    expect(out.map((x: any) => x.stderr.toString()).filter(Boolean)).toEqual([])
 
     const server = await read(path.join(tmp.path, ".openfable", "openfable.jsonc"))
     const tui = await read(path.join(tmp.path, ".openfable", "tui.jsonc"))
@@ -120,7 +120,7 @@ describe("plugin.install.concurrent", () => {
 
     const next = mods("mod-json", 8)
     const out = await Promise.all(
-      next.map((mod) =>
+      next.map((mod: any) =>
         run({
           dir: tmp.path,
           target,
@@ -130,8 +130,8 @@ describe("plugin.install.concurrent", () => {
       ),
     )
 
-    expect(out.map((x) => x.code)).toEqual(Array.from({ length: next.length }, () => 0))
-    expect(out.map((x) => x.stderr.toString()).filter(Boolean)).toEqual([])
+    expect(out.map((x: any) => x.code)).toEqual(Array.from({ length: next.length }, () => 0))
+    expect(out.map((x: any) => x.stderr.toString()).filter(Boolean)).toEqual([])
 
     const json = await read(cfg)
     expectPlugins(json.plugin, ["seed@1.0.0", ...next])

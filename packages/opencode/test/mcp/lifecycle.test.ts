@@ -290,7 +290,7 @@ test(
       })
 
       const before = yield* mcp.tools()
-      expect(Object.keys(before).some((key) => key.includes("test_tool"))).toBe(true)
+      expect(Object.keys(before).some((key: any) => key.includes("test_tool"))).toBe(true)
       expect(serverState.listToolsCalls).toBe(1)
 
       serverState.tools = [{ name: "next_tool", description: "next", inputSchema: { type: "object", properties: {} } }]
@@ -300,8 +300,8 @@ test(
       yield* Effect.promise(() => handler?.())
 
       const after = yield* mcp.tools()
-      expect(Object.keys(after).some((key) => key.includes("next_tool"))).toBe(true)
-      expect(Object.keys(after).some((key) => key.includes("test_tool"))).toBe(false)
+      expect(Object.keys(after).some((key: any) => key.includes("next_tool"))).toBe(true)
+      expect(Object.keys(after).some((key: any) => key.includes("test_tool"))).toBe(false)
       expect(serverState.listToolsCalls).toBe(2)
     }),
   ),
@@ -340,7 +340,7 @@ test(
 
         // Tools should be empty after disconnect
         const tools = yield* mcp.tools()
-        const serverTools = Object.keys(tools).filter((k) => k.startsWith("disc-server"))
+        const serverTools = Object.keys(tools).filter((k: any) => k.startsWith("disc-server"))
         expect(serverTools.length).toBe(0)
       }),
   ),
@@ -376,7 +376,7 @@ test(
         expect((yield* mcp.status())["reconn-server"]?.status).toBe("connected")
 
         const tools = yield* mcp.tools()
-        expect(Object.keys(tools).some((k) => k.includes("my_tool"))).toBe(true)
+        expect(Object.keys(tools).some((k: any) => k.includes("my_tool"))).toBe(true)
       }),
   ),
 )
@@ -464,7 +464,7 @@ test(
 
         // Good server's tools should still be available
         const tools = yield* mcp.tools()
-        expect(Object.keys(tools).some((k) => k.includes("good_tool"))).toBe(true)
+        expect(Object.keys(tools).some((k: any) => k.includes("good_tool"))).toBe(true)
       }),
   ),
 )
@@ -733,9 +733,9 @@ test(
         const keys = Object.keys(tools)
 
         // Server name dots should be replaced with underscores
-        expect(keys.some((k) => k.startsWith("my_special-server_"))).toBe(true)
+        expect(keys.some((k: any) => k.startsWith("my_special-server_"))).toBe(true)
         // Tool name dots should be replaced with underscores
-        expect(keys.some((k) => k.endsWith("tool_b"))).toBe(true)
+        expect(keys.some((k: any) => k.endsWith("tool_b"))).toBe(true)
         expect(keys.length).toBe(2)
       }),
   ),

@@ -183,7 +183,7 @@ describe("validateBudgetSections", () => {
   test("validateBudgetSections flags over-budget §7 in checkpoint.md", () => {
     const big = "## §7 Discovered knowledge (cross-task)\n_instr_\n" + "- entry ".repeat(2000)
     const violations = validateBudgetSections(big, CHECKPOINT_SECTION_BUDGETS, "checkpoint.md")
-    expect(violations.some((v) => v.detail.includes("§7"))).toBe(true)
+    expect(violations.some((v: any) => v.detail.includes("§7"))).toBe(true)
   })
 })
 

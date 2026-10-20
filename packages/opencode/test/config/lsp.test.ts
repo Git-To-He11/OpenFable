@@ -63,7 +63,7 @@ describe("ConfigLSP.Info refinement", () => {
     test("custom server WITHOUT extensions fails via derived Zod", () => {
       const result = ConfigLSP.Info.zod.safeParse({ "my-lsp": { command: ["my-lsp-bin"] } })
       expect(result.success).toBe(false)
-      expect(result.error!.issues.some((i) => i.message === expectedMessage)).toBe(true)
+      expect(result.error!.issues.some((i: any) => i.message === expectedMessage)).toBe(true)
     })
 
     test("custom server with empty extensions array fails (extensions must be non-empty-truthy)", () => {

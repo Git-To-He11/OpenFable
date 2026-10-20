@@ -177,7 +177,7 @@ describe("SessionPrune.prune", () => {
           yield* svc.prune({ sessionID: info.id, model, tokens })
 
           const msgs = yield* ssn.messages({ sessionID: info.id })
-          const part = msgs.flatMap((msg) => msg.parts).find((part) => part.type === "tool")
+          const part = msgs.flatMap((msg) => msg.parts).find((part: any) => part.type === "tool")
           expect(part?.type).toBe("tool")
           expect(part?.state.status).toBe("completed")
           if (part?.type === "tool" && part.state.status === "completed") {
@@ -209,7 +209,7 @@ describe("SessionPrune.prune", () => {
           yield* svc.prune({ sessionID: info.id, model, tokens })
 
           const msgs = yield* ssn.messages({ sessionID: info.id })
-          const part = msgs.flatMap((msg) => msg.parts).find((part) => part.type === "tool")
+          const part = msgs.flatMap((msg) => msg.parts).find((part: any) => part.type === "tool")
           expect(part?.type).toBe("tool")
           if (part?.type === "tool" && part.state.status === "completed") {
             expect(part.state.time.compacted).toBeUndefined()
@@ -411,7 +411,7 @@ describe("defaultThresholdsFor (Part 2 density)", () => {
     expect(out[0]).toBe("5%")
     expect(out[8]).toBe("45%") // mid-array spot check (closes a generator-typo gap)
     expect(out[out.length - 1]).toBe("90%")
-    const nums = out.map((s) => parseFloat(s.replace("%", "")))
+    const nums = out.map((s: any) => parseFloat(s.replace("%", "")))
     for (let i = 1; i < nums.length; i++) {
       expect(nums[i]).toBeGreaterThan(nums[i - 1])
     }

@@ -376,7 +376,7 @@ function synced(state: Record<string, number>) {
         .from(EventSequenceTable)
         .where(inArray(EventSequenceTable.aggregate_id, ids))
         .all(),
-    ).map((row) => [row.id, row.seq]),
+    ).map((row: any) => [row.id, row.seq]),
   ) as Record<string, number>
 
   return ids.every((id) => {
@@ -438,13 +438,13 @@ async function syncHistory(space: Info, url: URL | string, headers: HeadersInit 
       .from(SessionTable)
       .where(eq(SessionTable.workspace_id, space.id))
       .all()
-      .map((row) => row.id),
+      .map((row: any) => row.id),
   )
   const state = sessionIDs.length
     ? Object.fromEntries(
         Database.use((db) =>
           db.select().from(EventSequenceTable).where(inArray(EventSequenceTable.aggregate_id, sessionIDs)).all(),
-        ).map((row) => [row.aggregate_id, row.seq]),
+        ).map((row: any) => [row.aggregate_id, row.seq]),
       )
     : {}
 
@@ -607,7 +607,7 @@ export function startWorkspaceSyncing(projectID: ProjectID) {
       .all(),
   )
 
-  for (const row of new Map(spaces.map((row) => [row.workspace.id, row.workspace])).values()) {
+  for (const row of new Map(spaces.map((row: any) => [row.workspace.id, row.workspace])).values()) {
     void startSync(fromRow(row))
   }
 }

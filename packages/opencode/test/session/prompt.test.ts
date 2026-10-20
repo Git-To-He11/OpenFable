@@ -189,7 +189,7 @@ describe("session.prompt missing file", () => {
               sessionID: session.id,
               messageID: msg.info.id,
             })
-            const text = stored.parts.filter((part) => part.type === "text").map((part) => part.text)
+            const text = stored.parts.filter((part: any) => part.type === "text").map((part: any) => part.text)
 
             expect(text[0]?.startsWith("Called the Read tool with the following input:")).toBe(true)
             expect(text[1]?.includes("Read tool failed to read")).toBe(true)
@@ -221,7 +221,7 @@ describe("session.prompt special characters", () => {
             const session = yield* sessions.create({})
             const template = "Read @file#name.txt"
             const parts = yield* prompt.resolvePromptParts(template)
-            const fileParts = parts.filter((part) => part.type === "file")
+            const fileParts = parts.filter((part: any) => part.type === "file")
 
             expect(fileParts.length).toBe(1)
             expect(fileParts[0].filename).toBe("file#name.txt")
@@ -236,8 +236,8 @@ describe("session.prompt special characters", () => {
               noReply: true,
             })
             const stored = MessageV2.get({ sessionID: session.id, messageID: message.info.id })
-            const textParts = stored.parts.filter((part) => part.type === "text")
-            const hasContent = textParts.some((part) => part.text.includes("special content"))
+            const textParts = stored.parts.filter((part: any) => part.type === "text")
+            const hasContent = textParts.some((part: any) => part.text.includes("special content"))
             expect(hasContent).toBe(true)
 
             yield* sessions.remove(session.id)
@@ -307,10 +307,10 @@ describe("session.prompt regression", () => {
               })
 
               expect(result.info.role).toBe("assistant")
-              expect(result.parts.some((part) => part.type === "text" && part.text.includes("processor.ts"))).toBe(true)
+              expect(result.parts.some((part: any) => part.type === "text" && part.text.includes("processor.ts"))).toBe(true)
 
               const msgs = yield* sessions.messages({ sessionID: session.id })
-              expect(msgs.filter((msg) => msg.info.role === "assistant")).toHaveLength(1)
+              expect(msgs.filter((msg: any) => msg.info.role === "assistant")).toHaveLength(1)
               expect(calls).toBe(1)
             }),
           ),
@@ -678,11 +678,11 @@ describe("session.prompt F37 subagent context isolation", () => {
               expect(capturedBody).not.toBeNull()
               const messages = capturedBody!.messages
               const userTexts = messages
-                .filter((m) => m.role === "user")
+                .filter((m: any) => m.role === "user")
                 .flatMap((m) =>
                   typeof m.content === "string"
                     ? [m.content]
-                    : (m.content as Array<{ type: string; text?: string }>).map((c) => c.text ?? ""),
+                    : (m.content as Array<{ type: string; text?: string }>).map((c: any) => c.text ?? ""),
                 )
               const allUserText = userTexts.join("\n")
 

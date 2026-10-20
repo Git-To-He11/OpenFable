@@ -322,7 +322,7 @@ function createPluginScope(load: PluginLoad, id: string) {
     return () => {
       if (drop) return
       drop = true
-      list = list.filter((x) => x.key !== key)
+      list = list.filter((x: any) => x.key !== key)
     }
   }
 
@@ -392,7 +392,7 @@ function createPluginScope(load: PluginLoad, id: string) {
 function readPluginEnabledMap(value: unknown) {
   if (!isRecord(value)) return {}
   return Object.fromEntries(
-    Object.entries(value).filter((item): item is [string, boolean] => typeof item[1] === "boolean"),
+    Object.entries(value).filter((item: any): item is [string, boolean] => typeof item[1] === "boolean"),
   )
 }
 
@@ -411,7 +411,7 @@ function writePluginEnabledState(api: Api, id: string, enabled: boolean) {
 }
 
 function listPluginStatus(state: RuntimeState): TuiPluginStatus[] {
-  return state.plugins.map((plugin) => ({
+  return state.plugins.map((plugin: any) => ({
     id: plugin.id,
     source: plugin.meta.source,
     spec: plugin.meta.spec,
@@ -698,7 +698,7 @@ async function addExternalPluginEntries(state: RuntimeState, ready: PluginLoad[]
   if (!ready.length) return { plugins: [] as PluginEntry[], ok: true }
 
   const meta = await PluginMeta.touchMany(
-    ready.map((item) => ({
+    ready.map((item: any) => ({
       spec: item.spec,
       target: item.target,
       id: item.id,
@@ -771,12 +771,12 @@ function installDetail(err: unknown) {
   const lines = hit.stderr
     .toString()
     .split(/\r?\n/)
-    .map((line) => line.trim())
+    .map((line: any) => line.trim())
     .filter(Boolean)
-  const errs = lines.filter((line) => line.startsWith("error:")).map((line) => line.replace(/^error:\s*/, ""))
+  const errs = lines.filter((line: any) => line.startsWith("error:")).map((line: any) => line.replace(/^error:\s*/, ""))
   return {
     message: errs[0] ?? lines.at(-1) ?? errorMessage(hit),
-    missing: lines.some((line) => line.includes("No version matching")),
+    missing: lines.some((line: any) => line.includes("No version matching")),
   }
 }
 
@@ -787,7 +787,7 @@ async function addPluginBySpec(state: RuntimeState | undefined, raw: string) {
 
   const cfg = state.pending.get(spec) ?? defaultPluginOrigin(state, spec)
   const next = ConfigPlugin.pluginSpecifier(cfg.spec)
-  if (state.plugins.some((plugin) => plugin.load.spec === next)) {
+  if (state.plugins.some((plugin: any) => plugin.load.spec === next)) {
     state.pending.delete(spec)
     return true
   }
@@ -901,9 +901,9 @@ async function installPluginBySpec(
     }
   }
 
-  const tui = manifest.targets.find((item) => item.kind === "tui")
+  const tui = manifest.targets.find((item: any) => item.kind === "tui")
   if (tui) {
-    const file = patch.items.find((item) => item.kind === "tui")?.file
+    const file = patch.items.find((item: any) => item.kind === "tui")?.file
     const next = tui.opts ? ([spec, tui.opts] as ConfigPlugin.Spec) : spec
     state.pending.set(spec, {
       spec: next,

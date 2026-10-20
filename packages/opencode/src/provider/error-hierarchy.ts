@@ -163,7 +163,7 @@ const TIMEOUT_PATTERNS = [
 ]
 
 function matchesPatterns(message: string, patterns: RegExp[]): boolean {
-  return patterns.some((p) => p.test(message))
+  return patterns.some((p: any) => p.test(message))
 }
 
 export function classifyError(

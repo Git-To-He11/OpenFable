@@ -54,7 +54,7 @@ function turns(messages: MessageV2.WithParts[]) {
   for (let i = 0; i < messages.length; i++) {
     const msg = messages[i]
     if (msg.info.role !== "user") continue
-    if (msg.parts.some((part) => part.type === "compaction")) continue
+    if (msg.parts.some((part: any) => part.type === "compaction")) continue
     result.push({
       start: i,
       end: messages.length,
@@ -238,7 +238,7 @@ export const layer: Layer.Layer<
         throw new Error(`Compaction parent must be a user message: ${input.parentID}`)
       }
       const userMessage = parent.info
-      const compactionPart = parent.parts.find((part): part is MessageV2.CompactionPart => part.type === "compaction")
+      const compactionPart = parent.parts.find((part: any): part is MessageV2.CompactionPart => part.type === "compaction")
 
       let messages = input.messages
       let replay:
@@ -251,14 +251,14 @@ export const layer: Layer.Layer<
         const idx = input.messages.findIndex((m) => m.info.id === input.parentID)
         for (let i = idx - 1; i >= 0; i--) {
           const msg = input.messages[i]
-          if (msg.info.role === "user" && !msg.parts.some((p) => p.type === "compaction")) {
+          if (msg.info.role === "user" && !msg.parts.some((p: any) => p.type === "compaction")) {
             replay = { info: msg.info, parts: msg.parts }
             messages = input.messages.slice(0, i)
             break
           }
         }
         const hasContent =
-          replay && messages.some((m) => m.info.role === "user" && !m.parts.some((p) => p.type === "compaction"))
+          replay && messages.some((m: any) => m.info.role === "user" && !m.parts.some((p: any) => p.type === "compaction"))
         if (!hasContent) {
           replay = undefined
           messages = input.messages

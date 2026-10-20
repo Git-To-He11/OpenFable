@@ -52,7 +52,7 @@ export class WorkingMemory {
 
     if (Date.now() - entry.timestamp > entry.ttl) {
       this.entries.delete(key)
-      this.order = this.order.filter((k) => k !== key)
+      this.order = this.order.filter((k: any) => k !== key)
       return undefined
     }
 
@@ -66,7 +66,7 @@ export class WorkingMemory {
 
   delete(key: string): void {
     this.entries.delete(key)
-    this.order = this.order.filter((k) => k !== key)
+    this.order = this.order.filter((k: any) => k !== key)
     this.editLog.push({ op: { op: "delete", key }, timestamp: Date.now() })
   }
 
@@ -78,8 +78,8 @@ export class WorkingMemory {
 
   getAll(): WorkingMemoryEntry[] {
     return this.order
-      .map((key) => this.entries.get(key))
-      .filter((e): e is WorkingMemoryEntry => e !== undefined && Date.now() - e.timestamp <= e.ttl)
+      .map((key: any) => this.entries.get(key))
+      .filter((e: any): e is WorkingMemoryEntry => e !== undefined && Date.now() - e.timestamp <= e.ttl)
   }
 
   getRecent(count: number): WorkingMemoryEntry[] {
@@ -109,8 +109,8 @@ export class WorkingMemory {
   }
 
   reorder(keys: string[]): void {
-    const valid = keys.filter((k) => this.entries.has(k))
-    const remaining = this.order.filter((k) => !valid.includes(k))
+    const valid = keys.filter((k: any) => this.entries.has(k))
+    const remaining = this.order.filter((k: any) => !valid.includes(k))
     this.order = [...valid, ...remaining]
     this.editLog.push({ op: { op: "reorder", keys }, timestamp: Date.now() })
   }
@@ -143,7 +143,7 @@ export class WorkingMemory {
     }
     if (leastUsed) {
       this.entries.delete(leastUsed.key)
-      this.order = this.order.filter((k) => k !== leastUsed!.key)
+      this.order = this.order.filter((k: any) => k !== leastUsed!.key)
     }
   }
 }

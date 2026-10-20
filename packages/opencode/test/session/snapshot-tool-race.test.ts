@@ -284,7 +284,7 @@ it.live("tool execution produces non-empty session diff (snapshot race)", () =>
       const allMsgs = yield* MessageV2.filterCompactedEffect(session.id)
       const tool = allMsgs
         .flatMap((m) => m.parts)
-        .find((p): p is MessageV2.ToolPart => p.type === "tool" && p.tool === "bash")
+        .find((p: any): p is MessageV2.ToolPart => p.type === "tool" && p.tool === "bash")
       expect(tool?.state.status).toBe("completed")
 
       // Poll for diff — summarize() is fire-and-forget

@@ -66,8 +66,8 @@ describe("MessageV2.page / stream — default slice contract", () => {
         const defaultPage = MessageV2.page({ sessionID: info.id, limit: 10 })
         const defaultStream = Array.from(MessageV2.stream(info.id))
 
-        expect(defaultPage.items.map((m) => m.info.id)).toEqual([mainUserID])
-        expect(defaultStream.map((m) => m.info.id)).toEqual([mainUserID])
+        expect(defaultPage.items.map((m: any) => m.info.id)).toEqual([mainUserID])
+        expect(defaultStream.map((m: any) => m.info.id)).toEqual([mainUserID])
       }),
     ),
   )
@@ -82,9 +82,9 @@ describe("MessageV2.page / stream — default slice contract", () => {
 
         const allPage = MessageV2.page({ sessionID: info.id, limit: 10, agentID: "*" })
         const allStream = Array.from(MessageV2.stream(info.id, { agentID: "*" }))
-        const ids = allPage.items.map((m) => m.info.id).sort()
+        const ids = allPage.items.map((m: any) => m.info.id).sort()
         expect(ids).toEqual([mainUserID, subUserID].sort())
-        expect(allStream.map((m) => m.info.id).sort()).toEqual([mainUserID, subUserID].sort())
+        expect(allStream.map((m: any) => m.info.id).sort()).toEqual([mainUserID, subUserID].sort())
       }),
     ),
   )
@@ -98,7 +98,7 @@ describe("MessageV2.page / stream — default slice contract", () => {
         const { subUserID } = yield* seedMixed(info.id)
 
         const subPage = MessageV2.page({ sessionID: info.id, limit: 10, agentID: "explore-1" })
-        expect(subPage.items.map((m) => m.info.id)).toEqual([subUserID])
+        expect(subPage.items.map((m: any) => m.info.id)).toEqual([subUserID])
       }),
     ),
   )

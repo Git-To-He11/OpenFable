@@ -68,21 +68,21 @@ export class ProceduralMemory {
 
   getAll(): Procedure[] {
     const rows = this.db.$client.query(`SELECT * FROM procedural_memory ORDER BY confidence DESC`).all() as any[]
-    return rows.map((r) => this.rowToProcedure(r))
+    return rows.map((r: any) => this.rowToProcedure(r))
   }
 
   getBySource(source: Procedure["source"]): Procedure[] {
     const rows = this.db.$client
       .query(`SELECT * FROM procedural_memory WHERE source = ? ORDER BY confidence DESC`)
       .all(source) as any[]
-    return rows.map((r) => this.rowToProcedure(r))
+    return rows.map((r: any) => this.rowToProcedure(r))
   }
 
   search(query: string): Procedure[] {
     const rows = this.db.$client
       .query(`SELECT * FROM procedural_memory WHERE rule LIKE ? OR context LIKE ? ORDER BY confidence DESC`)
       .all(`%${query}%`, `%${query}%`) as any[]
-    return rows.map((r) => this.rowToProcedure(r))
+    return rows.map((r: any) => this.rowToProcedure(r))
   }
 
   markUsed(id: string): void {
@@ -104,7 +104,7 @@ export class ProceduralMemory {
   }
 
   getActiveRules(): Procedure[] {
-    return this.getAll().filter((p) => p.confidence >= 0.5)
+    return this.getAll().filter((p: any) => p.confidence >= 0.5)
   }
 
   private rowToProcedure(row: any): Procedure {

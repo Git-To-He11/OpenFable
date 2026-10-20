@@ -62,9 +62,9 @@ describe("session task route", () => {
           const res = await app.request(`/session/${session.id}/task`)
           expect(res.status).toBe(200)
           const body = (await res.json()) as Task[]
-          expect(body.map((t) => t.id)).toEqual(["T1", "T2"])
-          expect(body.map((t) => t.summary)).toEqual(["first", "second"])
-          expect(body.map((t) => t.status)).toEqual(["open", "open"])
+          expect(body.map((t: any) => t.id)).toEqual(["T1", "T2"])
+          expect(body.map((t: any) => t.summary)).toEqual(["first", "second"])
+          expect(body.map((t: any) => t.status)).toEqual(["open", "open"])
         },
       }),
     )

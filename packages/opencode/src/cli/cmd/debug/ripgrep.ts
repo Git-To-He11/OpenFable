@@ -60,7 +60,7 @@ const FilesCommand = cmd({
             .pipe(
               Stream.take(args.limit ?? Infinity),
               Stream.runCollect,
-              Effect.map((c) => [...c]),
+              Effect.map((c: any) => [...c]),
             )
         }),
       )

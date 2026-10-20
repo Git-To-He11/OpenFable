@@ -274,7 +274,7 @@ export const layer = Layer.effect(
         // open-source build compiles and runs without it.
         const privateDir = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "private")
         const privateFiles = fs.existsSync(privateDir)
-          ? fs.readdirSync(privateDir).filter((f) => f.endsWith(".ts") && !f.endsWith(".d.ts"))
+          ? fs.readdirSync(privateDir).filter((f: any) => f.endsWith(".ts") && !f.endsWith(".d.ts"))
           : []
         for (const entry of privateFiles) {
           const file = path.join(privateDir, entry)

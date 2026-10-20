@@ -57,7 +57,7 @@ export const layer = Layer.effect(
 
           if (!rev) {
             if ((msg.info.id === input.messageID && !input.partID) || part.id === input.partID) {
-              const partID = remaining.some((item) => ["text", "tool"].includes(item.type)) ? input.partID : undefined
+              const partID = remaining.some((item: any) => ["text", "tool"].includes(item.type)) ? input.partID : undefined
               rev = {
                 messageID: !partID && lastUser ? lastUser.id : msg.info.id,
                 partID,
@@ -74,7 +74,7 @@ export const layer = Layer.effect(
       if (session.revert?.snapshot) yield* snap.restore(session.revert.snapshot)
       yield* snap.revert(patches)
       if (rev.snapshot) rev.diff = yield* snap.diff(rev.snapshot as string)
-      const range = all.filter((msg) => msg.info.id >= rev!.messageID)
+      const range = all.filter((msg: any) => msg.info.id >= rev!.messageID)
       const diffs = yield* summary.computeDiff({ messages: range })
       yield* storage.write(["session_diff", input.sessionID], diffs).pipe(Effect.ignore)
       yield* bus.publish(Session.Event.Diff, { sessionID: input.sessionID, diff: diffs })

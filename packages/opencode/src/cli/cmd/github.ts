@@ -187,7 +187,7 @@ export function extractResponseText(parts: MessageV2.Part[]): string | null {
 export function formatPromptTooLargeError(files: { filename: string; content: string }[]): string {
   const fileDetails =
     files.length > 0
-      ? `\n\nFiles in prompt:\n${files.map((f) => `  - ${f.filename} (${((f.content.length * 0.75) / 1024).toFixed(0)} KB)`).join("\n")}`
+      ? `\n\nFiles in prompt:\n${files.map((f: any) => `  - ${f.filename} (${((f.content.length * 0.75) / 1024).toFixed(0)} KB)`).join("\n")}`
       : ""
   return `PROMPT_TOO_LARGE: The prompt exceeds the model's context limit.${fileDetails}`
 }
@@ -234,7 +234,7 @@ export const GithubInstallCommand = cmd({
               step2 = [
                 `    2. Add the following secrets in org or repo (${app.owner}/${app.repo}) settings`,
                 "",
-                ...providers[provider].env.map((e) => `       - ${e}`),
+                ...providers[provider].env.map((e: any) => `       - ${e}`),
               ].join("\n")
             }
 
@@ -379,7 +379,7 @@ export const GithubInstallCommand = cmd({
             const envStr =
               provider === "amazon-bedrock"
                 ? ""
-                : `\n        env:${providers[provider].env.map((e) => `\n          ${e}: \${{ secrets.${e} }}`).join("")}`
+                : `\n        env:${providers[provider].env.map((e: any) => `\n          ${e}: \${{ secrets.${e} }}`).join("")}`
 
             await Filesystem.write(
               path.join(app.root, WORKFLOW_FILE),
@@ -630,7 +630,7 @@ export const GithubRunCommand = cmd({
               const summary = await summarize(response)
               await pushToLocalBranch(summary, uncommittedChanges)
             }
-            const hasShared = prData.comments.nodes.some((c) => c.body.includes(`${shareBaseUrl}/s/${shareId}`))
+            const hasShared = prData.comments.nodes.some((c: any) => c.body.includes(`${shareBaseUrl}/s/${shareId}`))
             await createComment(`${response}${footer({ image: !hasShared })}`)
             await removeReaction(commentType)
           }
@@ -648,7 +648,7 @@ export const GithubRunCommand = cmd({
               const summary = await summarize(response)
               await pushToForkBranch(summary, prData, uncommittedChanges)
             }
-            const hasShared = prData.comments.nodes.some((c) => c.body.includes(`${shareBaseUrl}/s/${shareId}`))
+            const hasShared = prData.comments.nodes.some((c: any) => c.body.includes(`${shareBaseUrl}/s/${shareId}`))
             await createComment(`${response}${footer({ image: !hasShared })}`)
             await removeReaction(commentType)
           }
@@ -796,7 +796,7 @@ export const GithubRunCommand = cmd({
         const reviewContext = getReviewCommentContext()
         const mentions = (process.env["MENTIONS"] || "/opencode,/oc")
           .split(",")
-          .map((m) => m.trim().toLowerCase())
+          .map((m: any) => m.trim().toLowerCase())
           .filter(Boolean)
         let prompt = (() => {
           if (!isCommentEvent) {
@@ -804,19 +804,19 @@ export const GithubRunCommand = cmd({
           }
           const body = (payload as IssueCommentEvent | PullRequestReviewCommentEvent).comment.body.trim()
           const bodyLower = body.toLowerCase()
-          if (mentions.some((m) => bodyLower === m)) {
+          if (mentions.some((m: any) => bodyLower === m)) {
             if (reviewContext) {
               return `Review this code change and suggest improvements for the commented lines:\n\nFile: ${reviewContext.file}\nLines: ${reviewContext.line}\n\n${reviewContext.diffHunk}`
             }
             return "Summarize this thread"
           }
-          if (mentions.some((m) => bodyLower.includes(m))) {
+          if (mentions.some((m: any) => bodyLower.includes(m))) {
             if (reviewContext) {
               return `${body}\n\nContext: You are reviewing a comment on file "${reviewContext.file}" at line ${reviewContext.line}.\n\nDiff context:\n${reviewContext.diffHunk}`
             }
             return body
           }
-          throw new Error(`Comments must mention ${mentions.map((m) => "`" + m + "`").join(" or ")}`)
+          throw new Error(`Comments must mention ${mentions.map((m: any) => "`" + m + "`").join(" or ")}`)
         })()
 
         // Handle images
@@ -1267,7 +1267,7 @@ export const GithubRunCommand = cmd({
               content: AGENT_REACTION,
             })
 
-            const eyesReaction = reactions.data.find((r) => r.user?.login === AGENT_USERNAME)
+            const eyesReaction = reactions.data.find((r: any) => r.user?.login === AGENT_USERNAME)
             if (!eyesReaction) return
 
             return await octoRest.rest.reactions.deleteForPullRequestComment({
@@ -1285,7 +1285,7 @@ export const GithubRunCommand = cmd({
             content: AGENT_REACTION,
           })
 
-          const eyesReaction = reactions.data.find((r) => r.user?.login === AGENT_USERNAME)
+          const eyesReaction = reactions.data.find((r: any) => r.user?.login === AGENT_USERNAME)
           if (!eyesReaction) return
 
           return await octoRest.rest.reactions.deleteForIssueComment({
@@ -1303,7 +1303,7 @@ export const GithubRunCommand = cmd({
           content: AGENT_REACTION,
         })
 
-        const eyesReaction = reactions.data.find((r) => r.user?.login === AGENT_USERNAME)
+        const eyesReaction = reactions.data.find((r: any) => r.user?.login === AGENT_USERNAME)
         if (!eyesReaction) return
 
         await octoRest.rest.reactions.deleteForIssue({
@@ -1457,11 +1457,11 @@ query($owner: String!, $repo: String!, $number: Int!) {
       function buildPromptDataForIssue(issue: GitHubIssue) {
         // Only called for non-schedule events, so payload is defined
         const comments = (issue.comments?.nodes || [])
-          .filter((c) => {
+          .filter((c: any) => {
             const id = parseInt(c.databaseId)
             return id !== triggerCommentId
           })
-          .map((c) => `  - ${c.author.login} at ${c.createdAt}: ${c.body}`)
+          .map((c: any) => `  - ${c.author.login} at ${c.createdAt}: ${c.body}`)
 
         return [
           "<github_action_context>",
@@ -1585,15 +1585,15 @@ query($owner: String!, $repo: String!, $number: Int!) {
       function buildPromptDataForPR(pr: GitHubPullRequest) {
         // Only called for non-schedule events, so payload is defined
         const comments = (pr.comments?.nodes || [])
-          .filter((c) => {
+          .filter((c: any) => {
             const id = parseInt(c.databaseId)
             return id !== triggerCommentId
           })
-          .map((c) => `- ${c.author.login} at ${c.createdAt}: ${c.body}`)
+          .map((c: any) => `- ${c.author.login} at ${c.createdAt}: ${c.body}`)
 
-        const files = (pr.files.nodes || []).map((f) => `- ${f.path} (${f.changeType}) +${f.additions}/-${f.deletions}`)
-        const reviewData = (pr.reviews.nodes || []).map((r) => {
-          const comments = (r.comments.nodes || []).map((c) => `    - ${c.path}:${c.line ?? "?"}: ${c.body}`)
+        const files = (pr.files.nodes || []).map((f: any) => `- ${f.path} (${f.changeType}) +${f.additions}/-${f.deletions}`)
+        const reviewData = (pr.reviews.nodes || []).map((r: any) => {
+          const comments = (r.comments.nodes || []).map((c: any) => `    - ${c.path}:${c.line ?? "?"}: ${c.body}`)
           return [
             `- ${r.author.login} at ${r.submittedAt}:`,
             `  - Review body: ${r.body}`,

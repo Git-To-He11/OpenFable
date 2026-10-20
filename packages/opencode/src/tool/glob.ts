@@ -57,7 +57,7 @@ export const GlobTool = Tool.define(
                 const info = yield* fs.stat(full).pipe(Effect.catch(() => Effect.succeed(undefined)))
                 const mtime =
                   info?.mtime.pipe(
-                    Option.map((date) => date.getTime()),
+                    Option.map((date: any) => date.getTime()),
                     Option.getOrElse(() => 0),
                   ) ?? 0
                 return { path: full, mtime }
@@ -65,7 +65,7 @@ export const GlobTool = Tool.define(
             ),
             Stream.take(limit + 1),
             Stream.runCollect,
-            Effect.map((chunk) => [...chunk]),
+            Effect.map((chunk: any) => [...chunk]),
           )
 
           if (files.length > limit) {
@@ -77,7 +77,7 @@ export const GlobTool = Tool.define(
           const output = []
           if (files.length === 0) output.push("No files found")
           if (files.length > 0) {
-            output.push(...files.map((file) => file.path))
+            output.push(...files.map((file: any) => file.path))
             if (truncated) {
               output.push("")
               output.push(

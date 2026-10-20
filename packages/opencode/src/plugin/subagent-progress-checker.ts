@@ -57,7 +57,7 @@ function buildFeedback(args: {
 
   return [
     `tasks/${args.taskId}/progress.md exists but is missing required sections:`,
-    ...(args.missing ?? []).map((s) => `  - ${s}`),
+    ...(args.missing ?? []).map((s: any) => `  - ${s}`),
     "",
     "Add the missing sections. For reference, the full required template is:",
     "",
@@ -126,7 +126,7 @@ export async function SubagentProgressCheckerPlugin(_pluginInput: PluginInput): 
           return
         }
 
-        const missing = REQUIRED_SECTIONS.filter((s) => !body!.includes(s))
+        const missing = REQUIRED_SECTIONS.filter((s: any) => !body!.includes(s))
         if (missing.length > 0) {
           output.continue = true
           output.reason = buildFeedback({ kind: "incomplete", taskId, filePath, missing })

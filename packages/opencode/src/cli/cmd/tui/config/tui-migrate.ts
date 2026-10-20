@@ -147,5 +147,5 @@ async function openfableFiles(input: { directories: string[]; cwd: string }) {
       return ok ? file : undefined
     }),
   )
-  return existing.filter((file): file is string => !!file)
+  return existing.filter((file: any): file is string => !!file)
 }

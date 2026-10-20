@@ -151,7 +151,7 @@ describe("rebuild microcompact", () => {
 
         const all = yield* ssn.messages({ sessionID: info.id })
         const findPart = (msgID: typeof pre.msg.id) =>
-          all.find((m) => m.info.id === msgID)?.parts.find((p) => p.type === "tool")
+          all.find((m: any) => m.info.id === msgID)?.parts.find((p: any) => p.type === "tool")
 
         const preTool = findPart(pre.msg.id)
         const postReadTool = findPart(postRead.msg.id)
@@ -212,8 +212,8 @@ describe("rebuild microcompact", () => {
 
         const all = yield* ssn.messages({ sessionID: info.id })
         const preTool = all
-          .find((m) => m.info.id === pre.msg.id)
-          ?.parts.find((p) => p.type === "tool")
+          .find((m: any) => m.info.id === pre.msg.id)
+          ?.parts.find((p: any) => p.type === "tool")
         expect(
           preTool && preTool.state.status === "completed"
             ? preTool.state.time.compacted
@@ -259,7 +259,7 @@ describe("rebuild microcompact", () => {
 
         const all = yield* ssn.messages({ sessionID: info.id })
         const findTool = (id: typeof pre.msg.id) =>
-          all.find((m) => m.info.id === id)?.parts.find((p) => p.type === "tool")
+          all.find((m: any) => m.info.id === id)?.parts.find((p: any) => p.type === "tool")
         const compactedOf = (p?: MessageV2.Part) =>
           p && p.type === "tool" && p.state.status === "completed" ? p.state.time.compacted : undefined
 
@@ -305,7 +305,7 @@ describe("rebuild microcompact", () => {
 
         const all = yield* ssn.messages({ sessionID: info.id })
         const findTool = (id: typeof a.msg.id) =>
-          all.find((m) => m.info.id === id)?.parts.find((p) => p.type === "tool")
+          all.find((m: any) => m.info.id === id)?.parts.find((p: any) => p.type === "tool")
         const compactedOf = (p?: MessageV2.Part) =>
           p && p.type === "tool" && p.state.status === "completed" ? p.state.time.compacted : undefined
 

@@ -196,7 +196,7 @@ export function replay(event: SerializedEvent, options?: { publish: boolean }) {
 export function replayAll(events: SerializedEvent[], options?: { publish: boolean }) {
   const source = events[0]?.aggregateID
   if (!source) return
-  if (events.some((item) => item.aggregateID !== source)) {
+  if (events.some((item: any) => item.aggregateID !== source)) {
     throw new Error("Replay events must belong to the same session")
   }
   const start = events[0].seq

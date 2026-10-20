@@ -150,7 +150,7 @@ it.live("list returns all accounts", () =>
 
     const accounts = yield* AccountRepo.Service.use((r) => r.list())
     expect(accounts.length).toBe(2)
-    expect(accounts.map((a) => a.email).sort()).toEqual(["a@example.com", "b@example.com"])
+    expect(accounts.map((a: any) => a.email).sort()).toEqual(["a@example.com", "b@example.com"])
   }),
 )
 

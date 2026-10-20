@@ -12,7 +12,7 @@ export function jsonc(text: string, filepath: string): unknown {
   if (errors.length) {
     const lines = text.split("\n")
     const issues = errors
-      .map((e) => {
+      .map((e: any) => {
         const beforeOffset = text.substring(0, e.offset).split("\n")
         const line = beforeOffset.length
         const column = beforeOffset[beforeOffset.length - 1].length + 1

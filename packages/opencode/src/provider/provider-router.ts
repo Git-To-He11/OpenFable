@@ -61,7 +61,7 @@ function filterAvailableRoutes(
   routes: ProviderRoute[],
   excludeProviders: Set<string>,
 ): ProviderRoute[] {
-  return routes.filter((route) => {
+  return routes.filter((route: any) => {
     if (excludeProviders.has(route.providerID)) return false
     if (routingConfig.enableCooldown && isOnCooldown(route.providerID, route.modelID)) return false
     if (!route.isAvailable()) return false

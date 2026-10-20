@@ -192,8 +192,8 @@ describe("History.around", () => {
         const svc = yield* History.Service
         const ctx = yield* svc.around({ message_id: "m2", before: 1, after: 1 })
         expect(ctx.session_id).toBe("ses_a")
-        expect(ctx.messages.map((m) => m.message_id)).toEqual(["m1", "m2", "m3"])
-        expect(ctx.messages.find((m) => m.matched)?.message_id).toBe("m2")
+        expect(ctx.messages.map((m: any) => m.message_id)).toEqual(["m1", "m2", "m3"])
+        expect(ctx.messages.find((m: any) => m.matched)?.message_id).toBe("m2")
       }),
     ),
   )

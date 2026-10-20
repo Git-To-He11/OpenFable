@@ -225,7 +225,7 @@ it.live("session.processor effect tests capture llm input cleanly", () =>
 
         expect(value).toBe("continue")
         expect(calls).toBe(1)
-        expect(parts.some((part) => part.type === "text" && part.text === "hello")).toBe(true)
+        expect(parts.some((part: any) => part.type === "text" && part.text === "hello")).toBe(true)
       }),
     { git: true, config: (url) => providerCfg(url) },
   ),
@@ -295,7 +295,7 @@ it.live("session.processor effect tests preserve text start time", () =>
         yield* Effect.promise(async () => {
           const stop = Date.now() + 500
           while (Date.now() < stop) {
-            const text = MessageV2.parts(msg.id).find((part): part is MessageV2.TextPart => part.type === "text")
+            const text = MessageV2.parts(msg.id).find((part: any): part is MessageV2.TextPart => part.type === "text")
             if (text?.time?.start) return
             await Bun.sleep(10)
           }
@@ -305,7 +305,7 @@ it.live("session.processor effect tests preserve text start time", () =>
         gate.resolve()
 
         const exit = yield* Fiber.await(run)
-        const text = MessageV2.parts(msg.id).find((part): part is MessageV2.TextPart => part.type === "text")
+        const text = MessageV2.parts(msg.id).find((part: any): part is MessageV2.TextPart => part.type === "text")
 
         expect(Exit.isSuccess(exit)).toBe(true)
         expect(text?.text).toBe("hello")
@@ -357,8 +357,8 @@ it.live("session.processor effect tests stop after token overflow requests compa
         const parts = MessageV2.parts(msg.id)
 
         expect(value).toBe("overflow")
-        expect(parts.some((part) => part.type === "text" && part.text === "after")).toBe(true)
-        expect(parts.some((part) => part.type === "step-finish")).toBe(true)
+        expect(parts.some((part: any) => part.type === "text" && part.text === "after")).toBe(true)
+        expect(parts.some((part: any) => part.type === "step-finish")).toBe(true)
       }),
     { git: true, config: (url) => providerCfg(url) },
   ),
@@ -400,8 +400,8 @@ it.live("session.processor effect tests capture reasoning from http mock", () =>
         })
 
         const parts = MessageV2.parts(msg.id)
-        const reasoning = parts.find((part): part is MessageV2.ReasoningPart => part.type === "reasoning")
-        const text = parts.find((part): part is MessageV2.TextPart => part.type === "text")
+        const reasoning = parts.find((part: any): part is MessageV2.ReasoningPart => part.type === "reasoning")
+        const text = parts.find((part: any): part is MessageV2.TextPart => part.type === "text")
 
         expect(value).toBe("continue")
         expect(yield* llm.calls).toBe(1)
@@ -448,12 +448,12 @@ it.live("session.processor effect tests reset reasoning state across retries", (
         })
 
         const parts = MessageV2.parts(msg.id)
-        const reasoning = parts.filter((part): part is MessageV2.ReasoningPart => part.type === "reasoning")
+        const reasoning = parts.filter((part: any): part is MessageV2.ReasoningPart => part.type === "reasoning")
 
         expect(value).toBe("continue")
         expect(yield* llm.calls).toBe(2)
-        expect(reasoning.some((part) => part.text === "two")).toBe(true)
-        expect(reasoning.some((part) => part.text === "onetwo")).toBe(false)
+        expect(reasoning.some((part: any) => part.text === "two")).toBe(true)
+        expect(reasoning.some((part: any) => part.text === "onetwo")).toBe(false)
       }),
     { git: true, config: (url) => providerCfg(url) },
   ),
@@ -697,7 +697,7 @@ it.live("session.processor effect tests mark pending tools as aborted on cleanup
           const end = Date.now() + 500
           while (Date.now() < end) {
             const parts = await MessageV2.parts(msg.id)
-            if (parts.some((part) => part.type === "tool")) return
+            if (parts.some((part: any) => part.type === "tool")) return
             await Bun.sleep(10)
           }
         })
@@ -705,7 +705,7 @@ it.live("session.processor effect tests mark pending tools as aborted on cleanup
 
         const exit = yield* Fiber.await(run)
         const parts = MessageV2.parts(msg.id)
-        const call = parts.find((part): part is MessageV2.ToolPart => part.type === "tool")
+        const call = parts.find((part: any): part is MessageV2.ToolPart => part.type === "tool")
 
         expect(Exit.isFailure(exit)).toBe(true)
         if (Exit.isFailure(exit)) {

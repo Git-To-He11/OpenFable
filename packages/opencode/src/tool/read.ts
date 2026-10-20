@@ -42,13 +42,13 @@ export const ReadTool = Tool.define(
       const dir = path.dirname(filepath)
       const base = path.basename(filepath)
       const items = yield* fs.readDirectory(dir).pipe(
-        Effect.map((items) =>
+        Effect.map((items: any) =>
           items
             .filter(
               (item) =>
                 item.toLowerCase().includes(base.toLowerCase()) || base.toLowerCase().includes(item.toLowerCase()),
             )
-            .map((item) => path.join(dir, item))
+            .map((item: any) => path.join(dir, item))
             .slice(0, 3),
         ),
         Effect.catch(() => Effect.succeed([] as string[])),
@@ -221,7 +221,7 @@ export const ReadTool = Tool.define(
           metadata: {
             preview: msg,
             truncated: false,
-            loaded: loaded.map((item) => item.filepath),
+            loaded: loaded.map((item: any) => item.filepath),
           },
           attachments: [
             {
@@ -264,7 +264,7 @@ export const ReadTool = Tool.define(
       yield* warm(filepath)
 
       if (loaded.length > 0) {
-        output += `\n\n<system-reminder>\n${loaded.map((item) => item.content).join("\n\n")}\n</system-reminder>`
+        output += `\n\n<system-reminder>\n${loaded.map((item: any) => item.content).join("\n\n")}\n</system-reminder>`
       }
 
       return {
@@ -273,7 +273,7 @@ export const ReadTool = Tool.define(
         metadata: {
           preview: file.raw.slice(0, 20).join("\n"),
           truncated,
-          loaded: loaded.map((item) => item.filepath),
+          loaded: loaded.map((item: any) => item.filepath),
         },
       }
     })

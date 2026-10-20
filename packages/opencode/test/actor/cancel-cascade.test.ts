@@ -282,7 +282,7 @@ describe("ActorRegistry.listByParent", () => {
 
         const children = yield* reg.listByParent(parent.id, "explore-1")
         expect(children.length).toBe(2)
-        const ids = children.map((c) => c.actorID).sort()
+        const ids = children.map((c: any) => c.actorID).sort()
         expect(ids).toEqual(["general-1", "general-2"])
       }),
       { git: true, config: providerCfg },

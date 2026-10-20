@@ -284,7 +284,7 @@ describe("WorkflowRuntime nested cancel", () => {
         // The child sub-run must ALSO be cancelled (no orphan). list() returns every
         // run in the session; the child is the non-parent run, and it must be cancelled.
         const all = yield* runtime.list({ sessionID: parent.id })
-        const child2 = all.find((r) => r.runID !== runID)
+        const child2 = all.find((r: any) => r.runID !== runID)
         expect(child2?.status).toBe("cancelled")
       }),
       { git: true, config: providerCfg },

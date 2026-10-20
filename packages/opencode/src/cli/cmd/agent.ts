@@ -123,11 +123,11 @@ const AgentCreateCommand = cmd({
         // Select tools
         let selectedTools: string[]
         if (cliTools !== undefined) {
-          selectedTools = cliTools ? cliTools.split(",").map((t) => t.trim()) : AVAILABLE_TOOLS
+          selectedTools = cliTools ? cliTools.split(",").map((t: any) => t.trim()) : AVAILABLE_TOOLS
         } else {
           const result = await prompts.multiselect({
             message: "Select tools to enable (Space to toggle)",
-            options: AVAILABLE_TOOLS.map((tool) => ({
+            options: AVAILABLE_TOOLS.map((tool: any) => ({
               label: tool,
               value: tool,
             })),

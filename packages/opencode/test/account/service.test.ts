@@ -165,7 +165,7 @@ it.live("orgsByAccount groups orgs per account", () =>
 
     const rows = yield* Account.Service.use((s) => s.orgsByAccount()).pipe(Effect.provide(live(client)))
 
-    expect(rows.map((row) => [row.account.id, row.orgs.map((org) => org.id)]).map(([id, orgs]) => [id, orgs])).toEqual([
+    expect(rows.map((row: any) => [row.account.id, row.orgs.map((org: any) => org.id)]).map(([id, orgs]) => [id, orgs])).toEqual([
       [AccountID.make("user-1"), [OrgID.make("org-1")]],
       [AccountID.make("user-2"), [OrgID.make("org-2"), OrgID.make("org-3")]],
     ])

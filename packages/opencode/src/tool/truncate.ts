@@ -56,7 +56,7 @@ export const layer = Layer.effect(
         Identifier.create("tool", "ascending", Date.now() - Duration.toMillis(RETENTION)),
       )
       const entries = yield* fs.readDirectory(TRUNCATION_DIR).pipe(
-        Effect.map((all) => all.filter((name) => name.startsWith("tool_"))),
+        Effect.map((all: any) => all.filter((name: any) => name.startsWith("tool_"))),
         Effect.catch(() => Effect.succeed([])),
       )
       for (const entry of entries) {

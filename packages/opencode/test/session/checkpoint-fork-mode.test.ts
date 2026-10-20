@@ -450,7 +450,7 @@ describe("checkpoint writer forkContext shape per mode", () => {
           // Use messages() and find u2 — this is the only public lookup API on
           // the Session.Service interface.
           const all = yield* ssn.messages({ sessionID: info.id })
-          const wm = all.find((m) => m.info.id === u2.id)
+          const wm = all.find((m: any) => m.info.id === u2.id)
           expect((wm?.info as { agent?: string } | undefined)?.agent).toBeUndefined()
 
           const outcome = yield* svc.tryStartCheckpointWriter({

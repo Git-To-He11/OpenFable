@@ -36,7 +36,7 @@ export function convertToOpenAICompatibleChatMessages(prompt: LanguageModelV3Pro
 
         messages.push({
           role: "user",
-          content: content.map((part) => {
+          content: content.map((part: any) => {
             const partMetadata = getOpenAIMetadata(part)
             switch (part.type) {
               case "text": {

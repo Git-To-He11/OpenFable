@@ -84,12 +84,12 @@ export function createPlugTask(input: PlugInput, dep: PlugDeps = defaultPlugDeps
         const lines = hit.stderr
           .toString()
           .split(/\r?\n/)
-          .map((line) => line.trim())
+          .map((line: any) => line.trim())
           .filter(Boolean)
-        const errs = lines.filter((line) => line.startsWith("error:")).map((line) => line.replace(/^error:\s*/, ""))
+        const errs = lines.filter((line: any) => line.startsWith("error:")).map((line: any) => line.replace(/^error:\s*/, ""))
         const detail = errs[0] ?? lines.at(-1)
         if (detail) dep.log.error(detail)
-        if (lines.some((line) => line.includes("No version matching"))) {
+        if (lines.some((line: any) => line.includes("No version matching"))) {
           dep.log.info("This package depends on a version that is not available in your npm registry.")
           dep.log.info("Check npm registry/auth settings and try again.")
         }
@@ -126,7 +126,7 @@ export function createPlugTask(input: PlugInput, dep: PlugDeps = defaultPlugDeps
     }
 
     inspect.stop(
-      `Detected ${manifest.targets.map((item) => item.kind).join(" + ")} target${manifest.targets.length === 1 ? "" : "s"}`,
+      `Detected ${manifest.targets.map((item: any) => item.kind).join(" + ")} target${manifest.targets.length === 1 ? "" : "s"}`,
     )
 
     const patch = dep.spinner()

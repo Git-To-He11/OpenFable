@@ -196,13 +196,13 @@ export function detectSystemLocale(): Locale {
     for (const raw of value.split(":")) {
       const cleaned = raw.replace(/[.@].*$/, "").replace(/_/g, "-").toLowerCase()
       if (!cleaned || cleaned === "c" || cleaned === "posix") continue
-      const match = matchers.find((m) => m.test(cleaned))
+      const match = matchers.find((m: any) => m.test(cleaned))
       if (match) return match.locale
     }
   }
   try {
     const intl = Intl.DateTimeFormat().resolvedOptions().locale.toLowerCase()
-    const match = matchers.find((m) => m.test(intl))
+    const match = matchers.find((m: any) => m.test(intl))
     if (match) return match.locale
   } catch {}
   return "en"

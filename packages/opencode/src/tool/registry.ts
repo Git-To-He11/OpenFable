@@ -67,8 +67,8 @@ const log = Log.create({ service: "tool.registry" })
 export function renderWorkflowCatalog(): string {
   const list = BuiltinWorkflow.list()
   if (list.length === 0) return ""
-  const entries = list.map((w) => {
-    const phases = w.phases?.length ? "\n  Phases: " + w.phases.map((p) => p.title).join(" → ") : ""
+  const entries = list.map((w: any) => {
+    const phases = w.phases?.length ? "\n  Phases: " + w.phases.map((p: any) => p.title).join(" → ") : ""
     const when = w.whenToUse ? `\n  When to use: ${w.whenToUse}` : ""
     return `- ${w.name}: ${w.description}${when}${phases}`
   })
@@ -260,13 +260,13 @@ export const layer = Layer.effect(
 
     const all: Interface["all"] = Effect.fn("ToolRegistry.all")(function* () {
       const s = yield* InstanceState.get(state)
-      const customIds = new Set(s.custom.map((t) => t.id))
-      const builtins = s.builtin.filter((t) => !customIds.has(t.id))
+      const customIds = new Set(s.custom.map((t: any) => t.id))
+      const builtins = s.builtin.filter((t: any) => !customIds.has(t.id))
       return [...builtins, ...s.custom] as Tool.Def[]
     })
 
     const ids: Interface["ids"] = Effect.fn("ToolRegistry.ids")(function* () {
-      return (yield* all()).map((tool) => tool.id)
+      return (yield* all()).map((tool: any) => tool.id)
     })
 
     const describeSkill = Effect.fn("ToolRegistry.describeSkill")(function* (agent: Agent.Info) {
@@ -310,7 +310,7 @@ export const layer = Layer.effect(
     })
 
     const tools: Interface["tools"] = Effect.fn("ToolRegistry.tools")(function* (input) {
-      let filtered = (yield* all()).filter((tool) => {
+      let filtered = (yield* all()).filter((tool: any) => {
         if (tool.id === CodeSearchTool.id || tool.id === WebSearchTool.id) {
           if (tool.id === WebSearchTool.id) {
             return (
@@ -332,7 +332,7 @@ export const layer = Layer.effect(
 
       if (input.agent.toolAllowlist) {
         const allowed = new Set(input.agent.toolAllowlist)
-        filtered = filtered.filter((tool) => tool.id === "invalid" || allowed.has(tool.id))
+        filtered = filtered.filter((tool: any) => tool.id === "invalid" || allowed.has(tool.id))
       }
 
       const cfg = yield* config.get()

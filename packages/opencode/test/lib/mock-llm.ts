@@ -125,11 +125,11 @@ export class MockLLM {
           const events = self.#queue.shift() ?? textReply("ok")
 
           // Extract summary from events for trajectory
-          const textParts = events.filter((e) => e.type === "text-delta").map((e) => (e as any).text)
+          const textParts = events.filter((e: any) => e.type === "text-delta").map((e: any) => (e as any).text)
           const toolCalls = events
-            .filter((e) => e.type === "tool-call")
-            .map((e) => ({ name: (e as any).toolName, input: (e as any).input }))
-          const finish = events.find((e) => e.type === "finish-step")
+            .filter((e: any) => e.type === "tool-call")
+            .map((e: any) => ({ name: (e as any).toolName, input: (e as any).input }))
+          const finish = events.find((e: any) => e.type === "finish-step")
           const finishReason = finish ? (finish as any).finishReason : "unknown"
 
           // Record trajectory step

@@ -353,7 +353,7 @@ describe("Tool whitelist (Task 14)", () => {
         const msgs = yield* MessageV2.filterCompactedEffect(session.id)
         const rejected = msgs
           .flatMap((msg) => msg.parts)
-          .find((part) => part.type === "tool" && part.state.status === "completed" && (part.state.metadata?.rejected as unknown) === true)
+          .find((part: any) => part.type === "tool" && part.state.status === "completed" && (part.state.metadata?.rejected as unknown) === true)
         expect(rejected).toBeUndefined()
       }),
       { git: true, config: providerCfg },

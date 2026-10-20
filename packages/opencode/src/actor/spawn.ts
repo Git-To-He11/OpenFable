@@ -443,12 +443,12 @@ export const layer = Layer.effect(
                       .list({ session_id: input.parentSessionID, owner: input.actorID, include_terminal: false })
                       .pipe(Effect.orElseSucceed(() => []))
                   : []
-                const stillActionable = remaining.filter((t) => t.status === "open" || t.status === "in_progress")
+                const stillActionable = remaining.filter((t: any) => t.status === "open" || t.status === "in_progress")
                 const downgrade: ReturnStatus | undefined =
                   stillActionable.length > 0 ? "partial" : remaining.length > 0 ? "blocked" : undefined
                 const parsed = parseReturnHeader(deliveredText)
                 const reportedStatus = downgrade ?? parsed.status
-                const incompleteTasks = remaining.map((t) => t.id)
+                const incompleteTasks = remaining.map((t: any) => t.id)
                 const reconciledText =
                   downgrade && incompleteTasks.length > 0
                     ? `${deliveredText ?? ""}\n\n**Incomplete tasks**: ${incompleteTasks.join(", ")}`

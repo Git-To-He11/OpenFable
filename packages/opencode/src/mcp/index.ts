@@ -172,7 +172,7 @@ function defs(key: string, client: MCPClient, timeout?: number) {
     try: () => withTimeout(client.listTools(), timeout ?? DEFAULT_TIMEOUT),
     catch: (err) => (err instanceof Error ? err : new Error(String(err))),
   }).pipe(
-    Effect.map((result) => result.tools),
+    Effect.map((result: any) => result.tools),
     Effect.catch((err) => {
       log.error("failed to get tools from client", { key, error: err })
       return Effect.succeed(undefined)
@@ -193,7 +193,7 @@ function fetchFromClient<T extends { name: string }>(
       return e
     },
   }).pipe(
-    Effect.map((items) => {
+    Effect.map((items: any) => {
       const out: Record<string, T & { client: string }> = {}
       const sanitizedClient = sanitize(clientName)
       for (const item of items) {
@@ -332,7 +332,7 @@ export const layer = Layer.effect(
 
       for (const { name, transport } of transports) {
         const result = yield* connectTransport(transport, connectTimeout).pipe(
-          Effect.map((client) => ({ client, transportName: name })),
+          Effect.map((client: any) => ({ client, transportName: name })),
           Effect.catch((error) => {
             const lastError = error instanceof Error ? error : new Error(String(error))
             const isAuthError =
@@ -415,7 +415,7 @@ export const layer = Layer.effect(
 
       const connectTimeout = mcp.timeout ?? DEFAULT_TIMEOUT
       return yield* connectTransport(transport, connectTimeout).pipe(
-        Effect.map((client): { client: MCPClient | undefined; status: Status } => ({
+        Effect.map((client: any): { client: MCPClient | undefined; status: Status } => ({
           client,
           status: { status: "connected" },
         })),
@@ -685,9 +685,9 @@ export const layer = Layer.effect(
       return Effect.forEach(
         Object.entries(s.clients).filter(([name]) => s.status[name]?.status === "connected"),
         ([clientName, client]) =>
-          fetchFromClient(clientName, client, listFn, label).pipe(Effect.map((items) => Object.entries(items ?? {}))),
+          fetchFromClient(clientName, client, listFn, label).pipe(Effect.map((items: any) => Object.entries(items ?? {}))),
         { concurrency: "unbounded" },
-      ).pipe(Effect.map((results) => Object.fromEntries<T & { client: string }>(results.flat())))
+      ).pipe(Effect.map((results: any) => Object.fromEntries<T & { client: string }>(results.flat())))
     }
 
     const prompts = Effect.fn("MCP.prompts")(function* () {
@@ -757,7 +757,7 @@ export const layer = Layer.effect(
       yield* Effect.promise(() => McpOAuthCallback.ensureRunning(oauthConfig?.redirectUri))
 
       const oauthState = Array.from(crypto.getRandomValues(new Uint8Array(32)))
-        .map((b) => b.toString(16).padStart(2, "0"))
+        .map((b: any) => b.toString(16).padStart(2, "0"))
         .join("")
       yield* auth.updateOAuthState(mcpName, oauthState)
       let capturedUrl: URL | undefined

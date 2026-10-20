@@ -990,9 +990,9 @@ describe("Actor.spawn return-format injection (F21)", () => {
         yield* Deferred.await(result.outcome)
 
         const msgs = yield* session.messages({ sessionID: result.sessionID })
-        const subAgentUser = msgs.find((m) => m.info.role === "user" && m.info.agentID === result.actorID)
+        const subAgentUser = msgs.find((m: any) => m.info.role === "user" && m.info.agentID === result.actorID)
         expect(subAgentUser).toBeDefined()
-        const text = subAgentUser?.parts.find((p) => p.type === "text")?.text ?? ""
+        const text = subAgentUser?.parts.find((p: any) => p.type === "text")?.text ?? ""
         expect(text).toContain("Return format (required)")
         expect(text).toContain("**Status**:")
       }),
@@ -1027,8 +1027,8 @@ describe("Actor.spawn return-format injection (F21)", () => {
         yield* Deferred.await(result.outcome)
 
         const msgs = yield* session.messages({ sessionID: result.sessionID })
-        const subAgentUser = msgs.find((m) => m.info.role === "user" && m.info.agentID === result.actorID)
-        const text = subAgentUser?.parts.find((p) => p.type === "text")?.text ?? ""
+        const subAgentUser = msgs.find((m: any) => m.info.role === "user" && m.info.agentID === result.actorID)
+        const text = subAgentUser?.parts.find((p: any) => p.type === "text")?.text ?? ""
         expect(text).not.toContain("Return format (required)")
       }),
       { git: true, config: providerCfg },
@@ -1062,8 +1062,8 @@ describe("Actor.spawn return-format injection (F21)", () => {
         yield* Deferred.await(result.outcome)
 
         const msgs = yield* session.messages({ sessionID: result.sessionID })
-        const subAgentUser = msgs.find((m) => m.info.role === "user" && m.info.agentID === result.actorID)
-        const text = subAgentUser?.parts.find((p) => p.type === "text")?.text ?? ""
+        const subAgentUser = msgs.find((m: any) => m.info.role === "user" && m.info.agentID === result.actorID)
+        const text = subAgentUser?.parts.find((p: any) => p.type === "text")?.text ?? ""
         expect(text).not.toContain("Return format (required)")
       }),
       { git: true, config: providerCfg },

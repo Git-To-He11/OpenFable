@@ -83,7 +83,7 @@ describe("Discovery.pull", () => {
   test("downloads reference files alongside SKILL.md", async () => {
     const dirs = await pull(CLOUDFLARE_SKILLS_URL)
     // find a skill dir that should have reference files (e.g. agents-sdk)
-    const agentsSdk = dirs.find((d) => d.endsWith(path.sep + "agents-sdk"))
+    const agentsSdk = dirs.find((d: any) => d.endsWith(path.sep + "agents-sdk"))
     expect(agentsSdk).toBeDefined()
     if (agentsSdk) {
       const refs = path.join(agentsSdk, "references")

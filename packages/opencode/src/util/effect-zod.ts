@@ -260,7 +260,7 @@ function body(ast: SchemaAST.AST): z.ZodTypeAny {
 
 function opt(ast: SchemaAST.AST): z.ZodTypeAny {
   if (ast._tag !== "Union") return fail(ast)
-  const items = ast.types.filter((item) => item._tag !== "Undefined")
+  const items = ast.types.filter((item: any) => item._tag !== "Undefined")
   const inner =
     items.length === 1
       ? walk(items[0])
@@ -304,7 +304,7 @@ function union(ast: SchemaAST.Union): z.ZodTypeAny {
   // When every member is a string literal, emit z.enum() so that
   // JSON Schema produces { "enum": [...] } instead of { "anyOf": [{ "const": ... }] }.
   if (ast.types.length >= 2 && ast.types.every((t) => t._tag === "Literal" && typeof t.literal === "string")) {
-    return z.enum(ast.types.map((t) => (t as SchemaAST.Literal).literal as string) as [string, ...string[]])
+    return z.enum(ast.types.map((t: any) => (t as SchemaAST.Literal).literal as string) as [string, ...string[]])
   }
 
   const items = ast.types.map(walk)
@@ -329,7 +329,7 @@ function object(ast: SchemaAST.Objects): z.ZodTypeAny {
 
   // Pure object with known fields and no index signatures.
   if (ast.indexSignatures.length === 0) {
-    return z.object(Object.fromEntries(ast.propertySignatures.map((sig) => [String(sig.name), walk(sig.type)])))
+    return z.object(Object.fromEntries(ast.propertySignatures.map((sig: any) => [String(sig.name), walk(sig.type)])))
   }
 
   // Struct with a catchall (StructWithRest): known fields + index signature.
@@ -339,7 +339,7 @@ function object(ast: SchemaAST.Objects): z.ZodTypeAny {
   const sig = ast.indexSignatures[0]
   if (sig.parameter._tag !== "String") return fail(ast)
   return z
-    .object(Object.fromEntries(ast.propertySignatures.map((p) => [String(p.name), walk(p.type)])))
+    .object(Object.fromEntries(ast.propertySignatures.map((p: any) => [String(p.name), walk(p.type)])))
     .catchall(walk(sig.type))
 }
 

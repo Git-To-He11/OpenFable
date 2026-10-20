@@ -44,14 +44,14 @@ export async function extractFacts(
       schema: MemoryFactSchema,
       messages: [
         { role: "system", content: systemContent },
-        ...messages.map((m) => ({
+        ...messages.map((m: any) => ({
           role: m.role as "user" | "assistant",
           content: m.content,
         })),
       ],
     })
 
-    return object.facts.filter((f) => f.confidence >= 0.5)
+    return object.facts.filter((f: any) => f.confidence >= 0.5)
   } catch (err) {
     log.warn("memory extraction failed, falling back to heuristic", {
       error: err instanceof Error ? err.message : String(err),

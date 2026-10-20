@@ -34,14 +34,14 @@ export async function CheckpointSplitoverPlugin(pluginInput: PluginInput): Promi
           })
           if (violations.length === 0) return
 
-          const extractRequired = violations.filter((v) => v.severity === "extract-required")
+          const extractRequired = violations.filter((v: any) => v.severity === "extract-required")
           if (extractRequired.length > 0) {
             output.continue = true
             output.reason = buildExtractionReflection(extractRequired)
             return
           }
 
-          const errors = violations.filter((v) => v.severity === "error")
+          const errors = violations.filter((v: any) => v.severity === "error")
           if (errors.length > 0) {
             output.continue = true
             output.reason = buildReflectionMessage(errors, {

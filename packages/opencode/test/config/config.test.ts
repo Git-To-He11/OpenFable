@@ -1169,12 +1169,12 @@ test("merges plugin arrays from global and local configs", async () => {
       const plugins = config.plugin ?? []
 
       // Should contain both global and local plugins
-      expect(plugins.some((p) => p.includes("global-plugin-1"))).toBe(true)
-      expect(plugins.some((p) => p.includes("global-plugin-2"))).toBe(true)
-      expect(plugins.some((p) => p.includes("local-plugin-1"))).toBe(true)
+      expect(plugins.some((p: any) => p.includes("global-plugin-1"))).toBe(true)
+      expect(plugins.some((p: any) => p.includes("global-plugin-2"))).toBe(true)
+      expect(plugins.some((p: any) => p.includes("local-plugin-1"))).toBe(true)
 
       // Should have all 3 plugins (not replaced, but merged)
-      const pluginNames = plugins.filter((p) => p.includes("global-plugin") || p.includes("local-plugin"))
+      const pluginNames = plugins.filter((p: any) => p.includes("global-plugin") || p.includes("local-plugin"))
       expect(pluginNames.length).toBeGreaterThanOrEqual(3)
     },
   })
@@ -1286,7 +1286,7 @@ test("deduplicates duplicate instructions from global and local configs", async 
       expect(instructions).toContain("local-only.md")
       expect(instructions).toContain("duplicate.md")
 
-      const duplicates = instructions.filter((i) => i === "duplicate.md")
+      const duplicates = instructions.filter((i: any) => i === "duplicate.md")
       expect(duplicates.length).toBe(1)
       expect(instructions.length).toBe(3)
     },
@@ -1328,12 +1328,12 @@ test("deduplicates duplicate plugins from global and local configs", async () =>
       const plugins = config.plugin ?? []
 
       // Should contain all unique plugins
-      expect(plugins.some((p) => p.includes("global-plugin-1"))).toBe(true)
-      expect(plugins.some((p) => p.includes("local-plugin-1"))).toBe(true)
-      expect(plugins.some((p) => p.includes("duplicate-plugin"))).toBe(true)
+      expect(plugins.some((p: any) => p.includes("global-plugin-1"))).toBe(true)
+      expect(plugins.some((p: any) => p.includes("local-plugin-1"))).toBe(true)
+      expect(plugins.some((p: any) => p.includes("duplicate-plugin"))).toBe(true)
 
       // Should deduplicate the duplicate plugin
-      const duplicatePlugins = plugins.filter((p) => p.includes("duplicate-plugin"))
+      const duplicatePlugins = plugins.filter((p: any) => p.includes("duplicate-plugin"))
       expect(duplicatePlugins.length).toBe(1)
 
       // Should have exactly 3 unique plugins
@@ -1376,15 +1376,15 @@ test("keeps plugin origins aligned with merged plugin list", async () => {
       const cfg = await load()
       const plugins = cfg.plugin ?? []
       const origins = cfg.plugin_origins ?? []
-      const names = plugins.map((item) => ConfigPlugin.pluginSpecifier(item))
+      const names = plugins.map((item: any) => ConfigPlugin.pluginSpecifier(item))
 
       expect(names).toContain("shared-plugin@2.0.0")
       expect(names).not.toContain("shared-plugin@1.0.0")
       expect(names).toContain("global-only@1.0.0")
       expect(names).toContain("local-only@1.0.0")
 
-      expect(origins.map((item) => item.spec)).toEqual(plugins)
-      const hit = origins.find((item) => ConfigPlugin.pluginSpecifier(item.spec) === "shared-plugin@2.0.0")
+      expect(origins.map((item: any) => item.spec)).toEqual(plugins)
+      const hit = origins.find((item: any) => ConfigPlugin.pluginSpecifier(item.spec) === "shared-plugin@2.0.0")
       expect(hit?.scope).toBe("local")
     },
   })
@@ -2100,12 +2100,12 @@ describe("resolvePluginSpec", () => {
 describe("deduplicatePluginOrigins", () => {
   const dedupe = (plugins: ConfigPlugin.Spec[]) =>
     ConfigPlugin.deduplicatePluginOrigins(
-      plugins.map((spec) => ({
+      plugins.map((spec: any) => ({
         spec,
         source: "",
         scope: "global" as const,
       })),
-    ).map((item) => item.spec)
+    ).map((item: any) => item.spec)
 
   test("removes duplicates keeping higher priority (later entries)", () => {
     const plugins = ["global-plugin@1.0.0", "shared-plugin@1.0.0", "local-plugin@2.0.0", "shared-plugin@2.0.0"]
@@ -2169,8 +2169,8 @@ describe("deduplicatePluginOrigins", () => {
         const config = await load()
         const plugins = config.plugin ?? []
 
-        expect(plugins.some((p) => ConfigPlugin.pluginSpecifier(p) === "my-plugin@1.0.0")).toBe(true)
-        expect(plugins.some((p) => ConfigPlugin.pluginSpecifier(p).startsWith("file://"))).toBe(true)
+        expect(plugins.some((p: any) => ConfigPlugin.pluginSpecifier(p) === "my-plugin@1.0.0")).toBe(true)
+        expect(plugins.some((p: any) => ConfigPlugin.pluginSpecifier(p).startsWith("file://"))).toBe(true)
       },
     })
   })
@@ -2231,7 +2231,7 @@ describe("OPENFABLE_DISABLE_PROJECT_CONFIG", () => {
         fn: async () => {
           const directories = await listDirs()
           // Project .openfable should NOT be in directories list
-          const hasProjectOpencode = directories.some((d) => d.startsWith(tmp.path))
+          const hasProjectOpencode = directories.some((d: any) => d.startsWith(tmp.path))
           expect(hasProjectOpencode).toBe(false)
         },
       })

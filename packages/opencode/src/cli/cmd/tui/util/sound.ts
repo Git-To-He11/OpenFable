@@ -77,7 +77,7 @@ function asset() {
 
 function pick() {
   if (kind !== undefined) return kind
-  kind = LIST.find((item) => which(item)) ?? null
+  kind = LIST.find((item: any) => which(item)) ?? null
   return kind
 }
 

@@ -63,7 +63,7 @@ export class GraphWorkflowEngine {
 
     try {
       while (state.status === "running") {
-        const node = graph.nodes.find((n) => n.id === state.currentNode)
+        const node = graph.nodes.find((n: any) => n.id === state.currentNode)
         if (!node) {
           state.status = "failed"
           state.error = `Node not found: ${state.currentNode}`
@@ -162,20 +162,20 @@ export class GraphWorkflowEngine {
 
   private resolveNext(node: GraphNode, state: GraphState, graph: GraphDefinition): string | null {
     if (node.type === "condition") {
-      const edges = graph.edges.filter((e) => e.from === node.id)
+      const edges = graph.edges.filter((e: any) => e.from === node.id)
       for (const edge of edges) {
         if (edge.condition && edge.condition(state)) {
           return edge.to
         }
       }
-      const defaultEdge = edges.find((e) => !e.condition)
+      const defaultEdge = edges.find((e: any) => !e.condition)
       return defaultEdge?.to ?? null
     }
 
-    const edges = graph.edges.filter((e) => e.from === node.id)
+    const edges = graph.edges.filter((e: any) => e.from === node.id)
     if (edges.length === 0) return null
 
-    const conditionalEdge = edges.find((e) => e.condition && e.condition(state))
+    const conditionalEdge = edges.find((e: any) => e.condition && e.condition(state))
     if (conditionalEdge) return conditionalEdge.to
 
     return edges[0].to

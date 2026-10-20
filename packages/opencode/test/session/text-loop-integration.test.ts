@@ -309,7 +309,7 @@ describe("text loop detection (integration, MockLLM)", () => {
           expect(mockLLM.calls).toBe(4)
 
           // Final message should contain the recovered text
-          expect(result.parts.some((p) => p.type === "text" && p.text.includes("different approach"))).toBe(true)
+          expect(result.parts.some((p: any) => p.type === "text" && p.text.includes("different approach"))).toBe(true)
 
           // Verify recovery prompt was injected as a separate user message
           const msgs = yield* sessions.messages({ sessionID: session.id })
@@ -322,7 +322,7 @@ describe("text loop detection (integration, MockLLM)", () => {
           expect(recoveryMsg).toBeDefined()
           // It should NOT be on the original user message
           const originalUser = msgs.find(
-            (m) => m.info.role === "user" && m.parts.some((p) => p.type === "text" && p.text === "create a changelog"),
+            (m) => m.info.role === "user" && m.parts.some((p: any) => p.type === "text" && p.text === "create a changelog"),
           )
           const hasRecoveryOnOriginal = originalUser?.parts.some(
             (p) => p.type === "text" && p.text.includes("LOOP DETECTED"),
@@ -366,7 +366,7 @@ describe("text loop detection (integration, MockLLM)", () => {
 
           console.log(`[reasoning-test] MockLLM calls: ${mockLLM.calls}`)
           expect(mockLLM.calls).toBe(4) // 3 repeated + 1 after recovery
-          expect(result.parts.some((p) => p.type === "text" && p.text.includes("different way"))).toBe(true)
+          expect(result.parts.some((p: any) => p.type === "text" && p.text.includes("different way"))).toBe(true)
         }),
       { git: true, config: cfg },
     ),
@@ -420,10 +420,10 @@ describe("text loop detection (integration, MockLLM)", () => {
           for (const msg of allMsgs) {
             const role = msg.info.role
             const finish = "finish" in msg.info ? (msg.info as any).finish : ""
-            const syntheticParts = msg.parts.filter((p) => "synthetic" in p && (p as any).synthetic)
-            const textParts = msg.parts.filter((p) => p.type === "text" && !("synthetic" in p && (p as any).synthetic))
-            const text = textParts.map((p) => p.type === "text" ? p.text : "").join("").slice(0, 60)
-            const synthetic = syntheticParts.map((p) => p.type === "text" ? p.text.slice(0, 40) : "").join("")
+            const syntheticParts = msg.parts.filter((p: any) => "synthetic" in p && (p as any).synthetic)
+            const textParts = msg.parts.filter((p: any) => p.type === "text" && !("synthetic" in p && (p as any).synthetic))
+            const text = textParts.map((p: any) => p.type === "text" ? p.text : "").join("").slice(0, 60)
+            const synthetic = syntheticParts.map((p: any) => p.type === "text" ? p.text.slice(0, 40) : "").join("")
             if (synthetic) {
               console.log(`  [${role}] (synthetic) ${synthetic}...`)
             } else {
@@ -434,12 +434,12 @@ describe("text loop detection (integration, MockLLM)", () => {
 
           // Verify: 2 recovery prompts injected (mild + strong)
           const recoveryMsgs = allMsgs.filter(
-            (m) => m.info.role === "user" && m.parts.some((p) => "synthetic" in p && (p as any).synthetic && p.type === "text" && p.text.includes("system-reminder")),
+            (m) => m.info.role === "user" && m.parts.some((p: any) => "synthetic" in p && (p as any).synthetic && p.type === "text" && p.text.includes("system-reminder")),
           )
           console.log(`[7-repeats] Recovery messages injected: ${recoveryMsgs.length}`)
           expect(recoveryMsgs.length).toBe(2)
-          expect(recoveryMsgs[0].parts.some((p) => p.type === "text" && p.text.includes("LOOP DETECTED"))).toBe(true)
-          expect(recoveryMsgs[1].parts.some((p) => p.type === "text" && p.text.includes("CRITICAL"))).toBe(true)
+          expect(recoveryMsgs[0].parts.some((p: any) => p.type === "text" && p.text.includes("LOOP DETECTED"))).toBe(true)
+          expect(recoveryMsgs[1].parts.some((p: any) => p.type === "text" && p.text.includes("CRITICAL"))).toBe(true)
         }),
       { git: true, config: cfg },
     ),

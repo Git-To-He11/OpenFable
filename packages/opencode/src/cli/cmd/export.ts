@@ -187,7 +187,7 @@ function sanitize(data: { info: Session.Info; messages: MessageV2.WithParts[] })
                 : redact("revert-diff", data.info.id, data.info.revert.diff),
           },
     },
-    messages: data.messages.map((msg) => ({
+    messages: data.messages.map((msg: any) => ({
       info:
         msg.info.role === "user"
           ? {
@@ -265,7 +265,7 @@ export const ExportCommand = cmd({
         const selectedSession = await prompts.autocomplete({
           message: "Select session to export",
           maxItems: 10,
-          options: sessions.map((session) => ({
+          options: sessions.map((session: any) => ({
             label: session.title,
             value: session.id,
             hint: `${new Date(session.time.updated).toLocaleString()} • ${session.id.slice(-8)}`,

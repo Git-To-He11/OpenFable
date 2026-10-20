@@ -659,7 +659,7 @@ export class OpenAICompatibleChatLanguageModel implements LanguageModelV3 {
             }
 
             // go through all tool calls and send the ones that are not finished
-            for (const toolCall of toolCalls.filter((toolCall) => !toolCall.hasFinished)) {
+            for (const toolCall of toolCalls.filter((toolCall: any) => !toolCall.hasFinished)) {
               controller.enqueue({
                 type: "tool-input-end",
                 id: toolCall.id,

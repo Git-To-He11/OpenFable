@@ -45,7 +45,7 @@ export function hybridSearch(
   const ftsQuery = buildFtsQuery(input.query)
   if (!ftsQuery) return []
 
-  const queryEntities = extractEntities(input.query).map((e) => e.entity)
+  const queryEntities = extractEntities(input.query).map((e: any) => e.entity)
   const entityBoostMap = entityStore.findByEntities(queryEntities)
 
   const fetchLimit = Math.min(limit * 3, 50)
@@ -89,7 +89,7 @@ export function hybridSearch(
 
   const queryKeywords = tokenize(input.query)
 
-  const scored: ScoredResult[] = rows.map((r) => {
+  const scored: ScoredResult[] = rows.map((r: any) => {
     const bm25 = -r.score
     const entityCount = entityBoostMap.get(r.path) ?? 0
     const entityBoost = entityCount * weights.entity
@@ -126,6 +126,6 @@ export function hybridSearch(
 
 function tokenize(text: string): string[] {
   return (text.match(/[\p{L}\p{N}_]+/gu) ?? [])
-    .map((t) => t.toLowerCase())
-    .filter((t) => t.length >= 2)
+    .map((t: any) => t.toLowerCase())
+    .filter((t: any) => t.length >= 2)
 }

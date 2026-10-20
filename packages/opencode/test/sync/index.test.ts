@@ -230,7 +230,7 @@ describe("SyncEvent", () => {
         expect(two).toBe(id)
 
         const rows = Database.use((db) => db.select().from(EventTable).all())
-        expect(rows.map((row) => row.seq)).toEqual([0, 1, 2, 3])
+        expect(rows.map((row: any) => row.seq)).toEqual([0, 1, 2, 3])
       }),
     )
   })

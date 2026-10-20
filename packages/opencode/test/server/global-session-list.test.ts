@@ -38,7 +38,7 @@ describe("session.listGlobal", () => {
     })
 
     const sessions = [...svc.listGlobal({ limit: 200 })]
-    const ids = sessions.map((session) => session.id)
+    const ids = sessions.map((session: any) => session.id)
 
     expect(ids).toContain(firstSession.id)
     expect(ids).toContain(secondSession.id)
@@ -46,8 +46,8 @@ describe("session.listGlobal", () => {
     const firstProject = Project.get(firstSession.projectID)
     const secondProject = Project.get(secondSession.projectID)
 
-    const firstItem = sessions.find((session) => session.id === firstSession.id)
-    const secondItem = sessions.find((session) => session.id === secondSession.id)
+    const firstItem = sessions.find((session: any) => session.id === firstSession.id)
+    const secondItem = sessions.find((session: any) => session.id === secondSession.id)
 
     expect(firstItem?.project?.id).toBe(firstProject?.id)
     expect(firstItem?.project?.worktree).toBe(firstProject?.worktree)
@@ -69,12 +69,12 @@ describe("session.listGlobal", () => {
     })
 
     const sessions = [...svc.listGlobal({ limit: 200 })]
-    const ids = sessions.map((session) => session.id)
+    const ids = sessions.map((session: any) => session.id)
 
     expect(ids).not.toContain(archived.id)
 
     const allSessions = [...svc.listGlobal({ limit: 200, archived: true })]
-    const allIds = allSessions.map((session) => session.id)
+    const allIds = allSessions.map((session: any) => session.id)
 
     expect(allIds).toContain(archived.id)
   })
@@ -97,7 +97,7 @@ describe("session.listGlobal", () => {
     expect(page[0].id).toBe(second.id)
 
     const next = [...svc.listGlobal({ directory: tmp.path, limit: 10, cursor: page[0].time.updated })]
-    const ids = next.map((session) => session.id)
+    const ids = next.map((session: any) => session.id)
 
     expect(ids).toContain(first.id)
     expect(ids).not.toContain(second.id)

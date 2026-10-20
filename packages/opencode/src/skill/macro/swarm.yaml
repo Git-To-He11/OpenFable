@@ -1,0 +1,88 @@
+name: swarm-command
+description: |
+  Spawn a massive swarm of intelligent subagents running simultaneously in parallel
+  to complete all tasks quickly with verified, production-grade quality.
+  Activate when user message contains /swarm or "spawn a swarm".
+version: "2.0.0"
+author: openfable
+variables:
+  - name: mission
+    type: string
+    required: true
+    description: The mission briefing after /swarm:
+  - name: swarm_size
+    type: number
+    required: false
+    default: 8
+    description: Number of parallel subagents (3-12)
+  - name: mode
+    type: string
+    required: false
+    default: swarm
+    description: swarm | verify | repair
+trigger: "/swarm"
+steps:
+  - id: intake
+    type: prompt
+    config:
+      prompt: |
+        Phase 0 — Mission Intake (Swarm Commander):
+        1. Read the mission briefing and expand with standing context (AGENTS.md, prior conversation, memory).
+        2. Produce a Swarm Plan with:
+           - Complete task list, each with one-line acceptance criterion
+           - Dependencies between tasks (what must finish before what)
+           - File ownership map — EVERY file path assigned to EXACTLY ONE implementer agent
+           - Swarm size: 3-12 implementers (more than 8 only if tasks truly independent)
+           - Quality gates: real build/test commands, lint/typecheck, rendered-output review
+    next: dispatch
+  - id: dispatch
+    type: tool
+    config:
+      command: |
+        Launch ALL independent implementer agents IN A SINGLE MESSAGE with multiple Agent tool invocations so they run concurrently.
+        Each agent brief must include:
+        1. Role and single task with acceptance criterion
+        2. Full context: repo path, AGENTS.md rules verbatim, key file paths, API signatures, known facts
+        3. File ownership list — "you may create/modify ONLY these paths; do not touch anything else"
+        4. Hard constraints from workspace instructions (never weaken a check; no simulated code; immutable key files)
+        5. Verification duty: exact command to run and output to paste back as proof
+        6. Report format: what changed, files touched, verification evidence, open risks
+    next: integrate
+  - id: integrate
+    type: prompt
+    config:
+      prompt: |
+        Phase 2 — Integration (Swarm Commander):
+        1. Collect every agent report. Cross-check: does union of touched files cover mission?
+           Do any two agents claim same file? Any acceptance criterion unmet?
+        2. Run integration steps (build → typecheck → lint → test) yourself.
+        3. Run FULL-PROJECT gates yourself (whole build, whole test suite) — per-agent partial checks
+           do not prove the integrated whole works.
+    next: verify
+  - id: verify
+    type: tool
+    config:
+      command: |
+        Spawn a VERIFIER agent (read-only: code-reviewer, silent-failure-hunter, visual-judge) over the integrated result.
+        Verifiers check:
+        - Acceptance criteria actually met (spot-check code, not report)
+        - No mocks/stubs/placeholders shipped as capability
+        - No check weakened to make a test pass
+        - No regression in previously-working behavior
+        If verification fails: dispatch targeted repair agent with exact failing evidence and minimal file scope,
+        then re-run the gate. Repeat until gate passes WITH PRINTED EVIDENCE.
+    next: report
+  - id: report
+    type: prompt
+    config:
+      prompt: |
+        Phase 4 — Closing Report:
+        Deliver in plain language:
+        - What was accomplished (mission checklist, each item ✅ with evidence line)
+        - Verification evidence: build result, test counts, artifact paths/locations
+        - Anything deferred or failed — stated plainly, never hidden
+        - Suggested next steps only after deliverable is done
+examples:
+  - "/swarm Fix Android build, add network dashboard, push signed release"
+  - "/swarm Integrate all home-dir skills, agents, MCPs into repo with zero typecheck regressions"
+  - "/swarm mission=complete all verification, create release with all assets"

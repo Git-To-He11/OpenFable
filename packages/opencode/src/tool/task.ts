@@ -36,7 +36,7 @@ function levenshtein(a: string, b: string): number {
 }
 
 function suggestVerb(input: string): string | undefined {
-  const candidates = KNOWN_VERBS.map((v) => ({ v, d: levenshtein(input, v) })).filter((c) => c.d <= 2)
+  const candidates = KNOWN_VERBS.map((v: any) => ({ v, d: levenshtein(input, v) })).filter((c: any) => c.d <= 2)
   if (candidates.length !== 1) return undefined
   return candidates[0].v
 }
@@ -200,12 +200,12 @@ function extractTaskFlags(
   const bools: Record<string, boolean> = {}
   for (let i = 0; i < args.length; i++) {
     const a = args[i]
-    const boolName = boolFlags.find((n) => a === `--${n}`)
+    const boolName = boolFlags.find((n: any) => a === `--${n}`)
     if (boolName) {
       bools[boolName] = true
       continue
     }
-    const valName = valueFlags.find((n) => a === `--${n}`)
+    const valName = valueFlags.find((n: any) => a === `--${n}`)
     if (valName) {
       const next = args[i + 1]
       if (next === undefined) return { flags, bools, rest, error: `--${valName} requires a value` }
@@ -213,7 +213,7 @@ function extractTaskFlags(
       i++
       continue
     }
-    const eq = valueFlags.find((n) => a.startsWith(`--${n}=`))
+    const eq = valueFlags.find((n: any) => a.startsWith(`--${n}=`))
     if (eq) {
       const v = a.slice(`--${eq}=`.length)
       if (v === "") return { flags, bools, rest, error: `--${eq} requires a value` }
@@ -359,13 +359,13 @@ export const TaskTool = Tool.define<typeof parameters, Metadata, TaskRegistry.Se
         const lines =
           tasks.length === 0
             ? ["No tasks."]
-            : tasks.map((t) => {
+            : tasks.map((t: any) => {
                 return `${t.id} ${t.status} — ${t.summary}`
               })
         return {
           title: `Tasks: ${tasks.length}`,
           output: lines.join("\n"),
-          metadata: { count: tasks.length, ids: tasks.map((t) => t.id) } as Metadata,
+          metadata: { count: tasks.length, ids: tasks.map((t: any) => t.id) } as Metadata,
         }
       }
 

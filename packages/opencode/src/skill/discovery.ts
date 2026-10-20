@@ -72,7 +72,7 @@ export const layer: Layer.Layer<Service, never, AppFileSystem.Service | Path.Pat
 
         if (!data) return []
 
-        const list = data.skills.filter((skill) => {
+        const list = data.skills.filter((skill: any) => {
           if (!skill.files.includes("SKILL.md")) {
             log.warn("skill entry missing SKILL.md", { url: index, skill: skill.name })
             return false
@@ -100,7 +100,7 @@ export const layer: Layer.Layer<Service, never, AppFileSystem.Service | Path.Pat
           { concurrency: skillConcurrency },
         )
 
-        return dirs.filter((dir): dir is string => dir !== null)
+        return dirs.filter((dir: any): dir is string => dir !== null)
       })
 
       return Service.of({ pull })

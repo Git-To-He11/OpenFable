@@ -147,14 +147,14 @@ const live: Layer.Layer<
     }) {
       const providerPrompt = input.agent.prompt || SystemPrompt.provider(input.model)
       const providerPromptArr = (Array.isArray(providerPrompt) ? providerPrompt : [providerPrompt])
-        .filter((x) => x)
+        .filter((x: any) => x)
       const prompt = [
         buildMythosPrompt(input.agent.name, input.model.id, input.model.providerID),
         ...providerPromptArr,
         ...input.system,
         ...(input.user.system ? [input.user.system] : []),
       ]
-        .filter((x) => x)
+        .filter((x: any) => x)
         .join("\n")
       return [prompt]
     })
@@ -335,7 +335,7 @@ const live: Layer.Layer<
         }
 
         const ruleset = Permission.merge(input.agent.permission ?? [], input.permission ?? [])
-        workflowModel.sessionPreapprovedTools = Object.keys(tools).filter((name) => {
+        workflowModel.sessionPreapprovedTools = Object.keys(tools).filter((name: any) => {
           const match = ruleset.findLast((rule) => Wildcard.match(name, rule.permission))
           return !match || match.action !== "ask"
         })
@@ -447,7 +447,7 @@ const live: Layer.Layer<
         topP: params.topP,
         topK: params.topK,
         providerOptions: ProviderTransform.providerOptions(input.model, params.options),
-        activeTools: Object.keys(tools).filter((x) => x !== "invalid"),
+        activeTools: Object.keys(tools).filter((x: any) => x !== "invalid"),
         tools,
         toolChoice: input.toolChoice,
         maxOutputTokens: params.maxOutputTokens,

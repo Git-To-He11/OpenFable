@@ -793,7 +793,7 @@ describe("ProviderTransform.schema - gemini combiner nodes", () => {
         return
       }
       const before = path.reduce((acc: any, key) => acc?.[key], input)
-      const added = Object.keys(node).filter((key) => !(key in before))
+      const added = Object.keys(node).filter((key: any) => !(key in before))
       expect(added).toEqual([])
     })
   })

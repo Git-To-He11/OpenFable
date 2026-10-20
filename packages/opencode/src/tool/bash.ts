@@ -153,7 +153,7 @@ function source(node: Node) {
 }
 
 function commands(node: Node) {
-  return node.descendantsOfType("command").filter((child): child is Node => Boolean(child))
+  return node.descendantsOfType("command").filter((child: any): child is Node => Boolean(child))
 }
 
 function unquote(text: string) {
@@ -172,7 +172,7 @@ function home(text: string) {
 
 function envValue(key: string) {
   if (process.platform !== "win32") return process.env[key]
-  const name = Object.keys(process.env).find((item) => item.toLowerCase() === key.toLowerCase())
+  const name = Object.keys(process.env).find((item: any) => item.toLowerCase() === key.toLowerCase())
   return name ? process.env[name] : undefined
 }
 
@@ -221,8 +221,8 @@ function pathArgs(list: Part[], ps: boolean) {
   if (!ps) {
     return list
       .slice(1)
-      .filter((item) => !item.text.startsWith("-") && !(list[0]?.text === "chmod" && item.text.startsWith("+")))
-      .map((item) => item.text)
+      .filter((item: any) => !item.text.startsWith("-") && !(list[0]?.text === "chmod" && item.text.startsWith("+")))
+      .map((item: any) => item.text)
   }
 
   const out: string[] = []
@@ -306,7 +306,7 @@ const parse = Effect.fn("BashTool.parse")(function* (command: string, ps: boolea
 
 const ask = Effect.fn("BashTool.ask")(function* (ctx: Tool.Context, scan: Scan) {
   if (scan.dirs.size > 0) {
-    const globs = Array.from(scan.dirs).map((dir) => {
+    const globs = Array.from(scan.dirs).map((dir: any) => {
       if (process.platform === "win32") return AppFileSystem.normalizePathPattern(path.join(dir, "*"))
       return path.join(dir, "*")
     })
@@ -420,7 +420,7 @@ export const BashTool = Tool.define(
 
       for (const node of commands(root)) {
         const command = parts(node)
-        const tokens = command.map((item) => item.text)
+        const tokens = command.map((item: any) => item.text)
         const cmd = ps ? tokens[0]?.toLowerCase() : tokens[0]
 
         if (cmd && FILES.has(cmd)) {
@@ -549,7 +549,7 @@ export const BashTool = Tool.define(
           const timeout = Effect.sleep(`${input.timeout + 100} millis`)
 
           const exit = yield* Effect.raceAll([
-            handle.exitCode.pipe(Effect.map((code) => ({ kind: "exit" as const, code }))),
+            handle.exitCode.pipe(Effect.map((code: any) => ({ kind: "exit" as const, code }))),
             abort.pipe(Effect.map(() => ({ kind: "abort" as const, code: null }))),
             timeout.pipe(Effect.map(() => ({ kind: "timeout" as const, code: null }))),
           ])
@@ -574,7 +574,7 @@ export const BashTool = Tool.define(
         )
       }
       if (aborted) meta.push("User aborted the command")
-      const raw = list.map((item) => item.text).join("")
+      const raw = list.map((item: any) => item.text).join("")
       const end = tail(raw, lines, bytes)
       if (end.cut) cut = true
       if (!file && end.cut) {

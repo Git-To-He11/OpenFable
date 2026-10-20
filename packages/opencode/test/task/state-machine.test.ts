@@ -83,8 +83,8 @@ describe("TaskRegistry.block / unblock", () => {
         yield* reg.block({ session_id: sess.id, id: t.id, event_summary: "waiting on X" })
         yield* reg.unblock({ session_id: sess.id, id: t.id, event_summary: "X done" })
         const events = yield* reg.events({ session_id: sess.id, task_id: t.id })
-        const blocked = events.find((e) => e.kind === "blocked")
-        const unblocked = events.find((e) => e.kind === "unblocked")
+        const blocked = events.find((e: any) => e.kind === "blocked")
+        const unblocked = events.find((e: any) => e.kind === "unblocked")
         expect(blocked?.summary).toBe("waiting on X")
         expect(unblocked?.summary).toBe("X done")
       }),
@@ -102,7 +102,7 @@ describe("TaskRegistry.rename", () => {
         const renamed = yield* reg.rename({ session_id: sess.id, id: t.id, summary: "new title" })
         expect(renamed.summary).toBe("new title")
         const events = yield* reg.events({ session_id: sess.id, task_id: t.id })
-        expect(events.some((e) => e.kind === "renamed")).toBe(true)
+        expect(events.some((e: any) => e.kind === "renamed")).toBe(true)
       }),
     ),
   )
@@ -154,7 +154,7 @@ describe("TaskRegistry.start", () => {
         expect(fresh?.status).toBe("done")
         // No spurious 'started' event emitted for the refused transition.
         const events = yield* reg.events({ session_id: sess.id, task_id: t.id })
-        expect(events.some((e) => e.kind === "started")).toBe(false)
+        expect(events.some((e: any) => e.kind === "started")).toBe(false)
       }),
     ),
   )
@@ -218,8 +218,8 @@ describe("TaskRegistry.list includes in_progress by default", () => {
         const t = yield* reg.create({ session_id: sess.id, summary: "work" })
         yield* reg.start({ session_id: sess.id, id: t.id, owner: "main" })
         const listed = yield* reg.list({ session_id: sess.id })
-        expect(listed.map((x) => x.id)).toContain(t.id)
-        expect(listed.find((x) => x.id === t.id)?.status).toBe("in_progress")
+        expect(listed.map((x: any) => x.id)).toContain(t.id)
+        expect(listed.find((x: any) => x.id === t.id)?.status).toBe("in_progress")
       }),
     ),
   )

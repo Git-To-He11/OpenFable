@@ -37,7 +37,7 @@ const QueryCommand = cmd({
           const keys = Object.keys(result[0])
           console.log(keys.join("\t"))
           for (const row of result) {
-            console.log(keys.map((k) => row[k]).join("\t"))
+            console.log(keys.map((k: any) => row[k]).join("\t"))
           }
         }
       } catch (err) {

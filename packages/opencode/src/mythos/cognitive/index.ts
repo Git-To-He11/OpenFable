@@ -79,7 +79,7 @@ export const layer: Layer.Layer<Service> = Layer.effect(
 
     const getClaims = Effect.fn("MythosCognitive.getClaims")(function* (classFilter?: EpistemicClass) {
       if (!classFilter) return [...claims]
-      return claims.filter((c) => c.classification === classFilter)
+      return claims.filter((c: any) => c.classification === classFilter)
     })
 
     const createCheckpoint = Effect.fn("MythosCognitive.createCheckpoint")(function* () {
@@ -88,8 +88,8 @@ export const layer: Layer.Layer<Service> = Layer.effect(
       const checkpoint: StateCheckpoint = {
         id,
         turn: turnCounter,
-        facts: claims.filter((c) => c.classification === "Verified" || c.classification === "Observed"),
-        assumptions: claims.filter((c) => c.classification === "Inferred" || c.classification === "Speculative" || c.classification === "Unknown"),
+        facts: claims.filter((c: any) => c.classification === "Verified" || c.classification === "Observed"),
+        assumptions: claims.filter((c: any) => c.classification === "Inferred" || c.classification === "Speculative" || c.classification === "Unknown"),
         decisions: [],
         rejected: [],
         blocked: [],
@@ -114,7 +114,7 @@ export const layer: Layer.Layer<Service> = Layer.effect(
 
     const getSignals = Effect.fn("MythosCognitive.getSignals")(function* (minWeight?: number) {
       if (minWeight === undefined) return [...signals]
-      return signals.filter((s) => s.weight >= minWeight)
+      return signals.filter((s: any) => s.weight >= minWeight)
     })
 
     const surfaceThresholdMet = Effect.fn("MythosCognitive.surfaceThresholdMet")(function* () {

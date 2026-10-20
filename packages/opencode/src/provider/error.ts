@@ -37,7 +37,7 @@ function isOpenAiErrorRetryable(e: APICallError) {
 // Providers not reliably handled in this function:
 // - z.ai: can accept overflow silently (needs token-count/context-window checks)
 function isOverflow(message: string) {
-  if (OVERFLOW_PATTERNS.some((p) => p.test(message))) return true
+  if (OVERFLOW_PATTERNS.some((p: any) => p.test(message))) return true
 
   // Providers/status patterns handled outside of regex list:
   // - Cerebras: often returns "400 (no body)" / "413 (no body)"

@@ -4,7 +4,7 @@ import { BuiltinWorkflow } from "../../src/workflow/builtin"
 describe("BuiltinWorkflow registry", () => {
   test("lists deep-research with parsed meta", () => {
     const list = BuiltinWorkflow.list()
-    const dr = list.find((w) => w.name === "deep-research")
+    const dr = list.find((w: any) => w.name === "deep-research")
     expect(dr).toBeDefined()
     expect(dr!.description).toContain("Deep research")
     expect(dr!.whenToUse).toContain("multi-source")

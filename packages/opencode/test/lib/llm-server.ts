@@ -639,17 +639,17 @@ export class TestLLMServer extends Context.Service<TestLLMServer, TestLLMServer.
       let misses: Hit[] = []
 
       const queue = (...input: (Item | Reply)[]) => {
-        list = [...list, ...input.map((value) => ({ item: item(value) }))]
+        list = [...list, ...input.map((value: any) => ({ item: item(value) }))]
       }
 
       const queueMatch = (match: Match, ...input: (Item | Reply)[]) => {
-        list = [...list, ...input.map((value) => ({ item: item(value), match }))]
+        list = [...list, ...input.map((value: any) => ({ item: item(value), match }))]
       }
 
       const notify = Effect.fnUntraced(function* () {
-        const ready = waits.filter((item) => hits.length >= item.count)
+        const ready = waits.filter((item: any) => hits.length >= item.count)
         if (!ready.length) return
-        waits = waits.filter((item) => hits.length < item.count)
+        waits = waits.filter((item: any) => hits.length < item.count)
         yield* Effect.forEach(ready, (item) => Deferred.succeed(item.ready, void 0))
       })
 
@@ -761,7 +761,7 @@ export class TestLLMServer extends Context.Service<TestLLMServer, TestLLMServer.
           waits = [...waits, { count, ready }]
           yield* Deferred.await(ready)
         }),
-        inputs: Effect.sync(() => hits.map((hit) => hit.body)),
+        inputs: Effect.sync(() => hits.map((hit: any) => hit.body)),
         pending: Effect.sync(() => list.length),
         misses: Effect.sync(() => [...misses]),
       })

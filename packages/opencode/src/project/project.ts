@@ -309,10 +309,10 @@ export const layer: Layer.Layer<
         (s) =>
           fs.exists(s).pipe(
             Effect.orDie,
-            Effect.map((exists) => (exists ? s : undefined)),
+            Effect.map((exists: any) => (exists ? s : undefined)),
           ),
         { concurrency: "unbounded" },
-      ).pipe(Effect.map((arr) => arr.filter((x): x is string => x !== undefined)))
+      ).pipe(Effect.map((arr: any) => arr.filter((x: any): x is string => x !== undefined)))
 
       yield* db((d) =>
         d
@@ -439,10 +439,10 @@ export const layer: Layer.Layer<
         (dir) =>
           fs.isDir(dir).pipe(
             Effect.orDie,
-            Effect.map((ok) => (ok ? dir : undefined)),
+            Effect.map((ok: any) => (ok ? dir : undefined)),
           ),
         { concurrency: "unbounded" },
-      ).pipe(Effect.map((arr) => arr.filter((x): x is string => x !== undefined)))
+      ).pipe(Effect.map((arr: any) => arr.filter((x: any): x is string => x !== undefined)))
     })
 
     const addSandbox = Effect.fn("Project.addSandbox")(function* (id: ProjectID, directory: string) {
@@ -465,7 +465,7 @@ export const layer: Layer.Layer<
     const removeSandbox = Effect.fn("Project.removeSandbox")(function* (id: ProjectID, directory: string) {
       const row = yield* db((d) => d.select().from(ProjectTable).where(eq(ProjectTable.id, id)).get())
       if (!row) throw new Error(`Project not found: ${id}`)
-      const sboxes = row.sandboxes.filter((s) => s !== directory)
+      const sboxes = row.sandboxes.filter((s: any) => s !== directory)
       const result = yield* db((d) =>
         d
           .update(ProjectTable)
@@ -505,7 +505,7 @@ export function list() {
       .select()
       .from(ProjectTable)
       .all()
-      .map((row) => fromRow(row)),
+      .map((row: any) => fromRow(row)),
   )
 }
 

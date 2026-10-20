@@ -46,7 +46,7 @@ export function transformShareData(shareData: ShareData[]): {
   info: SDKSession
   messages: Array<{ info: Message; parts: Part[] }>
 } | null {
-  const sessionItem = shareData.find((d) => d.type === "session")
+  const sessionItem = shareData.find((d: any) => d.type === "session")
   if (!sessionItem) return null
 
   const messageMap = new Map<string, Message>()
@@ -67,7 +67,7 @@ export function transformShareData(shareData: ShareData[]): {
 
   return {
     info: sessionItem.data,
-    messages: Array.from(messageMap.values()).map((msg) => ({
+    messages: Array.from(messageMap.values()).map((msg: any) => ({
       info: msg,
       parts: partMap.get(msg.id) ?? [],
     })),

@@ -455,11 +455,11 @@ describe("util.effect-zod", () => {
 
       const neg = schema.safeParse(-3)
       expect(neg.success).toBe(false)
-      expect(neg.error!.issues.map((i) => i.message)).toEqual(expect.arrayContaining(["not positive", "not even"]))
+      expect(neg.error!.issues.map((i: any) => i.message)).toEqual(expect.arrayContaining(["not positive", "not even"]))
 
       const big = schema.safeParse(101)
       expect(big.success).toBe(false)
-      expect(big.error!.issues.map((i) => i.message)).toContain("too big")
+      expect(big.error!.issues.map((i: any) => i.message)).toContain("too big")
 
       // Passing value satisfies all three
       expect(schema.parse(42)).toBe(42)
@@ -475,7 +475,7 @@ describe("util.effect-zod", () => {
 
       const bad = schema.safeParse(-3)
       expect(bad.success).toBe(false)
-      expect(bad.error!.issues.map((i) => i.message)).toEqual(expect.arrayContaining(["not positive", "not even"]))
+      expect(bad.error!.issues.map((i: any) => i.message)).toEqual(expect.arrayContaining(["not positive", "not even"]))
     })
   })
 

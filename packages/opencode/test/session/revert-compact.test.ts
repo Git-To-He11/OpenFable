@@ -224,7 +224,7 @@ describe("revert + compact workflow", () => {
 
           let messages = yield* session.messages({ sessionID })
           expect(messages.length).toBe(4)
-          const messageIds = messages.map((m) => m.info.id)
+          const messageIds = messages.map((m: any) => m.info.id)
           expect(messageIds).toContain(userMsg1.id)
           expect(messageIds).toContain(userMsg2.id)
           expect(messageIds).toContain(assistantMsg1.id)
@@ -245,7 +245,7 @@ describe("revert + compact workflow", () => {
           yield* revert.cleanup(sessionInfo)
 
           messages = yield* session.messages({ sessionID })
-          const remainingIds = messages.map((m) => m.info.id)
+          const remainingIds = messages.map((m: any) => m.info.id)
           expect(messages.length).toBeLessThan(4)
           expect(remainingIds).not.toContain(userMsg2.id)
           expect(remainingIds).not.toContain(assistantMsg2.id)
@@ -417,7 +417,7 @@ describe("revert + compact workflow", () => {
           yield* revert.cleanup(state)
 
           const msgs = yield* session.messages({ sessionID: sid })
-          const ids = msgs.map((m) => m.info.id)
+          const ids = msgs.map((m: any) => m.info.id)
           expect(ids).toContain(u1.id)
           expect(ids).toContain(a1.id)
           expect(ids).not.toContain(u2.id)

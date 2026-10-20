@@ -66,7 +66,7 @@ describe("MessageV2.filterCompactedEffect agent_id filter", () => {
 
         const msgs = await Effect.runPromise(MessageV2.filterCompactedEffect(session.id))
         expect(msgs).toHaveLength(2)
-        expect(msgs.map((m) => (m.parts[0] as MessageV2.TextPart).text)).toEqual(["main-1", "main-2"])
+        expect(msgs.map((m: any) => (m.parts[0] as MessageV2.TextPart).text)).toEqual(["main-1", "main-2"])
         for (const m of msgs) expect(m.info.agentID).toBe("main")
 
         await svc.remove(session.id)
@@ -88,7 +88,7 @@ describe("MessageV2.filterCompactedEffect agent_id filter", () => {
           MessageV2.filterCompactedEffect(session.id, { agentID: "*" }),
         )
         expect(msgs).toHaveLength(4)
-        expect(msgs.map((m) => (m.parts[0] as MessageV2.TextPart).text)).toEqual([
+        expect(msgs.map((m: any) => (m.parts[0] as MessageV2.TextPart).text)).toEqual([
           "main-1",
           "actor-a",
           "main-2",
@@ -114,7 +114,7 @@ describe("MessageV2.filterCompactedEffect agent_id filter", () => {
           MessageV2.filterCompactedEffect(session.id, { agentID: "main" }),
         )
         expect(msgs).toHaveLength(2)
-        expect(msgs.map((m) => (m.parts[0] as MessageV2.TextPart).text)).toEqual(["main-1", "main-2"])
+        expect(msgs.map((m: any) => (m.parts[0] as MessageV2.TextPart).text)).toEqual(["main-1", "main-2"])
         for (const m of msgs) {
           expect(m.info.agentID).toBe("main")
         }
@@ -139,7 +139,7 @@ describe("MessageV2.filterCompactedEffect agent_id filter", () => {
           MessageV2.filterCompactedEffect(session.id, { agentID: "actor-a-1" }),
         )
         expect(msgs).toHaveLength(2)
-        expect(msgs.map((m) => (m.parts[0] as MessageV2.TextPart).text)).toEqual([
+        expect(msgs.map((m: any) => (m.parts[0] as MessageV2.TextPart).text)).toEqual([
           "actor-a-msg-1",
           "actor-a-msg-2",
         ])
@@ -181,7 +181,7 @@ describe("MessageV2.filterCompactedEffect agent_id filter", () => {
         // other-actor message must be excluded. Plus the child's own
         // message at the end.
         expect(msgs).toHaveLength(3)
-        expect(msgs.map((m) => (m.parts[0] as MessageV2.TextPart).text)).toEqual([
+        expect(msgs.map((m: any) => (m.parts[0] as MessageV2.TextPart).text)).toEqual([
           "parent-main-1",
           "parent-main-2",
           "child-1",

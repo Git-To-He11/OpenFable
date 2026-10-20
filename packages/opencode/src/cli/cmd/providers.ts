@@ -36,7 +36,7 @@ async function handlePluginAuth(plugin: { auth: PluginAuth }, provider: string, 
     const match = plugin.auth.methods.findIndex((x) => x.label.toLowerCase() === methodName.toLowerCase())
     if (match === -1) {
       prompts.log.error(
-        `Unknown method "${methodName}" for ${provider}. Available: ${plugin.auth.methods.map((x) => x.label).join(", ")}`,
+        `Unknown method "${methodName}" for ${provider}. Available: ${plugin.auth.methods.map((x: any) => x.label).join(", ")}`,
       )
       process.exit(1)
     }
@@ -500,7 +500,7 @@ export const ProvidersLoginCommand = cmd({
               }[x.id],
             })),
           ),
-          ...pluginProviders.map((x) => ({
+          ...pluginProviders.map((x: any) => ({
             label: x.name,
             value: x.id,
             hint: "plugin",
@@ -517,8 +517,8 @@ export const ProvidersLoginCommand = cmd({
           return
         } else if (args.provider) {
           const input = args.provider
-          const byID = options.find((x) => x.value === input)
-          const byName = options.find((x) => x.label.toLowerCase() === input.toLowerCase())
+          const byID = options.find((x: any) => x.value === input)
+          const byName = options.find((x: any) => x.label.toLowerCase() === input.toLowerCase())
           const match = byID ?? byName
           if (!match) {
             prompts.log.error(`Unknown provider "${input}"`)

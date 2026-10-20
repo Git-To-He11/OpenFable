@@ -72,7 +72,7 @@ export class SkillMacroFramework {
 
   private loadSkills(): void {
     try {
-      const files = fs.readdirSync(this.skillsDir).filter((f) => f.endsWith(".yaml") || f.endsWith(".yml") || f.endsWith(".json"))
+      const files = fs.readdirSync(this.skillsDir).filter((f: any) => f.endsWith(".yaml") || f.endsWith(".yml") || f.endsWith(".json"))
       for (const file of files) {
         try {
           const content = fs.readFileSync(path.join(this.skillsDir, file), "utf-8")
@@ -105,7 +105,7 @@ export class SkillMacroFramework {
   }
 
   findSkillByTrigger(trigger: string): SkillDefinition | undefined {
-    return this.listSkills().find((s) => trigger.startsWith(s.trigger))
+    return this.listSkills().find((s: any) => trigger.startsWith(s.trigger))
   }
 
   async execute(skillName: string, context: SkillContext): Promise<{ output: string; context: SkillContext }> {
@@ -129,7 +129,7 @@ export class SkillMacroFramework {
       }
       visited.add(currentStepId)
 
-      const step = skill.steps.find((s) => s.id === currentStepId)
+      const step = skill.steps.find((s: any) => s.id === currentStepId)
       if (!step) break
 
       try {
@@ -228,7 +228,7 @@ export class SkillMacroFramework {
 
   private interpolateObj(obj: any, variables: Record<string, any>): any {
     if (typeof obj === "string") return this.interpolate(obj, variables)
-    if (Array.isArray(obj)) return obj.map((item) => this.interpolateObj(item, variables))
+    if (Array.isArray(obj)) return obj.map((item: any) => this.interpolateObj(item, variables))
     if (typeof obj === "object" && obj !== null) {
       const result: Record<string, any> = {}
       for (const [key, value] of Object.entries(obj)) {

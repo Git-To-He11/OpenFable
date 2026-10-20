@@ -91,14 +91,14 @@ export class SemanticMemory {
     const rows = this.db.$client
       .query(`SELECT * FROM semantic_symbols WHERE name LIKE ? ORDER BY name LIMIT ?`)
       .all(`%${name}%`, limit) as any[]
-    return rows.map((r) => this.rowToSymbol(r))
+    return rows.map((r: any) => this.rowToSymbol(r))
   }
 
   getByFile(filePath: string): Symbol[] {
     const rows = this.db.$client
       .query(`SELECT * FROM semantic_symbols WHERE file_path = ? ORDER BY start_line`)
       .all(filePath) as any[]
-    return rows.map((r) => this.rowToSymbol(r))
+    return rows.map((r: any) => this.rowToSymbol(r))
   }
 
   getDependencies(symbolId: string): Symbol[] {
@@ -109,7 +109,7 @@ export class SemanticMemory {
          WHERE d.from_id = ?`,
       )
       .all(symbolId) as any[]
-    return rows.map((r) => this.rowToSymbol(r))
+    return rows.map((r: any) => this.rowToSymbol(r))
   }
 
   getDependents(symbolId: string): Symbol[] {
@@ -120,7 +120,7 @@ export class SemanticMemory {
          WHERE d.to_id = ?`,
       )
       .all(symbolId) as any[]
-    return rows.map((r) => this.rowToSymbol(r))
+    return rows.map((r: any) => this.rowToSymbol(r))
   }
 
   invalidateByHash(filePath: string, currentHash: string): number {

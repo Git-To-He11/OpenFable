@@ -126,14 +126,14 @@ describe("tool.apply_patch freeform", () => {
         // Verify permission metadata includes files array for UI rendering
         const permissionCall = calls[0]
         expect(permissionCall.metadata.files).toHaveLength(3)
-        expect(permissionCall.metadata.files.map((f) => f.type).sort()).toEqual(["add", "delete", "update"])
+        expect(permissionCall.metadata.files.map((f: any) => f.type).sort()).toEqual(["add", "delete", "update"])
 
-        const addFile = permissionCall.metadata.files.find((f) => f.type === "add")
+        const addFile = permissionCall.metadata.files.find((f: any) => f.type === "add")
         expect(addFile).toBeDefined()
         expect(addFile!.relativePath).toBe("nested/new.txt")
         expect(addFile!.patch).toContain("+created")
 
-        const updateFile = permissionCall.metadata.files.find((f) => f.type === "update")
+        const updateFile = permissionCall.metadata.files.find((f: any) => f.type === "update")
         expect(updateFile).toBeDefined()
         expect(updateFile!.patch).toContain("-line2")
         expect(updateFile!.patch).toContain("+changed")

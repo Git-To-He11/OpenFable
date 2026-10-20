@@ -17,7 +17,7 @@ function js(code: string, opts?: ChildProcess.CommandOptions) {
 
 function decodeByteStream(stream: Stream.Stream<Uint8Array, PlatformError.PlatformError>) {
   return Stream.runCollect(stream).pipe(
-    Effect.map((chunks) => {
+    Effect.map((chunks: any) => {
       const total = chunks.reduce((acc, x) => acc + x.length, 0)
       const out = new Uint8Array(total)
       let off = 0

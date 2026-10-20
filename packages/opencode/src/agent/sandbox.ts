@@ -113,7 +113,7 @@ export class Sandbox {
 
   private isBlocked(command: string): boolean {
     const normalized = command.toLowerCase().trim()
-    return this.config.blockedCommands.some((blocked) => normalized.includes(blocked.toLowerCase()))
+    return this.config.blockedCommands.some((blocked: any) => normalized.includes(blocked.toLowerCase()))
   }
 
   private wrapCommand(command: string, cwd?: string): string {

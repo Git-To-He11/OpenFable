@@ -46,7 +46,7 @@ export const AgentCommand = cmd({
       const resolvedTools = await resolveTools(agent, availableTools)
       const toolID = args.tool as string | undefined
       if (toolID) {
-        const tool = availableTools.find((item) => item.id === toolID)
+        const tool = availableTools.find((item: any) => item.id === toolID)
         if (!tool) {
           process.stderr.write(`Tool ${toolID} not found for agent ${agentName}` + EOL)
           process.exit(1)
@@ -87,7 +87,7 @@ async function getAvailableTools(agent: Agent.Info) {
 
 async function resolveTools(agent: Agent.Info, availableTools: Awaited<ReturnType<typeof getAvailableTools>>) {
   const disabled = Permission.disabled(
-    availableTools.map((tool) => tool.id),
+    availableTools.map((tool: any) => tool.id),
     agent.permission,
   )
   const resolved: Record<string, boolean> = {}

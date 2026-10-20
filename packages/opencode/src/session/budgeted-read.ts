@@ -94,7 +94,7 @@ export async function readBudgetedSectionAware(
     used += Token.estimate([sec.header, sec.italic, ...sec.indexLines].join("\n"))
     out.push(sec.header, sec.italic, ...sec.indexLines)
 
-    const fullBody = sec.body.filter((l) => !sec.indexLines.includes(l)).join("\n")
+    const fullBody = sec.body.filter((l: any) => !sec.indexLines.includes(l)).join("\n")
     const bodyTokens = Token.estimate(fullBody)
     if (used + bodyTokens <= budgetTokens) {
       out.push(fullBody)

@@ -119,7 +119,7 @@ export const layer: Layer.Layer<Service, never, Config.Service> = Layer.effect(
       const fetchLimit = Math.min(limit * 3, 50)
       const rows = Database.Client().$client.query(sql).all(ftsQuery, ...params, fetchLimit) as SearchRow[]
 
-      const mapped = rows.map((r) => ({
+      const mapped = rows.map((r: any) => ({
         path: r.path,
         snippet: r.snippet,
         score: -r.score,

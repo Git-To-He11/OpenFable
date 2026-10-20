@@ -85,8 +85,8 @@ describe("workflow-of-workflows real-LLM verification", () => {
                 `export const meta = { name: "port", description: "port each unit" }`,
                 `const body = (await readFile("units.txt")) || ""`,
                 `const units = body.split("\\n").filter(Boolean)`,
-                `const done = await parallel(units.map((u) => () => agent("Reply with the single word: done. (unit " + u + ")")))`,
-                `return { ported: done.filter((x) => x !== null).length, expected: units.length }`,
+                `const done = await parallel(units.map((u: any) => () => agent("Reply with the single word: done. (unit " + u + ")")))`,
+                `return { ported: done.filter((x: any) => x !== null).length, expected: units.length }`,
               ].join("\n"),
             )
 
@@ -132,7 +132,7 @@ describe("workflow-of-workflows real-LLM verification", () => {
               // eslint-disable-next-line no-console
               console.log(
                 "WOW-VERIFY runs:",
-                all.map((x) => `${x.name}:${x.status}(s${x.succeeded}/f${x.failed})`).join("  "),
+                all.map((x: any) => `${x.name}:${x.status}(s${x.succeeded}/f${x.failed})`).join("  "),
               )
             })
             expect(all.length).toBeGreaterThanOrEqual(3) // orchestrate + classify + port

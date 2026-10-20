@@ -15,7 +15,7 @@ import { localShellInputSchema, localShellOutputSchema } from "./tool/local-shel
  */
 function isFileId(data: string, prefixes?: readonly string[]): boolean {
   if (!prefixes) return false
-  return prefixes.some((prefix) => data.startsWith(prefix))
+  return prefixes.some((prefix: any) => data.startsWith(prefix))
 }
 
 export async function convertToOpenAIResponsesInput({

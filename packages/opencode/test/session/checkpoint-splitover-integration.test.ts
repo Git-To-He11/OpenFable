@@ -62,7 +62,7 @@ describe("CheckpointSplitoverPlugin (integration)", () => {
     // records pluginName via plugin.name (src/plugin/index.ts). Rewriting the
     // export as a const arrow would change .name and break this assertion.
     expect(result.contributingPluginNames).toContain("CheckpointSplitoverPlugin")
-    expect(result.contributingHookIDs.some((id) => id.endsWith("#actor.preStop"))).toBe(true)
+    expect(result.contributingHookIDs.some((id: any) => id.endsWith("#actor.preStop"))).toBe(true)
   })
 })
 
@@ -210,7 +210,7 @@ describe("CheckpointSplitoverPlugin spawn-loop integration", () => {
       // At least one ReActReentered fired in the pre phase, attributed to
       // CheckpointSplitoverPlugin. The subscriber's callback overwrote the
       // file → second preStop saw clean content → no further re-entries.
-      const preEvents = reenteredEvents.filter((e) => e.phase === "pre")
+      const preEvents = reenteredEvents.filter((e: any) => e.phase === "pre")
       expect(preEvents.length).toBe(1)
       expect(preEvents[0].triggeredByPlugins).toContain("CheckpointSplitoverPlugin")
       expect(preEvents[0].iteration).toBe(1)
@@ -499,7 +499,7 @@ describe("parentSessionID end-to-end (Axis A wiring)", () => {
               // Find the child session created by tryStartCheckpointWriter.
               const children = yield* Effect.sync(() => sessions.children(parent.id))
               const childList = yield* children
-              const child = childList.find((c) => c.title.startsWith("checkpoint-writer:"))
+              const child = childList.find((c: any) => c.title.startsWith("checkpoint-writer:"))
               if (!child) throw new Error("expected a checkpoint-writer child session")
               childSessionIDForCleanup = child.id
 
@@ -517,7 +517,7 @@ describe("parentSessionID end-to-end (Axis A wiring)", () => {
       // The contract under test: clean parent file → no preStop reentry.
       // Pre-fix: at least one reentry event from CheckpointSplitoverPlugin
       // with reason mentioning "checkpoint file did not exist".
-      const splitoverReentries = reenteredEvents.filter((e) =>
+      const splitoverReentries = reenteredEvents.filter((e: any) =>
         e.triggeredByPlugins.includes("CheckpointSplitoverPlugin"),
       )
       expect(splitoverReentries.length).toBe(0)

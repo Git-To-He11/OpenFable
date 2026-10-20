@@ -73,7 +73,7 @@ describe("invalid-output continuation — integration", () => {
               expect(stub.captures.length).toBe(2)
               expect(result.info.role).toBe("assistant")
               if (result.info.role === "assistant") expect(result.info.error).toBeUndefined()
-              expect(result.parts.some((p) => p.type === "text" && p.text === "final answer")).toBe(true)
+              expect(result.parts.some((p: any) => p.type === "text" && p.text === "final answer")).toBe(true)
             }),
           ),
       })
@@ -106,7 +106,7 @@ describe("invalid-output continuation — integration", () => {
               expect(stub.captures.length).toBe(2)
               expect(result.info.role).toBe("assistant")
               if (result.info.role === "assistant") expect(result.info.error).toBeUndefined()
-              expect(result.parts.some((p) => p.type === "text" && p.text === "final answer")).toBe(true)
+              expect(result.parts.some((p: any) => p.type === "text" && p.text === "final answer")).toBe(true)
             }),
           ),
       })

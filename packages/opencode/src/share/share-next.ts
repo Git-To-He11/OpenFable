@@ -131,7 +131,7 @@ export const layer = Layer.effect(
           return
         }
 
-        const next = new Map(data.map((item) => [key(item), item]))
+        const next = new Map(data.map((item: any) => [key(item), item]))
         s.queue.set(sessionID, next)
         yield* flush(sessionID).pipe(
           Effect.delay(1000),
@@ -280,9 +280,9 @@ export const layer = Layer.effect(
         Array.from(
           new Map(
             messages
-              .filter((msg) => msg.info.role === "user")
-              .map((msg) => (msg.info as SDK.UserMessage).model)
-              .map((item) => [`${item.providerID}/${item.modelID}`, item] as const),
+              .filter((msg: any) => msg.info.role === "user")
+              .map((msg: any) => (msg.info as SDK.UserMessage).model)
+              .map((item: any) => [`${item.providerID}/${item.modelID}`, item] as const),
           ).values(),
         ),
         (item) => provider.getModel(ProviderID.make(item.providerID), ModelID.make(item.modelID)),
@@ -291,11 +291,11 @@ export const layer = Layer.effect(
 
       yield* sync(sessionID, [
         { type: "session", data: info },
-        ...messages.map((item) => ({ type: "message" as const, data: item.info as SDK.Message })),
+        ...messages.map((item: any) => ({ type: "message" as const, data: item.info as SDK.Message })),
         ...messages.flatMap((item) =>
           item.parts
-            .filter((part) => part.type !== "compaction")
-            .map((part) => ({ type: "part" as const, data: part as SDK.Part })),
+            .filter((part: any) => part.type !== "compaction")
+            .map((part: any) => ({ type: "part" as const, data: part as SDK.Part })),
         ),
         { type: "session_diff", data: diffs as SDK.SnapshotFileDiff[] },
         { type: "model", data: models as SDK.Model[] },

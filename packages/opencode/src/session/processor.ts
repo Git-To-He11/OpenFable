@@ -850,7 +850,7 @@ export const layer: Layer.Layer<
                   }),
                 catch: (e) => e,
               }).pipe(
-                Effect.map((output) => ({ ok: true as const, output })),
+                Effect.map((output: any) => ({ ok: true as const, output })),
                 Effect.catch((error) => Effect.succeed({ ok: false as const, error })),
               )
 

@@ -131,7 +131,7 @@ function stableStringify(value: unknown): string {
   const keys = Object.keys(value as Record<string, unknown>).sort()
   return (
     "{" +
-    keys.map((k) => JSON.stringify(k) + ":" + stableStringify((value as Record<string, unknown>)[k])).join(",") +
+    keys.map((k: any) => JSON.stringify(k) + ":" + stableStringify((value as Record<string, unknown>)[k])).join(",") +
     "}"
   )
 }
@@ -345,7 +345,7 @@ export const layer = Layer.effect(
       if (!firstUser || firstUser.info.role !== "user") return
       const firstInfo = firstUser.info
 
-      const subtasks = firstUser.parts.filter((p): p is MessageV2.SubtaskPart => p.type === "subtask")
+      const subtasks = firstUser.parts.filter((p: any): p is MessageV2.SubtaskPart => p.type === "subtask")
       const onlySubtasks = subtasks.length > 0 && firstUser.parts.every((p) => p.type === "subtask")
 
       const ag = yield* agents.get("title")
@@ -357,7 +357,7 @@ export const layer = Layer.effect(
           : ((yield* provider.getSmallModel(input.providerID)) ??
             (yield* provider.getModel(input.providerID, input.modelID)))
       const msgs = onlySubtasks
-        ? [{ role: "user" as const, content: subtasks.map((p) => p.prompt).join("\n") }]
+        ? [{ role: "user" as const, content: subtasks.map((p: any) => p.prompt).join("\n") }]
         : yield* MessageV2.toModelMessagesEffect(context, mdl)
       const text = yield* llm
         .stream({
@@ -372,16 +372,16 @@ export const layer = Layer.effect(
           messages: [{ role: "user", content: "Generate a title for this conversation:\n" }, ...msgs],
         })
         .pipe(
-          Stream.filter((e): e is Extract<LLM.Event, { type: "text-delta" }> => e.type === "text-delta"),
-          Stream.map((e) => e.text),
+          Stream.filter((e: any): e is Extract<LLM.Event, { type: "text-delta" }> => e.type === "text-delta"),
+          Stream.map((e: any) => e.text),
           Stream.mkString,
           Effect.orDie,
         )
       const cleaned = text
         .replace(/<think>[\s\S]*?<\/think>\s*/g, "")
         .split("\n")
-        .map((line) => line.trim())
-        .find((line) => line.length > 0)
+        .map((line: any) => line.trim())
+        .find((line: any) => line.length > 0)
       if (!cleaned) return
       const t = cleaned.length > 100 ? cleaned.substring(0, 97) + "..." : cleaned
       yield* sessions
@@ -406,9 +406,9 @@ export const layer = Layer.effect(
       // so we never pair the newest prompt with a stale/older result.
       const assistants = history
         .slice(userIdx + 1)
-        .filter((m): m is MessageV2.WithParts & { info: MessageV2.Assistant } => m.info.role === "assistant")
+        .filter((m: any): m is MessageV2.WithParts & { info: MessageV2.Assistant } => m.info.role === "assistant")
       if (assistants.length === 0) return ""
-      if (assistants.some((m) => m.info.time.completed === undefined)) return ""
+      if (assistants.some((m: any) => m.info.time.completed === undefined)) return ""
       const lastAssistant = assistants[assistants.length - 1]
 
       const base = yield* agents.get("title")
@@ -438,16 +438,16 @@ export const layer = Layer.effect(
           messages: [...msgs, { role: "user", content: PREDICT_NUDGE }],
         })
         .pipe(
-          Stream.filter((e): e is Extract<LLM.Event, { type: "text-delta" }> => e.type === "text-delta"),
-          Stream.map((e) => e.text),
+          Stream.filter((e: any): e is Extract<LLM.Event, { type: "text-delta" }> => e.type === "text-delta"),
+          Stream.map((e: any) => e.text),
           Stream.mkString,
           Effect.orElseSucceed(() => ""),
         )
       const cleaned = text
         .replace(/<think>[\s\S]*?<\/think>\s*/g, "")
         .split("\n")
-        .map((line) => line.trim())
-        .find((line) => line.length > 0)
+        .map((line: any) => line.trim())
+        .find((line: any) => line.length > 0)
       if (!cleaned) return ""
       const stripped = cleaned.replace(quoteTrimRegex, "")
       return stripped.length > 120 ? stripped.substring(0, 117) + "..." : stripped
@@ -736,7 +736,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
                 })
                 const output = {
                   ...result,
-                  attachments: result.attachments?.map((attachment) => ({
+                  attachments: result.attachments?.map((attachment: any) => ({
                     ...attachment,
                     id: PartID.ascending(),
                     sessionID: ctx.sessionID,
@@ -893,7 +893,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
                 title: "",
                 metadata,
                 output: truncated.content,
-                attachments: attachments.map((attachment) => ({
+                attachments: attachments.map((attachment: any) => ({
                   ...attachment,
                   id: PartID.ascending(),
                   sessionID: ctx.sessionID,
@@ -972,7 +972,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
 
       const taskAgent = yield* agents.get(task.agent)
       if (!taskAgent) {
-        const available = (yield* agents.list()).filter((a) => !a.hidden).map((a) => a.name)
+        const available = (yield* agents.list()).filter((a: any) => !a.hidden).map((a: any) => a.name)
         const hint = available.length ? ` Available agents: ${available.join(", ")}` : ""
         const error = new NamedError.Unknown({ message: `Agent not found: "${task.agent}".${hint}` })
         yield* bus.publish(Session.Event.Error, { sessionID, error: error.toObject() })
@@ -1036,7 +1036,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
           ),
         )
 
-      const attachments = result?.attachments?.map((attachment) => ({
+      const attachments = result?.attachments?.map((attachment: any) => ({
         ...attachment,
         id: PartID.ascending(),
         sessionID,
@@ -1115,7 +1115,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
       }
       const agent = yield* agents.get(input.agent)
       if (!agent) {
-        const available = (yield* agents.list()).filter((a) => !a.hidden).map((a) => a.name)
+        const available = (yield* agents.list()).filter((a: any) => !a.hidden).map((a: any) => a.name)
         const hint = available.length ? ` Available agents: ${available.join(", ")}` : ""
         const error = new NamedError.Unknown({ message: `Agent not found: "${input.agent}".${hint}` })
         yield* bus.publish(Session.Event.Error, { sessionID: input.sessionID, error: error.toObject() })
@@ -1124,12 +1124,12 @@ NOTE: At any point in time through this workflow you should feel free to ask the
       const inputModel = input.modelRef
         ? yield* provider
             .resolveModelRef(input.modelRef)
-            .pipe(Effect.map((m) => ({ providerID: m.providerID, modelID: m.id })))
+            .pipe(Effect.map((m: any) => ({ providerID: m.providerID, modelID: m.id })))
         : input.model
       const agentModel = agent.modelRef
         ? yield* provider
             .resolveModelRef(agent.modelRef)
-            .pipe(Effect.map((m) => ({ providerID: m.providerID, modelID: m.id })))
+            .pipe(Effect.map((m: any) => ({ providerID: m.providerID, modelID: m.id })))
         : agent.model
       const model = inputModel ?? agentModel ?? (yield* lastModel(input.sessionID))
       const userMsg: MessageV2.User = {
@@ -1328,7 +1328,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
       const agentName = input.agent || (yield* agents.defaultAgent())
       const ag = yield* agents.get(agentName)
       if (!ag) {
-        const available = (yield* agents.list()).filter((a) => !a.hidden).map((a) => a.name)
+        const available = (yield* agents.list()).filter((a: any) => !a.hidden).map((a: any) => a.name)
         const hint = available.length ? ` Available agents: ${available.join(", ")}` : ""
         const error = new NamedError.Unknown({ message: `Agent not found: "${agentName}".${hint}` })
         yield* bus.publish(Session.Event.Error, { sessionID: input.sessionID, error: error.toObject() })
@@ -1338,12 +1338,12 @@ NOTE: At any point in time through this workflow you should feel free to ask the
       const inputModel = input.modelRef
         ? yield* provider
             .resolveModelRef(input.modelRef)
-            .pipe(Effect.map((m) => ({ providerID: m.providerID, modelID: m.id })))
+            .pipe(Effect.map((m: any) => ({ providerID: m.providerID, modelID: m.id })))
         : input.model
       const agentModel = ag.modelRef
         ? yield* provider
             .resolveModelRef(ag.modelRef)
-            .pipe(Effect.map((m) => ({ providerID: m.providerID, modelID: m.id })))
+            .pipe(Effect.map((m: any) => ({ providerID: m.providerID, modelID: m.id })))
         : ag.model
       const model = inputModel ?? agentModel ?? (yield* lastModel(input.sessionID))
       const same = agentModel && model.providerID === agentModel.providerID && model.modelID === agentModel.modelID
@@ -1529,7 +1529,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
                   })
                   if (result.attachments?.length) {
                     pieces.push(
-                      ...result.attachments.map((a) => ({
+                      ...result.attachments.map((a: any) => ({
                         ...a,
                         synthetic: true,
                         filename: a.filename ?? part.filename,
@@ -1646,7 +1646,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
       })
 
       const parts = yield* Effect.forEach(input.parts, resolvePart, { concurrency: "unbounded" }).pipe(
-        Effect.map((x) => x.flat().map(assign)),
+        Effect.map((x: any) => x.flat().map(assign)),
       )
 
       yield* plugin.trigger(
@@ -1825,7 +1825,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
         }) {
           if (input.assistant.finish !== "length" || input.assistant.error || input.assistant.summary) return false
           if (
-            MessageV2.parts(input.assistant.id).some((part) => part.type === "tool" && !part.metadata?.providerExecuted)
+            MessageV2.parts(input.assistant.id).some((part: any) => part.type === "tool" && !part.metadata?.providerExecuted)
           ) {
             return false
           }
@@ -2225,7 +2225,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
             if (!lastAssistant && msg.info.role === "assistant") lastAssistant = msg.info
             if (!lastFinished && msg.info.role === "assistant" && msg.info.finish) lastFinished = msg.info
             if (lastUser && lastFinished) break
-            const task = msg.parts.filter((part): part is MessageV2.SubtaskPart => part.type === "subtask")
+            const task = msg.parts.filter((part: any): part is MessageV2.SubtaskPart => part.type === "subtask")
             if (task && !lastFinished) tasks.push(...task)
           }
 
@@ -2275,7 +2275,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
           // Skip provider-executed tool parts — those were fully handled within the
           // provider's stream (e.g. DWS Agent Platform) and don't need a re-loop.
           const hasToolCalls =
-            lastAssistantMsg?.parts.some((part) => part.type === "tool" && !part.metadata?.providerExecuted) ?? false
+            lastAssistantMsg?.parts.some((part: any) => part.type === "tool" && !part.metadata?.providerExecuted) ?? false
 
           if (
             lastAssistant?.finish === "length" &&
@@ -2377,7 +2377,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
           // Detect compaction boundary: if the last user message has a compaction
           // part, route to compact.process() instead of the normal LLM flow.
           const lastUserMsgForCompaction = msgs.findLast((m) => m.info.role === "user")
-          if (lastUserMsgForCompaction?.parts.some((p) => p.type === "compaction")) {
+          if (lastUserMsgForCompaction?.parts.some((p: any) => p.type === "compaction")) {
             const compactionPart = lastUserMsgForCompaction.parts.find(
               (p): p is MessageV2.CompactionPart => p.type === "compaction",
             )
@@ -2403,7 +2403,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
               const lastUserMsg = msgs.findLast((m) => m.info.role === "user")
               if (
                 lastUserMsg &&
-                !lastUserMsg.parts.some((p) => p.type === "text" && p.text?.includes("Context is filling up"))
+                !lastUserMsg.parts.some((p: any) => p.type === "text" && p.text?.includes("Context is filling up"))
               ) {
                 lastUserMsg.parts.push({
                   id: PartID.ascending(),
@@ -2540,13 +2540,13 @@ NOTE: At any point in time through this workflow you should feel free to ask the
               const boundary = yield* checkpoint
                 .lastBoundary(sessionID)
                 .pipe(Effect.catch(() => Effect.succeed(undefined)))
-              const boundaryMsg = boundary ? msgs.find((m) => m.info.id === boundary) : undefined
+              const boundaryMsg = boundary ? msgs.find((m: any) => m.info.id === boundary) : undefined
               const inserted = boundary
                 ? yield* checkpoint
                     .insertRebuildBoundary({
                       sessionID,
                       boundary,
-                      lastMessageInfo: computeLastMessageInfo(msgs.map((m) => m.info)),
+                      lastMessageInfo: computeLastMessageInfo(msgs.map((m: any) => m.info)),
                       agentID: lastUser.agentID,
                       agent: lastUser.agent,
                       model: { providerID: model.providerID, modelID: model.id },
@@ -2581,7 +2581,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
           // `agent` resolved at iteration start; reuse here for the
           // agent-not-found user-visible error.
           if (!agent) {
-            const available = (yield* agents.list()).filter((a) => !a.hidden).map((a) => a.name)
+            const available = (yield* agents.list()).filter((a: any) => !a.hidden).map((a: any) => a.name)
             const hint = available.length ? ` Available agents: ${available.join(", ")}` : ""
             const error = new NamedError.Unknown({ message: `Agent not found: "${lastUser.agent}".${hint}` })
             yield* bus.publish(Session.Event.Error, { sessionID, error: error.toObject() })
@@ -2617,7 +2617,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
 
           const outcome: "break" | "continue" = yield* Effect.gen(function* () {
             const lastUserMsg = msgs.findLast((m) => m.info.role === "user")
-            const bypassAgentCheck = lastUserMsg?.parts.some((p) => p.type === "agent") ?? false
+            const bypassAgentCheck = lastUserMsg?.parts.some((p: any) => p.type === "agent") ?? false
 
             const tools = yield* resolveTools({
               agent,
@@ -2966,13 +2966,13 @@ NOTE: At any point in time through this workflow you should feel free to ask the
                 yield* checkpoint.waitForWriter(sessionID).pipe(Effect.ignore)
                 const boundary2 = yield* checkpoint.lastBoundary(sessionID)
                   .pipe(Effect.catch(() => Effect.succeed(undefined)))
-                const boundary2Msg = boundary2 ? msgs.find((m) => m.info.id === boundary2) : undefined
+                const boundary2Msg = boundary2 ? msgs.find((m: any) => m.info.id === boundary2) : undefined
                 const inserted2 = boundary2
                   ? yield* checkpoint
                       .insertRebuildBoundary({
                         sessionID,
                         boundary: boundary2,
-                        lastMessageInfo: computeLastMessageInfo(msgs.map((m) => m.info)),
+                        lastMessageInfo: computeLastMessageInfo(msgs.map((m: any) => m.info)),
                         agentID: lastUser.agentID,
                         agent: lastUser.agent,
                         model: { providerID: model.providerID, modelID: model.id },
@@ -3005,14 +3005,14 @@ NOTE: At any point in time through this workflow you should feel free to ask the
           // --- Text Loop Detection (cross-step) ---
           const completedParts = MessageV2.parts(handle.message.id)
           const stepText = completedParts
-            .filter((p): p is MessageV2.TextPart => p.type === "text" && !p.synthetic)
-            .map((p) => p.text)
+            .filter((p: any): p is MessageV2.TextPart => p.type === "text" && !p.synthetic)
+            .map((p: any) => p.text)
             .join(" ")
           if (stepText.trim()) {
             // Include tool call signatures in the key so same text + different tools ≠ loop
             const toolSig = completedParts
-              .filter((p): p is MessageV2.ToolPart => p.type === "tool")
-              .map((p) => `${p.tool}:${JSON.stringify(p.state && "input" in p.state ? p.state.input : "")}`)
+              .filter((p: any): p is MessageV2.ToolPart => p.type === "tool")
+              .map((p: any) => `${p.tool}:${JSON.stringify(p.state && "input" in p.state ? p.state.input : "")}`)
               .join("|")
             const normalized = normalizeForLoopDetection(stepText) + (toolSig ? `\0${toolSig}` : "")
             textLoopBuffer.push(normalized)
@@ -3119,7 +3119,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
       yield* elog.info("command", { sessionID: input.sessionID, command: input.command, agent: input.agent })
       const cmd = yield* commands.get(input.command)
       if (!cmd) {
-        const available = (yield* commands.list()).map((c) => c.name)
+        const available = (yield* commands.list()).map((c: any) => c.name)
         const hint = available.length ? ` Available commands: ${available.join(", ")}` : ""
         const error = new NamedError.Unknown({ message: `Command not found: "${input.command}".${hint}` })
         yield* bus.publish(Session.Event.Error, { sessionID: input.sessionID, error: error.toObject() })
@@ -3147,7 +3147,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
       }
 
       const raw = input.arguments.match(argsRegex) ?? []
-      const args = raw.map((arg) => arg.replace(quoteTrimRegex, ""))
+      const args = raw.map((arg: any) => arg.replace(quoteTrimRegex, ""))
       const templateCommand = yield* Effect.promise(async () => cmd.template)
 
       let template: string
@@ -3203,7 +3203,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
 
       const agent = yield* agents.get(agentName)
       if (!agent) {
-        const available = (yield* agents.list()).filter((a) => !a.hidden).map((a) => a.name)
+        const available = (yield* agents.list()).filter((a: any) => !a.hidden).map((a: any) => a.name)
         const hint = available.length ? ` Available agents: ${available.join(", ")}` : ""
         const error = new NamedError.Unknown({ message: `Agent not found: "${agentName}".${hint}` })
         yield* bus.publish(Session.Event.Error, { sessionID: input.sessionID, error: error.toObject() })
@@ -3217,7 +3217,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
       if (isSubtask) {
         const promptText = cmd.source === "skill"
           ? templateCommand + (input.arguments.trim() ? "\n\n" + input.arguments : "")
-          : (templateParts.find((y): y is typeof y & { type: "text"; text: string } => y.type === "text"))?.text ?? ""
+          : (templateParts.find((y: any): y is typeof y & { type: "text"; text: string } => y.type === "text"))?.text ?? ""
         parts = [
           {
             type: "subtask" as const,
@@ -3237,7 +3237,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
           text: `<skill_content name="${input.command}">\n${templateCommand}\n</skill_content>`,
           synthetic: true,
         }
-        const attachments = templateParts.filter((p): p is Exclude<typeof p, { type: "text" }> => p.type !== "text")
+        const attachments = templateParts.filter((p: any): p is Exclude<typeof p, { type: "text" }> => p.type !== "text")
         parts = [{ type: "text" as const, text: visibleText }, skillPart, ...attachments, ...(input.parts ?? [])]
       } else {
         parts = [...templateParts, ...(input.parts ?? [])]

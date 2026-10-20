@@ -82,8 +82,8 @@ function createTestDb() {
   const dir = path.join(import.meta.dirname, "../../migration")
   const entries = readdirSync(dir, { withFileTypes: true })
   const migrations = entries
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => ({
+    .filter((entry: any) => entry.isDirectory())
+    .map((entry: any) => ({
       sql: readFileSync(path.join(dir, entry.name, "migration.sql"), "utf-8"),
       timestamp: Number(entry.name.split("_")[0]),
       name: entry.name,
@@ -626,7 +626,7 @@ describe("JSON to SQLite migration", () => {
     const stats = await JsonMigration.run(db)
 
     expect(stats.projects).toBe(1)
-    expect(stats.errors.some((x) => x.includes("failed to read") && x.includes("broken.json"))).toBe(true)
+    expect(stats.errors.some((x: any) => x.includes("failed to read") && x.includes("broken.json"))).toBe(true)
 
     const projects = db.select().from(ProjectTable).all()
     expect(projects.length).toBe(1)

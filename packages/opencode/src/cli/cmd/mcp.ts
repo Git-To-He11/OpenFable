@@ -55,7 +55,7 @@ function isMcpRemote(config: McpEntry): config is McpRemote {
 }
 
 function configuredServers(config: Config.Info) {
-  return Object.entries(config.mcp ?? {}).filter((entry): entry is [string, McpConfigured] => isMcpConfigured(entry[1]))
+  return Object.entries(config.mcp ?? {}).filter((entry: any): entry is [string, McpConfigured] => isMcpConfigured(entry[1]))
 }
 
 function sourceLabel(config: Config.Info, name: string) {
@@ -390,7 +390,7 @@ export const McpLogoutCommand = cmd({
         if (!serverName) {
           const selected = await prompts.select({
             message: "Select MCP server to logout",
-            options: serverNames.map((name) => {
+            options: serverNames.map((name: any) => {
               const entry = credentials[name]
               const hasTokens = !!entry.tokens
               const hasClient = !!entry.clientInfo

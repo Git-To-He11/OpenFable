@@ -23,7 +23,7 @@ describe("file.ripgrep", () => {
       Ripgrep.Service.use((rg) =>
         rg.files({ cwd: tmp.path }).pipe(
           Stream.runCollect,
-          Effect.map((c) => [...c]),
+          Effect.map((c: any) => [...c]),
         ),
       ),
     )
@@ -44,7 +44,7 @@ describe("file.ripgrep", () => {
       Ripgrep.Service.use((rg) =>
         rg.files({ cwd: tmp.path, hidden: false }).pipe(
           Stream.runCollect,
-          Effect.map((c) => [...c]),
+          Effect.map((c: any) => [...c]),
         ),
       ),
     )
@@ -124,7 +124,7 @@ describe("file.ripgrep", () => {
       Ripgrep.Service.use((rg) =>
         rg.files({ cwd: tmp.path, glob: ["packages/*"] }).pipe(
           Stream.runCollect,
-          Effect.map((c) => [...c]),
+          Effect.map((c: any) => [...c]),
         ),
       ),
     )
@@ -143,7 +143,7 @@ describe("file.ripgrep", () => {
       Ripgrep.Service.use((rg) =>
         rg.files({ cwd: tmp.path }).pipe(
           Stream.runCollect,
-          Effect.map((c) => [...c].sort()),
+          Effect.map((c: any) => [...c].sort()),
         ),
       ),
     )
@@ -162,7 +162,7 @@ describe("file.ripgrep", () => {
       Ripgrep.Service.use((rg) =>
         rg.files({ cwd: tmp.path, glob: ["*.ts"] }).pipe(
           Stream.runCollect,
-          Effect.map((c) => [...c]),
+          Effect.map((c: any) => [...c]),
         ),
       ),
     )

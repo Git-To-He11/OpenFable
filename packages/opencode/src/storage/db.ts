@@ -63,11 +63,11 @@ function time(tag: string) {
 
 function migrations(dir: string): Journal {
   const dirs = readdirSync(dir, { withFileTypes: true })
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => entry.name)
+    .filter((entry: any) => entry.isDirectory())
+    .map((entry: any) => entry.name)
 
   const sql = dirs
-    .map((name) => {
+    .map((name: any) => {
       const file = path.join(dir, name, "migration.sql")
       if (!existsSync(file)) return
       return {

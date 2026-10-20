@@ -54,7 +54,7 @@ function build(key: string, remote: Item, url: string, prev?: Model): Model {
     remote.capabilities.supports.min_thinking_budget !== undefined
   const image =
     (remote.capabilities.supports.vision ?? false) ||
-    (remote.capabilities.limits.vision?.supported_media_types ?? []).some((item) => item.startsWith("image/"))
+    (remote.capabilities.limits.vision?.supported_media_types ?? []).some((item: any) => item.startsWith("image/"))
 
   const isMsgApi = remote.supported_endpoints?.includes("/v1/messages")
 
@@ -128,7 +128,7 @@ export async function get(
 
   const result = { ...existing }
   const remote = new Map(
-    data.data.filter((m) => m.model_picker_enabled && m.policy?.state !== "disabled").map((m) => [m.id, m] as const),
+    data.data.filter((m: any) => m.model_picker_enabled && m.policy?.state !== "disabled").map((m: any) => [m.id, m] as const),
   )
 
   // prune existing models whose api.id isn't in the endpoint response

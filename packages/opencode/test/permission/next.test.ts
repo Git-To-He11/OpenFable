@@ -841,7 +841,7 @@ it.live("reply - always keeps other session pending", () =>
       yield* reply({ requestID: PermissionID.make("per_test6a"), reply: "always" })
 
       yield* Fiber.join(a)
-      expect((yield* list()).map((item) => item.id)).toEqual([PermissionID.make("per_test6b")])
+      expect((yield* list()).map((item: any) => item.id)).toEqual([PermissionID.make("per_test6b")])
 
       yield* rejectAll()
       yield* Fiber.await(b)

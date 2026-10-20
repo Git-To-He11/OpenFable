@@ -48,11 +48,11 @@ export function names(): ReadonlySet<string> {
 export function paths(): string[] {
   if (process.platform === "darwin")
     return [
-      ...DARWIN_HOME.map((n) => path.join(home, n)),
-      ...DARWIN_LIBRARY.map((n) => path.join(home, "Library", n)),
+      ...DARWIN_HOME.map((n: any) => path.join(home, n)),
+      ...DARWIN_LIBRARY.map((n: any) => path.join(home, "Library", n)),
       ...DARWIN_ROOT,
     ]
-  if (process.platform === "win32") return WIN32_HOME.map((n) => path.join(home, n))
+  if (process.platform === "win32") return WIN32_HOME.map((n: any) => path.join(home, n))
   return []
 }
 

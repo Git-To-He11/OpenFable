@@ -57,15 +57,15 @@ const shells = (() => {
   }
 
   const list = [bash, Bun.which("pwsh"), Bun.which("powershell"), process.env.COMSPEC || Bun.which("cmd.exe")]
-    .filter((shell): shell is string => Boolean(shell))
-    .map((shell) => ({ label: Shell.name(shell), shell }))
+    .filter((shell: any): shell is string => Boolean(shell))
+    .map((shell: any) => ({ label: Shell.name(shell), shell }))
 
   return list.filter(
     (item, i) => list.findIndex((other) => other.shell.toLowerCase() === item.shell.toLowerCase()) === i,
   )
 })()
 const PS = new Set(["pwsh", "powershell"])
-const ps = shells.filter((item) => PS.has(item.label))
+const ps = shells.filter((item: any) => PS.has(item.label))
 
 const sh = () => Shell.name(Shell.acceptable())
 const evalarg = (text: string) => (sh() === "cmd" ? quote(text) : squote(text))
@@ -221,7 +221,7 @@ describe("tool.bash permissions", () => {
                 capture(requests),
               ),
             )
-            const bashReq = requests.find((r) => r.permission === "bash")
+            const bashReq = requests.find((r: any) => r.permission === "bash")
             expect(bashReq).toBeDefined()
             expect(bashReq!.patterns).toContain("Write-Host foo")
             expect(bashReq!.patterns).toContain("Write-Host bar")
@@ -252,7 +252,7 @@ describe("tool.bash permissions", () => {
             ),
           ),
         ).rejects.toThrow(err.message)
-        const extDirReq = requests.find((r) => r.permission === "external_directory")
+        const extDirReq = requests.find((r: any) => r.permission === "external_directory")
         expect(extDirReq).toBeDefined()
         expect(extDirReq!.patterns).toContain(want)
       },
@@ -284,8 +284,8 @@ describe("tool.bash permissions", () => {
                   capture(requests),
                 ),
               )
-              const extDirReq = requests.find((r) => r.permission === "external_directory")
-              const bashReq = requests.find((r) => r.permission === "bash")
+              const extDirReq = requests.find((r: any) => r.permission === "external_directory")
+              const bashReq = requests.find((r: any) => r.permission === "bash")
               expect(extDirReq).toBeDefined()
               expect(extDirReq!.patterns).toContain(glob(path.join(outerTmp.path, "*")))
               expect(bashReq).toBeDefined()
@@ -319,7 +319,7 @@ describe("tool.bash permissions", () => {
                   ),
                 ),
               ).rejects.toThrow(err.message)
-              const extDirReq = requests.find((r) => r.permission === "external_directory")
+              const extDirReq = requests.find((r: any) => r.permission === "external_directory")
               expect(extDirReq).toBeDefined()
               expect(extDirReq!.patterns).toContain(glob(path.join(process.env.WINDIR!, "*")))
             },
@@ -347,8 +347,8 @@ describe("tool.bash permissions", () => {
                   capture(requests),
                 ),
               )
-              const extDirReq = requests.find((r) => r.permission === "external_directory")
-              const bashReq = requests.find((r) => r.permission === "bash")
+              const extDirReq = requests.find((r: any) => r.permission === "external_directory")
+              const bashReq = requests.find((r: any) => r.permission === "bash")
               expect(extDirReq).toBeDefined()
               expect(extDirReq!.patterns).toContain(glob(path.join(process.env.WINDIR!, "*")))
               expect(bashReq).toBeDefined()
@@ -507,7 +507,7 @@ describe("tool.bash permissions", () => {
                     ),
                   ),
                 ).rejects.toThrow(err.message)
-                const extDirReq = requests.find((r) => r.permission === "external_directory")
+                const extDirReq = requests.find((r: any) => r.permission === "external_directory")
                 expect(extDirReq).toBeDefined()
                 expect(extDirReq!.patterns).toContain(glob(path.join(process.env.WINDIR!, "*")))
               },
@@ -538,7 +538,7 @@ describe("tool.bash permissions", () => {
                   capture(requests),
                 ),
               )
-              const extDirReq = requests.find((r) => r.permission === "external_directory")
+              const extDirReq = requests.find((r: any) => r.permission === "external_directory")
               expect(extDirReq).toBeDefined()
               expect(extDirReq!.patterns).toContain(
                 Filesystem.normalizePathPattern(path.join(process.env.WINDIR!, "*")),
@@ -631,8 +631,8 @@ describe("tool.bash permissions", () => {
                   capture(requests),
                 ),
               )
-              const extDirReq = requests.find((r) => r.permission === "external_directory")
-              const bashReq = requests.find((r) => r.permission === "bash")
+              const extDirReq = requests.find((r: any) => r.permission === "external_directory")
+              const bashReq = requests.find((r: any) => r.permission === "bash")
               expect(extDirReq).toBeDefined()
               expect(extDirReq!.patterns).toContain(
                 Filesystem.normalizePathPattern(path.join(process.env.WINDIR!, "*")),
@@ -662,7 +662,7 @@ describe("tool.bash permissions", () => {
                   capture(requests),
                 ),
               )
-              const bashReq = requests.find((r) => r.permission === "bash")
+              const bashReq = requests.find((r: any) => r.permission === "bash")
               expect(bashReq).toBeDefined()
               expect(bashReq!.patterns).not.toContain("a * 3")
               expect(bashReq!.always).not.toContain("a *")
@@ -692,7 +692,7 @@ describe("tool.bash permissions", () => {
             ),
           ),
         ).rejects.toThrow(err.message)
-        const extDirReq = requests.find((r) => r.permission === "external_directory")
+        const extDirReq = requests.find((r: any) => r.permission === "external_directory")
         expect(extDirReq).toBeDefined()
       },
     })
@@ -718,7 +718,7 @@ describe("tool.bash permissions", () => {
             ),
           ),
         ).rejects.toThrow(err.message)
-        const extDirReq = requests.find((r) => r.permission === "external_directory")
+        const extDirReq = requests.find((r: any) => r.permission === "external_directory")
         expect(extDirReq).toBeDefined()
         expect(extDirReq!.patterns).toContain(glob(path.join(os.tmpdir(), "*")))
       },
@@ -751,7 +751,7 @@ describe("tool.bash permissions", () => {
               ),
             ).rejects.toThrow(err.message)
 
-            const extDirReq = requests.find((r) => r.permission === "external_directory")
+            const extDirReq = requests.find((r: any) => r.permission === "external_directory")
             expect({ dir, patterns: extDirReq?.patterns, always: extDirReq?.always }).toEqual({
               dir,
               patterns: [want],
@@ -853,7 +853,7 @@ describe("tool.bash permissions", () => {
             ),
           ),
         ).rejects.toThrow(err.message)
-        const extDirReq = requests.find((r) => r.permission === "external_directory")
+        const extDirReq = requests.find((r: any) => r.permission === "external_directory")
         const expected = glob(path.join(outerTmp.path, "*"))
         expect(extDirReq).toBeDefined()
         expect(extDirReq!.patterns).toContain(expected)
@@ -882,7 +882,7 @@ describe("tool.bash permissions", () => {
             capture(requests),
           ),
         )
-        const extDirReq = requests.find((r) => r.permission === "external_directory")
+        const extDirReq = requests.find((r: any) => r.permission === "external_directory")
         expect(extDirReq).toBeUndefined()
       },
     })
@@ -906,7 +906,7 @@ describe("tool.bash permissions", () => {
         )
         expect(requests.length).toBe(1)
         expect(requests[0].always.length).toBeGreaterThan(0)
-        expect(requests[0].always.some((item) => item.endsWith("*"))).toBe(true)
+        expect(requests[0].always.some((item: any) => item.endsWith("*"))).toBe(true)
       },
     })
   })
@@ -927,7 +927,7 @@ describe("tool.bash permissions", () => {
             capture(requests),
           ),
         )
-        const bashReq = requests.find((r) => r.permission === "bash")
+        const bashReq = requests.find((r: any) => r.permission === "bash")
         expect(bashReq).toBeUndefined()
       },
     })
@@ -949,7 +949,7 @@ describe("tool.bash permissions", () => {
             ),
           ),
         ).rejects.toThrow(err.message)
-        const bashReq = requests.find((r) => r.permission === "bash")
+        const bashReq = requests.find((r: any) => r.permission === "bash")
         expect(bashReq).toBeDefined()
         expect(bashReq!.patterns).toContain("echo test > output.txt")
       },
@@ -964,7 +964,7 @@ describe("tool.bash permissions", () => {
         const bash = await initBash()
         const requests: Array<Omit<Permission.Request, "id" | "sessionID" | "tool">> = []
         await Effect.runPromise(bash.execute({ command: "ls -la", description: "List" }, capture(requests)))
-        const bashReq = requests.find((r) => r.permission === "bash")
+        const bashReq = requests.find((r: any) => r.permission === "bash")
         expect(bashReq).toBeDefined()
         expect(bashReq!.always[0]).toBe("ls *")
       },

@@ -648,7 +648,7 @@ export const Zls: Info = {
         return
       }
 
-      const asset = release.assets?.find((a) => a.name === assetName)
+      const asset = release.assets?.find((a: any) => a.name === assetName)
       if (!asset?.browser_download_url) {
         log.error(`Could not find asset ${assetName} in latest zls release`)
         return
@@ -933,9 +933,9 @@ export const Clangd: Info = {
     }
 
     const asset =
-      assets.find((item) => valid(item) && item.name?.endsWith(".zip")) ??
-      assets.find((item) => valid(item) && item.name?.endsWith(".tar.xz")) ??
-      assets.find((item) => valid(item))
+      assets.find((item: any) => valid(item) && item.name?.endsWith(".zip")) ??
+      assets.find((item: any) => valid(item) && item.name?.endsWith(".tar.xz")) ??
+      assets.find((item: any) => valid(item))
     if (!asset?.name || !asset.browser_download_url) {
       log.error("clangd could not match release asset", { tag, platform })
       return
@@ -1137,7 +1137,7 @@ export const JDTLS: Info = {
     }
     const jarFileName =
       (await fs.readdir(launcherDir).catch(() => []))
-        .find((item) => /^org\.eclipse\.equinox\.launcher_.*\.jar$/.test(item))
+        .find((item: any) => /^org\.eclipse\.equinox\.launcher_.*\.jar$/.test(item))
         ?.trim() ?? ""
     const launcherJar = path.join(launcherDir, jarFileName)
     if (!(await pathExists(launcherJar))) {
@@ -1591,7 +1591,7 @@ export const TerraformLS: Info = {
       const tfPlatform = platform === "win32" ? "windows" : platform
 
       const builds = release.builds ?? []
-      const build = builds.find((b) => b.arch === tfArch && b.os === tfPlatform)
+      const build = builds.find((b: any) => b.arch === tfArch && b.os === tfPlatform)
       if (!build?.url) {
         log.error(`Could not find build for ${tfPlatform}/${tfArch} terraform-ls release version ${release.version}`)
         return
@@ -1679,7 +1679,7 @@ export const TexLab: Info = {
       const assetName = `texlab-${texArch}-${texPlatform}.${ext}`
 
       const assets = release.assets ?? []
-      const asset = assets.find((a) => a.name === assetName)
+      const asset = assets.find((a: any) => a.name === assetName)
       if (!asset?.browser_download_url) {
         log.error(`Could not find asset ${assetName} in texlab release`)
         return
@@ -1870,7 +1870,7 @@ export const Tinymist: Info = {
       const assetName = `tinymist-${tinymistArch}-${tinymistPlatform}.${ext}`
 
       const assets = release.assets ?? []
-      const asset = assets.find((a) => a.name === assetName)
+      const asset = assets.find((a: any) => a.name === assetName)
       if (!asset?.browser_download_url) {
         log.error(`Could not find asset ${assetName} in tinymist release`)
         return

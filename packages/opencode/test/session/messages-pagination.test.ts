@@ -144,18 +144,18 @@ describe("MessageV2.page", () => {
         const ids = await fill(session.id, 6)
 
         const a = MessageV2.page({ sessionID: session.id, limit: 2 })
-        expect(a.items.map((item) => item.info.id)).toEqual(ids.slice(-2))
+        expect(a.items.map((item: any) => item.info.id)).toEqual(ids.slice(-2))
         expect(a.items.every((item) => item.parts.length === 1)).toBe(true)
         expect(a.more).toBe(true)
         expect(a.cursor).toBeTruthy()
 
         const b = MessageV2.page({ sessionID: session.id, limit: 2, before: a.cursor! })
-        expect(b.items.map((item) => item.info.id)).toEqual(ids.slice(-4, -2))
+        expect(b.items.map((item: any) => item.info.id)).toEqual(ids.slice(-4, -2))
         expect(b.more).toBe(true)
         expect(b.cursor).toBeTruthy()
 
         const c = MessageV2.page({ sessionID: session.id, limit: 2, before: b.cursor! })
-        expect(c.items.map((item) => item.info.id)).toEqual(ids.slice(0, 2))
+        expect(c.items.map((item: any) => item.info.id)).toEqual(ids.slice(0, 2))
         expect(c.more).toBe(false)
         expect(c.cursor).toBeUndefined()
 
@@ -172,7 +172,7 @@ describe("MessageV2.page", () => {
         const ids = await fill(session.id, 4)
 
         const result = MessageV2.page({ sessionID: session.id, limit: 4 })
-        expect(result.items.map((item) => item.info.id)).toEqual(ids)
+        expect(result.items.map((item: any) => item.info.id)).toEqual(ids)
 
         await svc.remove(session.id)
       },
@@ -213,7 +213,7 @@ describe("MessageV2.page", () => {
         const ids = await fill(session.id, 3)
 
         const result = MessageV2.page({ sessionID: session.id, limit: 3 })
-        expect(result.items.map((item) => item.info.id)).toEqual(ids)
+        expect(result.items.map((item: any) => item.info.id)).toEqual(ids)
         expect(result.more).toBe(false)
         expect(result.cursor).toBeUndefined()
 
@@ -273,8 +273,8 @@ describe("MessageV2.page", () => {
         const a = MessageV2.page({ sessionID: session.id, limit: 2 })
         const b = MessageV2.page({ sessionID: session.id, limit: 2, before: a.cursor! })
 
-        expect(a.items.map((item) => item.info.id)).toEqual(ids.slice(-2))
-        expect(b.items.map((item) => item.info.id)).toEqual(ids.slice(0, 2))
+        expect(a.items.map((item: any) => item.info.id)).toEqual(ids.slice(-2))
+        expect(b.items.map((item: any) => item.info.id)).toEqual(ids.slice(0, 2))
 
         await svc.remove(session.id)
       },
@@ -289,11 +289,11 @@ describe("MessageV2.page", () => {
         const ids = await fill(session.id, 4, () => 1000)
 
         const a = MessageV2.page({ sessionID: session.id, limit: 2 })
-        expect(a.items.map((item) => item.info.id)).toEqual(ids.slice(-2))
+        expect(a.items.map((item: any) => item.info.id)).toEqual(ids.slice(-2))
         expect(a.more).toBe(true)
 
         const b = MessageV2.page({ sessionID: session.id, limit: 2, before: a.cursor! })
-        expect(b.items.map((item) => item.info.id)).toEqual(ids.slice(0, 2))
+        expect(b.items.map((item: any) => item.info.id)).toEqual(ids.slice(0, 2))
         expect(b.more).toBe(false)
 
         await svc.remove(session.id)
@@ -332,7 +332,7 @@ describe("MessageV2.page", () => {
 
         const result = MessageV2.page({ sessionID: session.id, limit: 100 })
         expect(result.items).toHaveLength(10)
-        expect(result.items.map((item) => item.info.id)).toEqual(ids)
+        expect(result.items.map((item: any) => item.info.id)).toEqual(ids)
         expect(result.more).toBe(false)
         expect(result.cursor).toBeUndefined()
 
@@ -351,7 +351,7 @@ describe("MessageV2.stream", () => {
         const ids = await fill(session.id, 5)
 
         const items = Array.from(MessageV2.stream(session.id))
-        expect(items.map((item) => item.info.id)).toEqual(ids.slice().reverse())
+        expect(items.map((item: any) => item.info.id)).toEqual(ids.slice().reverse())
 
         await svc.remove(session.id)
       },
@@ -667,7 +667,7 @@ describe("MessageV2.filterCompacted", () => {
         const result = MessageV2.filterCompacted(MessageV2.stream(session.id))
         expect(result).toHaveLength(5)
         // reversed from newest-first to chronological
-        expect(result.map((item) => item.info.id)).toEqual(ids)
+        expect(result.map((item: any) => item.info.id)).toEqual(ids)
 
         await svc.remove(session.id)
       },
@@ -704,7 +704,7 @@ describe("MessageV2.filterCompacted", () => {
         })
 
         const result = MessageV2.filterCompacted(MessageV2.stream(session.id))
-        expect(result.map((item) => item.info.id)).toEqual([u2, a2])
+        expect(result.map((item: any) => item.info.id)).toEqual([u2, a2])
 
         await svc.remove(session.id)
       },
@@ -755,7 +755,7 @@ describe("MessageV2.filterCompacted", () => {
         })
 
         const result = MessageV2.filterCompacted(MessageV2.stream(session.id))
-        expect(result.map((item) => item.info.id)).toEqual([u3, a3])
+        expect(result.map((item: any) => item.info.id)).toEqual([u3, a3])
 
         await svc.remove(session.id)
       },
@@ -862,7 +862,7 @@ describe("MessageV2 consistency", () => {
           cursor = result.cursor
         }
 
-        expect(streamed.map((m) => m.info.id)).toEqual(paged.map((m) => m.info.id))
+        expect(streamed.map((m: any) => m.info.id)).toEqual(paged.map((m: any) => m.info.id))
 
         await svc.remove(session.id)
       },
@@ -879,7 +879,7 @@ describe("MessageV2 consistency", () => {
         const filtered = MessageV2.filterCompacted(MessageV2.stream(session.id))
         const all = Array.from(MessageV2.stream(session.id)).reverse()
 
-        expect(filtered.map((m) => m.info.id)).toEqual(all.map((m) => m.info.id))
+        expect(filtered.map((m: any) => m.info.id)).toEqual(all.map((m: any) => m.info.id))
 
         await svc.remove(session.id)
       },

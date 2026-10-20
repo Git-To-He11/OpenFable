@@ -184,8 +184,8 @@ describe("session.llm system prompt — memory-instructions guard", () => {
         }
         const capture = await request
         const messages = capture.body.messages as Array<{ role: string; content: string }>
-        const sysMsgs = messages.filter((m) => m.role === "system")
-        const allSys = sysMsgs.map((m) => m.content).join("\n")
+        const sysMsgs = messages.filter((m: any) => m.role === "system")
+        const allSys = sysMsgs.map((m: any) => m.content).join("\n")
         expect(allSys).toContain("# Memory system")
       },
     })
@@ -268,8 +268,8 @@ describe("session.llm system prompt — memory-instructions guard", () => {
         }
         const capture = await request
         const messages = capture.body.messages as Array<{ role: string; content: string }>
-        const sysMsgs = messages.filter((m) => m.role === "system")
-        const allSys = sysMsgs.map((m) => m.content).join("\n")
+        const sysMsgs = messages.filter((m: any) => m.role === "system")
+        const allSys = sysMsgs.map((m: any) => m.content).join("\n")
         expect(allSys).not.toContain("# Memory system")
       },
     })
@@ -325,8 +325,8 @@ describe("session.llm system prompt — memory-instructions guard", () => {
         }
         const capture = await request
         const messages = capture.body.messages as Array<{ role: string; content: string }>
-        const sysMsgs = messages.filter((m) => m.role === "system")
-        const allSys = sysMsgs.map((m) => m.content).join("\n")
+        const sysMsgs = messages.filter((m: any) => m.role === "system")
+        const allSys = sysMsgs.map((m: any) => m.content).join("\n")
         expect(allSys).toContain("Active recall protocol")
         expect(allSys).toContain("use Grep with a keyword pattern")
       },
@@ -383,8 +383,8 @@ describe("session.llm system prompt — memory-instructions guard", () => {
         }
         const capture = await request
         const messages = capture.body.messages as Array<{ role: string; content: string }>
-        const sysMsgs = messages.filter((m) => m.role === "system")
-        const allSys = sysMsgs.map((m) => m.content).join("\n")
+        const sysMsgs = messages.filter((m: any) => m.role === "system")
+        const allSys = sysMsgs.map((m: any) => m.content).join("\n")
 
         // F22 v8.1 assertions:
         // (1) writer-as-sole-curator language
@@ -463,8 +463,8 @@ describe("session.llm system prompt — memory-instructions guard", () => {
         }
         const capture = await request
         const allSys = (capture.body.messages as Array<{ role: string; content: string }>)
-          .filter((m) => m.role === "system")
-          .map((m) => m.content)
+          .filter((m: any) => m.role === "system")
+          .map((m: any) => m.content)
           .join("\n")
         expect(allSys).toContain(path.join(Global.Path.data, "memory", "projects", Instance.current.project.id, "MEMORY.md"))
         expect(allSys).toContain(path.join(Global.Path.data, "memory", "sessions", sessionID, "checkpoint.md"))

@@ -51,7 +51,7 @@ function getBackend() {
 }
 
 function protecteds(dir: string) {
-  return Protected.paths().filter((item) => {
+  return Protected.paths().filter((item: any) => {
     const rel = path.relative(dir, item)
     return rel !== "" && !rel.startsWith("..") && !path.isAbsolute(rel)
   })
@@ -91,7 +91,7 @@ export const layer = Layer.effect(
 
           const subs: ParcelWatcher.AsyncSubscription[] = []
           yield* Effect.addFinalizer(() =>
-            Effect.promise(() => Promise.allSettled(subs.map((sub) => sub.unsubscribe()))),
+            Effect.promise(() => Promise.allSettled(subs.map((sub: any) => sub.unsubscribe()))),
           )
 
           const cb: ParcelWatcher.SubscribeCallback = Instance.bind((err, evts) => {

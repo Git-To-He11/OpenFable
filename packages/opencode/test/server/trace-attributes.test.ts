@@ -61,7 +61,7 @@ describe("requestAttributes", () => {
 
   test("produces no param attributes when no params are matched", () => {
     const attrs = requestAttributes(fakeContext("POST", "http://localhost/config", {}))
-    expect(Object.keys(attrs).filter((k) => k !== "http.method" && k !== "http.path")).toEqual([])
+    expect(Object.keys(attrs).filter((k: any) => k !== "http.method" && k !== "http.path")).toEqual([])
   })
 
   test("namespaces non-ID params under opencode. (e.g. mcp :name)", () => {

@@ -209,7 +209,7 @@ export const layer = Layer.effect(
       ref === undefined
         ? Effect.succeed(fallback)
         : provider.resolveModelRef(ref).pipe(
-            Effect.map((m) => ({ providerID: m.providerID, modelID: m.id })),
+            Effect.map((m: any) => ({ providerID: m.providerID, modelID: m.id })),
             Effect.catchCause(() =>
               Effect.sync(() => {
                 // Leave a breadcrumb so a bad ref isn't pure silence: an unknown
@@ -610,7 +610,7 @@ export const layer = Layer.effect(
                 spawned.actorID,
                 o,
                 Deferred.await(spawned.outcome).pipe(
-                  Effect.map((outcome) => {
+                  Effect.map((outcome: any) => {
                     if (outcome.status !== "success") {
                       reason = "actor-error"
                       errorMessage = (outcome as { error?: string }).error

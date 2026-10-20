@@ -33,7 +33,7 @@ function generateRandomString(length: number): string {
   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~"
   const bytes = crypto.getRandomValues(new Uint8Array(length))
   return Array.from(bytes)
-    .map((b) => chars[b % chars.length])
+    .map((b: any) => chars[b % chars.length])
     .join("")
 }
 

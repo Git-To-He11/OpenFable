@@ -4,7 +4,7 @@ import { ConfigKeybinds } from "@/config/keybinds"
 
 const KeybindOverride = z
   .object(
-    Object.fromEntries(Object.keys(ConfigKeybinds.Keybinds.shape).map((key) => [key, z.string().optional()])) as Record<
+    Object.fromEntries(Object.keys(ConfigKeybinds.Keybinds.shape).map((key: any) => [key, z.string().optional()])) as Record<
       string,
       z.ZodOptional<z.ZodString>
     >,

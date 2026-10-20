@@ -128,7 +128,8 @@ const cli = yargs(args)
       let last = -1
       if (tty) process.stderr.write("\x1b[?25l")
       try {
-        await JsonMigration.run(drizzle({ client: Database.Client().$client }), {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await JsonMigration.run(drizzle({ client: Database.Client().$client } as any), {
           progress: (event) => {
             const percent = Math.floor((event.current / event.total) * 100)
             if (percent === last && event.current !== event.total) return

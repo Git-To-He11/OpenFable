@@ -259,7 +259,7 @@ test("InstanceState survives high-contention concurrent access", async () => {
 
   try {
     const results = await Promise.all(
-      dirs.map((d) =>
+      dirs.map((d: any) =>
         Instance.provide({
           directory: d.path,
           fn: () => rt.runPromise(Test.use((svc) => svc.get())),

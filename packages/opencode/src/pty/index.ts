@@ -162,7 +162,7 @@ export const layer = Layer.effect(
 
     const list = Effect.fn("Pty.list")(function* () {
       const s = yield* InstanceState.get(state)
-      return Array.from(s.sessions.values()).map((session) => session.info)
+      return Array.from(s.sessions.values()).map((session: any) => session.info)
     })
 
     const get = Effect.fn("Pty.get")(function* (id: PtyID) {

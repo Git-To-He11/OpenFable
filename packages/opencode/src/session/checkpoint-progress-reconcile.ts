@@ -18,7 +18,7 @@ export interface ProgressDiffItem {
 export function parseWrittenAt(body: string): number | null {
   const fm = body.match(/^---\n([\s\S]*?)\n---\n/)
   if (!fm) return null
-  const line = fm[1].split("\n").find((l) => l.startsWith("written-at:"))
+  const line = fm[1].split("\n").find((l: any) => l.startsWith("written-at:"))
   if (!line) return null
   const value = Number(line.slice("written-at:".length).trim())
   if (!Number.isFinite(value)) return null

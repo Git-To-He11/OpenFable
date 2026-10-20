@@ -162,7 +162,7 @@ function estimateMessageTokens(m: { parts: Array<{ type: string; [k: string]: un
 }
 
 function hasTextBlocks(m: { parts: Array<{ type: string }> }): boolean {
-  return m.parts.some((p) => p.type === "text" || p.type === "reasoning")
+  return m.parts.some((p: any) => p.type === "text" || p.type === "reasoning")
 }
 
 /**
@@ -209,7 +209,7 @@ export function computeBoundary(
   if (lastAsstIdx <= 0) return msgs[lastAsstIdx >= 0 ? lastAsstIdx : 0].info.id
 
   // Token estimate per message (computed once).
-  const tokens = msgs.map((m) => estimateMessageTokens(m))
+  const tokens = msgs.map((m: any) => estimateMessageTokens(m))
 
   // Spec 2 starting point: lastAsstIdx - 1.
   let startIdx = lastAsstIdx - 1
@@ -553,7 +553,7 @@ export const layer: Layer.Layer<
       const candidateID = computeBoundary(msgs)
       const candidateIdx = msgs.findIndex((m) => m.info.id === candidateID)
       const adjustedIdx = adjustBoundaryForApiInvariants(
-        msgs.map((m) => ({
+        msgs.map((m: any) => ({
           role: m.info.role,
           id: m.info.id,
           content: m.parts.flatMap((p) =>
@@ -608,7 +608,7 @@ export const layer: Layer.Layer<
             memoryExists ? `Previous memory: ${memoryFile}` : "",
             "Read BOTH the prior checkpoint (to dedupe Discovered/Dead-end titles AND to carry forward Live Resources, Execution-context frames, and Session-metadata fields that are still alive) AND the prior memory (project memory) before writing yours.",
           ]
-            .filter((s) => s.length > 0)
+            .filter((s: any) => s.length > 0)
             .join("\n")
         : "This is the first checkpoint of this session. No prior checkpoint exists; MEMORY.md and the task narrative directory likely don't exist yet either."
 
@@ -677,7 +677,7 @@ export const layer: Layer.Layer<
         : -1
       const rawDeltaStart = lastIdx >= 0 ? lastIdx + 1 : 0
       const alignedStart = alignToNonToolResultUser(
-        msgs.map((m) => ({ info: { role: m.info.role }, parts: m.parts })),
+        msgs.map((m: any) => ({ info: { role: m.info.role }, parts: m.parts })),
         rawDeltaStart,
       )
       const delta = forkMode ? [] : msgs.slice(alignedStart, watermarkIdx + 1)
@@ -935,7 +935,7 @@ export const layer: Layer.Layer<
       // it resolves via Deferred.succeed in the detached writer. We only
       // need a collective upper bound so a stuck writer doesn't block exit.
       yield* Effect.all(
-        pending.map((state) => Deferred.await(state.writing)),
+        pending.map((state: any) => Deferred.await(state.writing)),
         { concurrency: "unbounded" },
       ).pipe(
         Effect.timeout(timeoutMs),
@@ -1098,7 +1098,7 @@ export const layer: Layer.Layer<
       if (tasks.length === 0) {
         lines.push("(none)")
       } else {
-        const topLevel = tasks.filter((t) => !t.parent_task_id)
+        const topLevel = tasks.filter((t: any) => !t.parent_task_id)
         const byParent = new Map<string, typeof tasks>()
         for (const t of tasks) {
           if (!t.parent_task_id) continue
@@ -1114,7 +1114,7 @@ export const layer: Layer.Layer<
           const subs = byParent.get(t.id) ?? []
           if (subs.length === 0) continue
           const sublist = subs
-            .map((s) => `${statusIcon(s.status)}${s.id}`)
+            .map((s: any) => `${statusIcon(s.status)}${s.id}`)
             .join(" / ")
           ledgerLines.push(`  Subtasks: ${sublist}`)
         }
@@ -1178,7 +1178,7 @@ export const layer: Layer.Layer<
           memoryPath(projectID),
           checkpointPath(sessionID),
           globalMemoryPath(),
-        ].filter((p) => p.length > 0),
+        ].filter((p: any) => p.length > 0),
       )
 
       const scopeFilter =
@@ -1198,9 +1198,9 @@ export const layer: Layer.Layer<
         ),
       )
       const keyEntries = scopedPaths
-        .map((r) => r.path)
-        .filter((p) => !pushedPaths.has(p) && !p.includes(`${path.sep}checkpoint${path.sep}learning-`))
-        .map((p) => p.replace(memoryRoot + path.sep, ""))
+        .map((r: any) => r.path)
+        .filter((p: any) => !pushedPaths.has(p) && !p.includes(`${path.sep}checkpoint${path.sep}learning-`))
+        .map((p: any) => p.replace(memoryRoot + path.sep, ""))
       if (keyEntries.length > 0) {
         lines.push("## Memory keys index")
         let kBudget = caps.memory_titles ?? 500
@@ -1364,7 +1364,7 @@ export const layer: Layer.Layer<
       const allMsgs = yield* session.messages({ sessionID: input.sessionID, agentID: "*" })
       const boundaryTime =
         input.boundaryCreatedAt ??
-        allMsgs.find((m) => m.info.id === input.boundary)?.info.time.created
+        allMsgs.find((m: any) => m.info.id === input.boundary)?.info.time.created
       if (boundaryTime === undefined) {
         log.warn("microcompact skipped: no boundary timestamp available", {
           sessionID: input.sessionID,

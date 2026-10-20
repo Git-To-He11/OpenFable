@@ -91,8 +91,8 @@ describe("SessionCheckpoint.insertRebuildBoundary", () => {
 
         const after = yield* ssn.messages({ sessionID: info.id })
         // Every original message still present — nothing deleted.
-        expect(after.some((m) => m.info.id === m1.id)).toBe(true)
-        expect(after.some((m) => m.info.id === m3.id)).toBe(true)
+        expect(after.some((m: any) => m.info.id === m1.id)).toBe(true)
+        expect(after.some((m: any) => m.info.id === m3.id)).toBe(true)
         expect(after.length).toBe(3)
       }),
     ),
@@ -131,12 +131,12 @@ describe("SessionCompaction.create preserves messages", () => {
         const after = yield* ssn.messages({ sessionID: info.id })
         // Compaction never deletes: all originals survive, plus one boundary message.
         for (const m of seeded) {
-          expect(after.some((x) => x.info.id === m.id)).toBe(true)
+          expect(after.some((x: any) => x.info.id === m.id)).toBe(true)
         }
         expect(after.length).toBe(seeded.length + 1)
         // The appended boundary carries a compaction part.
         const boundary = after.at(-1)!
-        expect(boundary.parts.some((p) => p.type === "compaction")).toBe(true)
+        expect(boundary.parts.some((p: any) => p.type === "compaction")).toBe(true)
       }),
     ),
   )

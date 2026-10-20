@@ -46,7 +46,7 @@ function parseArguments(raw: unknown): Record<string, unknown> {
 export function parse(text: string, sessionId: SessionID) {
   const entries = text
     .split("\n")
-    .map((l) => l.trim())
+    .map((l: any) => l.trim())
     .filter(Boolean)
     .flatMap((line) => {
       try {
@@ -142,13 +142,13 @@ export function parse(text: string, sessionId: SessionID) {
 
       if (role === "user" || role === "developer") {
         const textBlocks = content
-          .filter((c) => (c.type === "input_text" || c.type === "text") && typeof c.text === "string" && (c.text as string).trim())
-          .map((c) => c.text as string)
+          .filter((c: any) => (c.type === "input_text" || c.type === "text") && typeof c.text === "string" && (c.text as string).trim())
+          .map((c: any) => c.text as string)
         if (textBlocks.length === 0) continue
 
         flushAssistant()
         const id = MessageID.ascending()
-        const parts: Built["parts"] = textBlocks.map((txt) => ({
+        const parts: Built["parts"] = textBlocks.map((txt: any) => ({
           part: { id: PartID.ascending(), sessionID: sessionId, messageID: id, type: "text" as const, text: txt },
           time: ts,
         }))
@@ -163,7 +163,7 @@ export function parse(text: string, sessionId: SessionID) {
         messages.push({ info, parts })
         lastUserId = id
         if (!title) {
-          const candidate = textBlocks.find((x) => x.trim() && !x.trim().startsWith("<"))
+          const candidate = textBlocks.find((x: any) => x.trim() && !x.trim().startsWith("<"))
           if (candidate) title = candidate.trim().replace(/\s+/g, " ").slice(0, 100)
         }
         continue
@@ -188,7 +188,7 @@ export function parse(text: string, sessionId: SessionID) {
     if (itemType === "reasoning") {
       const assistant = ensureAssistant(ts)
       const summary = payload.summary as Array<Record<string, unknown>> | undefined
-      const summaryText = summary?.map((s) => s.text ?? "").join("") ?? ""
+      const summaryText = summary?.map((s: any) => s.text ?? "").join("") ?? ""
       if (summaryText.trim()) {
         assistant.parts.push({
           part: {
@@ -321,7 +321,7 @@ export async function run(opts?: { force?: boolean }): Promise<ImportStats> {
 
       const project = resolveProject(parsed.cwd)
       const now = Date.now()
-      const messageIds = parsed.messages.map((m) => m.info.id)
+      const messageIds = parsed.messages.map((m: any) => m.info.id)
 
       Database.transaction((tx) => {
         tx.insert(ProjectTable)

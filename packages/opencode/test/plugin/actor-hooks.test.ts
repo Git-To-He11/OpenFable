@@ -1269,7 +1269,7 @@ describe("hook observability events", () => {
           ),
       })
 
-      const preStopEvents = events.filter((e) => e.event === "actor.preStop" && e.outcome !== "skipped")
+      const preStopEvents = events.filter((e: any) => e.event === "actor.preStop" && e.outcome !== "skipped")
       expect(preStopEvents.length).toBeGreaterThanOrEqual(1)
       expect(preStopEvents[0].outcome).toBe("success")
       expect(preStopEvents[0].continueRequested).toBe(false)
@@ -1358,7 +1358,7 @@ describe("hook observability events", () => {
           ),
       })
 
-      const skippedEvents = events.filter((e) => e.outcome === "skipped")
+      const skippedEvents = events.filter((e: any) => e.outcome === "skipped")
       expect(skippedEvents.length).toBeGreaterThanOrEqual(1)
     } finally {
       await server.stop()

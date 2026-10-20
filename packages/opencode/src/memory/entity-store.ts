@@ -91,7 +91,7 @@ export class EntityStore {
     const rows = this.db.$client
       .query(`SELECT DISTINCT memory_path FROM memory_entity WHERE entity = ?`)
       .all(entity) as Array<{ memory_path: string }>
-    return rows.map((r) => r.memory_path)
+    return rows.map((r: any) => r.memory_path)
   }
 
   findByEntities(entities: string[]): Map<string, number> {

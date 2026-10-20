@@ -28,7 +28,7 @@ export const SkillTool = Tool.define(
           const info = yield* skill.get(params.name)
           if (!info) {
             const all = yield* skill.all()
-            const available = all.map((item) => item.name).join(", ")
+            const available = all.map((item: any) => item.name).join(", ")
             throw new Error(`Skill "${params.name}" not found. Available skills: ${available || "none"}`)
           }
 
@@ -63,11 +63,11 @@ export const SkillTool = Tool.define(
           const base = pathToFileURL(dir).href
           const limit = 10
           const files = yield* rg.files({ cwd: dir, follow: false, hidden: true, signal: ctx.abort }).pipe(
-            Stream.filter((file) => !file.includes("SKILL.md")),
-            Stream.map((file) => path.resolve(dir, file)),
+            Stream.filter((file: any) => !file.includes("SKILL.md")),
+            Stream.map((file: any) => path.resolve(dir, file)),
             Stream.take(limit),
             Stream.runCollect,
-            Effect.map((chunk) => [...chunk].map((file) => `<file>${file}</file>`).join("\n")),
+            Effect.map((chunk: any) => [...chunk].map((file: any) => `<file>${file}</file>`).join("\n")),
           )
 
           return {

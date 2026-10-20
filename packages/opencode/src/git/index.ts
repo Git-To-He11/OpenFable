@@ -118,7 +118,7 @@ export const layer = Layer.effect(
     const lines = Effect.fn("Git.lines")(function* (args: string[], opts: Options) {
       return (yield* text(args, opts))
         .split(/\r?\n/)
-        .map((item) => item.trim())
+        .map((item: any) => item.trim())
         .filter(Boolean)
     })
 

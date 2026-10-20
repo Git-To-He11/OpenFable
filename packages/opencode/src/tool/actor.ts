@@ -50,7 +50,7 @@ function levenshteinActor(a: string, b: string): number {
 }
 
 function suggestActorVerb(input: string): string | undefined {
-  const candidates = KNOWN_ACTOR_VERBS.map((v) => ({ v, d: levenshteinActor(input, v) })).filter((c) => c.d <= 2)
+  const candidates = KNOWN_ACTOR_VERBS.map((v: any) => ({ v, d: levenshteinActor(input, v) })).filter((c: any) => c.d <= 2)
   if (candidates.length !== 1) return undefined
   return candidates[0].v
 }
@@ -85,7 +85,7 @@ function extractNamedFlags(
   const flags: Record<string, string> = {}
   for (let i = 0; i < args.length; i++) {
     const a = args[i]
-    const bare = names.find((n) => a === `--${n}`)
+    const bare = names.find((n: any) => a === `--${n}`)
     if (bare) {
       const next = args[i + 1]
       if (next === undefined)
@@ -94,7 +94,7 @@ function extractNamedFlags(
       i++
       continue
     }
-    const eq = names.find((n) => a.startsWith(`--${n}=`))
+    const eq = names.find((n: any) => a.startsWith(`--${n}=`))
     if (eq) {
       const v = a.slice(`--${eq}=`.length)
       if (v === "") return Effect.fail({ kind: "flag" as const, line, detail: `actor: --${eq} requires a value` })
@@ -306,8 +306,8 @@ export const ActorTool = Tool.define(
       // that the model couldn't introspect (root cause of three harness runs
       // with zero subagent spawns).
       const allAgents = yield* agent.list()
-      const spawnable = allAgents.filter((a) => a.mode === "subagent" && !a.hidden)
-      const spawnableNames = spawnable.map((a) => a.name)
+      const spawnable = allAgents.filter((a: any) => a.mode === "subagent" && !a.hidden)
+      const spawnableNames = spawnable.map((a: any) => a.name)
       if (spawnableNames.length === 0) {
         return yield* Effect.die(new Error("No spawnable subagent types"))
       }
@@ -668,7 +668,7 @@ export const ActorTool = Tool.define(
         const model = modelRef
           ? yield* provider
               .resolveModelRef(modelRef, msg.info.providerID)
-              .pipe(Effect.map((m) => ({ modelID: m.id, providerID: m.providerID })))
+              .pipe(Effect.map((m: any) => ({ modelID: m.id, providerID: m.providerID })))
           : (next.model ?? {
               modelID: msg.info.modelID,
               providerID: msg.info.providerID,
