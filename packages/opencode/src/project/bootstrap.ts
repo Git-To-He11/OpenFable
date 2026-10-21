@@ -34,7 +34,7 @@ export const InstanceBootstrap = Effect.gen(function* () {
       Snapshot.Service,
       WriterService,
       BackfillService,
-    ].map((s: any) => Effect.forkDetach(s.use((i) => i.init()))),
+    ].map((s: any) => Effect.forkDetach(s.use((i: any) => i.init()))),
   ).pipe(Effect.withSpan("InstanceBootstrap.init"))
 
   // Warm the FTS index off the boot path. Off-tool writes between

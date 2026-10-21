@@ -179,7 +179,7 @@ describe("SessionPrune.prune", () => {
           const msgs = yield* ssn.messages({ sessionID: info.id })
           const part = msgs.flatMap((msg) => msg.parts).find((part: any) => part.type === "tool")
           expect(part?.type).toBe("tool")
-          expect(part?.state.status).toBe("completed")
+          expect((part as any)?.state?.status).toBe("completed")
           if (part?.type === "tool" && part.state.status === "completed") {
             expect(part.state.time.compacted).toBeNumber()
           }

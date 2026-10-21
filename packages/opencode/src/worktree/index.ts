@@ -264,7 +264,7 @@ export const layer: Layer.Layer<
       const booted = yield* Effect.promise(() =>
         Instance.provide({
           directory: info.directory,
-          init: () => BootstrapRuntime.runPromise(InstanceBootstrap),
+          init: () => BootstrapRuntime.runPromise(InstanceBootstrap) as never as any,
           fn: () => undefined,
         })
           .then(() => true)

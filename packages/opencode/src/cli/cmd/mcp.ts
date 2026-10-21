@@ -409,13 +409,14 @@ export const McpLogoutCommand = cmd({
           serverName = selected
         }
 
-        if (!credentials[serverName]) {
-          prompts.log.error(`No credentials found for: ${serverName}`)
+        if (!credentials[serverName as string]) {
+          prompts.log.error(`No credentials found for: ${serverName as string}`)
           prompts.outro("Done")
           return
         }
 
-        await AppRuntime.runPromise(MCP.Service.use((mcp) => mcp.removeAuth(serverName)))
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await AppRuntime.runPromise(MCP.Service.use((mcp: any) => mcp.removeAuth(serverName)))
         prompts.log.success(`Removed OAuth credentials for ${serverName}`)
         prompts.outro("Done")
       },

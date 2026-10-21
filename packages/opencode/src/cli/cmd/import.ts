@@ -66,7 +66,7 @@ export function transformShareData(shareData: ShareData[]): {
   if (messageMap.size === 0) return null
 
   return {
-    info: sessionItem.data,
+    info: sessionItem.data as any,
     messages: Array.from(messageMap.values()).map((msg: any) => ({
       info: msg,
       parts: partMap.get(msg.id) ?? [],

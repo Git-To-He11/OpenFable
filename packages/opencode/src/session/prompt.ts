@@ -1671,7 +1671,7 @@ NOTE: At any point in time through this workflow you should feel free to ask the
           issues: parsed.error.issues,
         })
       }
-      parts.forEach((part, index) => {
+      parts.forEach((part: any, index: any) => {
         const p = MessageV2.Part.safeParse(part)
         if (p.success) return
         log.error("invalid user part before save", {

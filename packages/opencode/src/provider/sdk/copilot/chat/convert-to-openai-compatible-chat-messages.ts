@@ -63,7 +63,7 @@ export function convertToOpenAICompatibleChatMessages(prompt: LanguageModelV3Pro
                 }
               }
             }
-          }),
+          }) as any,
           ...metadata,
         })
 

@@ -862,7 +862,6 @@ export const toModelMessagesEffect = Effect.fnUntraced(function* (
     convertToModelMessages(
       result.filter((msg: any) => msg.parts.some((part: any) => part.type !== "step-start")),
       {
-        //@ts-expect-error (convertToModelMessages expects a ToolSet but only actually needs tools[name]?.toModelOutput)
         tools,
       },
     ),
@@ -950,7 +949,7 @@ export function parts(message_id: MessageID) {
     db.select().from(PartTable).where(eq(PartTable.message_id, message_id)).orderBy(PartTable.id).all(),
   )
   return rows.map(
-    (row) =>
+    (row: any) =>
       ({
         ...row.data,
         id: row.id,

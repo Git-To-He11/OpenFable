@@ -215,8 +215,8 @@ describe("rebuild microcompact", () => {
           .find((m: any) => m.info.id === pre.msg.id)
           ?.parts.find((p: any) => p.type === "tool")
         expect(
-          preTool && preTool.state.status === "completed"
-            ? preTool.state.time.compacted
+          preTool && (preTool as any).state.status === "completed"
+            ? (preTool as any).state.time.compacted
             : undefined,
         ).toBeUndefined()
       }),

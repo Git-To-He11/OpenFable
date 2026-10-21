@@ -45,7 +45,7 @@ export const ReadTool = Tool.define(
         Effect.map((items: any) =>
           items
             .filter(
-              (item) =>
+              (item: any) =>
                 item.toLowerCase().includes(base.toLowerCase()) || base.toLowerCase().includes(item.toLowerCase()),
             )
             .map((item: any) => path.join(dir, item))

@@ -403,7 +403,7 @@ export const layer: Layer.Layer<
             if (
               recentParts.length !== DOOM_LOOP_THRESHOLD ||
               !recentParts.every(
-                (part) =>
+                (part: any) =>
                   part.type === "tool" &&
                   part.tool === value.toolName &&
                   part.state.status !== "pending" &&

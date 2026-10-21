@@ -24,7 +24,7 @@ export function InstanceMiddleware(workspaceID?: WorkspaceID): MiddlewareHandler
       async fn() {
         return Instance.provide({
           directory,
-          init: () => AppRuntime.runPromise(InstanceBootstrap),
+          init: () => AppRuntime.runPromise(InstanceBootstrap) as never as any,
           async fn() {
             return next()
           },

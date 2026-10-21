@@ -299,7 +299,7 @@ export function list(project: Project.Info) {
   const rows = Database.use((db) =>
     db.select().from(WorkspaceTable).where(eq(WorkspaceTable.project_id, project.id)).all(),
   )
-  const spaces = rows.map(fromRow).sort((a, b) => a.id.localeCompare(b.id))
+  const spaces = rows.map(fromRow).sort((a: any, b: any) => a.id.localeCompare(b.id))
   return spaces
 }
 
@@ -608,7 +608,7 @@ export function startWorkspaceSyncing(projectID: ProjectID) {
   )
 
   for (const row of new Map(spaces.map((row: any) => [row.workspace.id, row.workspace])).values()) {
-    void startSync(fromRow(row))
+    void startSync(fromRow(row as any))
   }
 }
 

@@ -53,3 +53,17 @@ UPCOMING_CHANGELOG.md
 /android/local.properties
 /android/app/*.keystore
 /android/app/debug/*.jks
+# --- cleanup artifacts ---
+push_out*.txt
+tmp-automation-hub/
+tmp-awesome-skills/
+tmp-create-prdd/
+tmp-gambit/
+tmp-prompt-popper/
+tmp-skill-creator/
+tmp-skills-collection/
+tmp-slash-commands/
+tmp-token-usage/
+OpenFable/
+*.exe
+*.bat

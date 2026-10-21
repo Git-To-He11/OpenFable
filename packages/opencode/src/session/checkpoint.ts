@@ -556,7 +556,7 @@ export const layer: Layer.Layer<
         msgs.map((m: any) => ({
           role: m.info.role,
           id: m.info.id,
-          content: m.parts.flatMap((p) =>
+          content: m.parts.flatMap((p: any) =>
             p.type === "tool"
               ? [
                   { type: "tool_use", id: p.callID },

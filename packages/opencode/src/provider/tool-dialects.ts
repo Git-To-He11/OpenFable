@@ -129,7 +129,7 @@ export class HermesDialect implements ToolCallDialect {
   encodeTools(tools: ToolSpec[]): any {
     const toolDefs = tools.map((t: any) => {
       const props = Object.entries(t.parameters.properties)
-        .map(([k, v]) => `    "${k}": {"type": "${v.type}"${v.description ? `, "description": "${v.description}"` : ""}}`)
+        .map(([k, v]: [string, any]) => `    "${k}": {"type": "${v.type}"${v.description ? `, "description": "${v.description}"` : ""}}`)
         .join(",\n")
       return `  "${t.name}": {\n    "description": "${t.description}",\n    "parameters": {\n      "type": "object",\n      "properties": {\n${props}\n      },\n      "required": [${(t.parameters.required ?? []).map((r: any) => `"${r}"`).join(", ")}]\n    }\n  }`
     })
@@ -176,7 +176,7 @@ export class XMLDialect implements ToolCallDialect {
   encodeTools(tools: ToolSpec[]): any {
     const defs = tools.map((t: any) => {
       const params = Object.entries(t.parameters.properties)
-        .map(([k, v]) => `  <param name="${k}" type="${v.type}">${v.description ?? ""}</param>`)
+        .map(([k, v]: [string, any]) => `  <param name="${k}" type="${v.type}">${v.description ?? ""}</param>`)
         .join("\n")
       return `<tool name="${t.name}">\n  <description>${t.description}</description>\n${params}\n</tool>`
     })
