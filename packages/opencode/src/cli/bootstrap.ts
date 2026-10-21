@@ -9,7 +9,7 @@ const log = Log.create({ service: "cli.bootstrap" })
 export async function bootstrap<T>(directory: string, cb: () => Promise<T>) {
   return Instance.provide({
     directory,
-    init: () => AppRuntime.runPromise(InstanceBootstrap) as never as any,
+    init: () => AppRuntime.runPromise(InstanceBootstrap as never),
     fn: async () => {
       try {
         return await cb()
