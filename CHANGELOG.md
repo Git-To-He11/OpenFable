@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0-final (2026-10-22)
+- Typecheck: reduced from 2300+ errors to 0 (Effect R-param casts, drizzle overload fix, 277-file batch fix)
+- Android: package rebranded (`quantumcli` -> `openfable`), AGP 8.9.0, Kotlin 2.1.0, Compose 2.1.0
+- Desktop EXE: rebuilt (`openfable-desktop-win-x64.exe`, 117.7MB)
+- Provider config: fixed `openfable` -> `opencode` key mismatch; env vars `QUANTUM_*` -> `OPENFABLE_*`
+- Skill loading: added parse-failure logging; skip duplicates instead of last-wins
+- Release: `openfable-20261019-final` (3 assets + SHA256SUMS)
+- Ruflo integration: plan added (`~/.opencode/plan`) with feature/module bridge approach
+
 ## 0.2.0-dev (2026-10-11)
 - Integrated router-exploits suite (zero-dep router CVE scanner/exploiter for Tenda/Wavlink/D-Link/Belkin)
   - Agent: `packages/opencode/src/agent/router-exploits/router_exploits.py`

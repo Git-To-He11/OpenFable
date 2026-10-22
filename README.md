@@ -19,6 +19,24 @@
 
 ---
 
+### 🔄 Origin / This Fork — Enhancement Comparison
+
+| Dimension | Original (MiMoCode / `quantumcli`) | OpenFable Fork (this repo) | Status |
+|---|---|---|---|
+| Package / brand | `com.projectzerodays.quantumcli` | `com.projectzerodays.openfable` | Done |
+| Provider key | `openfable` (wrong) | `opencode` (fixed) | Done |
+| Skill loading | Last-wins duplicates | Skip duplicates + parse logging | Done |
+| AGP / Kotlin / Compose | Old versions | 8.9.0 / 2.1.0 / 2.1.0 | Done |
+| Android SDK / lint | Disabled | SDK 35 + lint enabled | Done |
+| Build assets (APK + EXE) | Not rebuilt | `app-full-release.apk` + `.exe` (117MB) | Done |
+| Typecheck errors | Not tracked | **2300+ → 0** (`tsgo --noEmit`) | Done |
+| GitHub release | None | `openfable-20261019-final` (3 assets + SHA256) | Done |
+| Provider env vars | `QUANTUM_*` | `OPENFABLE_*` | Done |
+| Debug keystore fallback | Missing | Added for release builds | Done |
+| Ruflo integration | None | Plan + feature/module bridge | In progress |
+
+---
+
 ## What is OpenFable?
 
 OpenFable is a terminal-native AI coding agent that reads your code, writes patches, runs tests, and iterates until the job is done. It's built on [MiMoCode](https://github.com/XiaomiMiMo/MiMo-Code) (Xiaomi's open-source terminal AI assistant) and enhanced with:

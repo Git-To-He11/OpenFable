@@ -4,6 +4,9 @@
 
 A terminal-native AI coding assistant with persistent memory, multi-agent orchestration, and TUI. Fork of MiMoCode.
 
+## Ruflo Integration (in progress)
+Plan at `~/.opencode/plan` — feature/module integration of the ruflo agent harness (`https://github.com/ProjectZeroDays/ruflo`): MCP server bridge, swarm plugin, AgentDB memory layer, plugin marketplace wiring. Not a full code merge (dual-stack: Rust + TypeScript).
+
 ## Ownership
 
 Fork maintained by xanstomper. Full rebrand from MiMoCode → OpenFable complete.
