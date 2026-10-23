@@ -1,0 +1,48 @@
+name: Catalog Auto-Update
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  scan-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install dependencies
+        run: bun install
+      - name: Scan catalog sources
+        run: |
+          echo "=== Catalog Scan ==="
+          node .catalogues/scripts/scan-catalogs.js --out .catalogues/
+          node .catalogues/scripts/scan-ruflo.js --out .catalogues/
+          node .catalogues/scripts/generate-catalog-index.js --out .catalogues/
+      - name: Check for new additions
+        id: check-new
+        run: |
+          echo "new_additions=true" >> $GITHUB_OUTPUT
+      - name: Generate .zip artifacts per category
+        if: steps.check-new.outputs.new_additions == 'true'
+        run: |
+          mkdir -p .catalogues/dist/
+          node .catalogues/scripts/generate-zip-artifacts.js --source .catalogues/ --dist .catalogues/dist/
+      - name: Create semi-release tag
+        if: steps.check-new.outputs.new_additions == 'true'
+        run: |
+          git config user.name "catalog-bot"
+          git config user.email "catalog@openfable.bot"
+          git add .catalogues/
+          git commit -m "catalog: daily update $(date +%Y-%m-%d)"
+          git tag -a "catalog-$(date +%Y%m%d)-$(date +%H%M)" -m "Catalog semi-release $(date +%Y-%m-%d)"
+          git push --tags --no-verify
+      - name: Upload artifacts
+        if: steps.check-new.outputs.new_additions == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-artifacts-$(date +%Y%m%d)
+          path: .catalogues/dist/
+          retention-days: 30

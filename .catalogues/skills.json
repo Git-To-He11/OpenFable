@@ -1,0 +1,26 @@
+{
+  "catalog_name": "skills",
+  "version": "1.0.0",
+  "updated_at": "2026-10-23T06:00:00Z",
+  "source_repo": "https://github.com/ProjectZeroDays/ruflo",
+  "items": [
+    { "id": "agent-specialized", "name": "Specialized Agent Roles", "path": "packages/opencode/src/agent/specialized/", "version": "1.0.0", "verified": true },
+    { "id": "agent-computer-interface", "name": "Agent Computer Interface", "path": "packages/opencode/src/agent/computer-interface.ts", "version": "1.0.0", "verified": true },
+    { "id": "agent-sandbox", "name": "Sandbox Execution", "path": "packages/opencode/src/agent/sandbox.ts", "version": "1.0.0", "verified": true },
+    { "id": "cognitive-workflow", "name": "Cognitive Workflow State Machine", "path": "packages/opencode/src/workflow/cognitive/", "version": "1.0.0", "verified": true },
+    { "id": "layered-memory", "name": "Layered Memory System", "path": "packages/opencode/src/memory/layers/", "version": "1.0.0", "verified": true },
+    { "id": "verification-loop", "name": "RunUntilGreen Verification", "path": "packages/opencode/src/verification/", "version": "1.0.0", "verified": true },
+    { "id": "token-budget-engine", "name": "Token Budget Compiler", "path": "packages/opencode/src/token-budget/", "version": "1.0.0", "verified": true },
+    { "id": "repo-map-compiler", "name": "Repo-Map Knowledge Compiler", "path": "packages/opencode/src/knowledge/", "version": "1.0.0", "verified": true },
+    { "id": "unified-adapter", "name": "Unified Provider Adapter", "path": "packages/opencode/src/provider/unified-adapter.ts", "version": "1.0.0", "verified": true },
+    { "id": "computer-interface", "name": "Agent-Computer Command Set", "path": "packages/opencode/src/agent/computer-interface.ts", "version": "1.0.0", "verified": true },
+    { "id": "graph-workflow-engine", "name": "Graph Workflow Engine (LangGraph-style)", "path": "packages/opencode/src/workflow/graph/", "version": "1.0.0", "verified": true },
+    { "id": "skill-macro-framework", "name": "YAML/JSON Macro Skill Framework", "path": "packages/opencode/src/skill/macro/", "version": "1.0.0", "verified": true },
+    { "id": "sandbox-execution", "name": "Sandboxed Command Execution", "path": "packages/opencode/src/agent/sandbox.ts", "version": "1.0.0", "verified": true },
+    { "id": "tool-call-dialects", "name": "Multi-Provider Tool Call Dialects", "path": "packages/opencode/src/provider/tool-dialects.ts", "version": "1.0.0", "verified": true }
+  ],
+  "total_items": 14,
+  "verified_count": 14,
+  "new_items_last_update": 0,
+  "last_scan": "2026-10-23T06:00:00Z"
+}

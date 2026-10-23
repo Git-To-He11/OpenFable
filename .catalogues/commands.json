@@ -1,0 +1,15 @@
+{
+  "catalog_name": "commands",
+  "version": "1.0.0",
+  "items": [
+    { "id": "swarm", "name": "/swarm", "description": "Swarm orchestration activation", "verified": true },
+    { "id": "push", "name": "/push", "description": "Universal push macro (release gate)", "verified": true },
+    { "id": "goal", "name": "/goal", "description": "Release-goal verification (typecheck, lint, assets, docs)", "verified": true },
+    { "id": "debug", "name": "/debug", "description": "Debug config inspection", "verified": true },
+    { "id": "audit", "name": "/audit", "description": "Security audit command", "verified": true },
+    { "id": "release", "name": "/release", "description": "Release bundle creation", "verified": true }
+  ],
+  "total_items": 6,
+  "verified_count": 6,
+  "last_scan": "2026-10-23T06:00:00Z"
+}

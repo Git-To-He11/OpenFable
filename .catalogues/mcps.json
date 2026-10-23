@@ -1,0 +1,11 @@
+{
+  "catalog_name": "mcps",
+  "version": "1.0.0",
+  "items": [
+    { "id": "mcp-opencode", "name": "OpenFable MCP Server", "command": "npx -y opencode@latest mcp start", "verified": true },
+    { "id": "mcp-ruflo", "name": "Ruflo MCP Server", "command": "npx -y ruflo@latest mcp start", "verified": true }
+  ],
+  "total_items": 2,
+  "verified_count": 2,
+  "last_scan": "2026-10-23T06:00:00Z"
+}

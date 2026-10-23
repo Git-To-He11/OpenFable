@@ -1,0 +1,18 @@
+{
+  "catalog_name": "plugins",
+  "version": "1.0.0",
+  "updated_at": "2026-10-23T06:00:00Z",
+  "items": [
+    { "id": "ruflo-core", "name": "Ruflo Core Plugin", "description": "Foundation tools, agent definitions, MCP server", "version": "1.0.0", "verified": true },
+    { "id": "ruflo-swarm", "name": "Ruflo Swarm Plugin", "description": "Swarm coordination, mesh/hierarchical/adaptive topologies", "version": "1.0.0", "verified": true },
+    { "id": "ruflo-rag-memory", "name": "Ruflo RAG Memory Plugin", "description": "AgentDB vector memory with HNSW indexing and RuVector training", "version": "1.0.0", "verified": true },
+    { "id": "ruflo-security", "name": "Ruflo Security Audit Plugin", "description": "AIDefence, CVE remediation, path traversal prevention", "version": "1.0.0", "verified": true },
+    { "id": "ruflo-console", "name": "Ruflo Console Plugin", "description": "Agent cockpit — workflows, agents, cost, replay", "version": "1.0.0", "verified": true },
+    { "id": "ruflo-mods", "name": "Ruflo Mods Plugin", "description": "Routing and policy enforcement inside Claude Code", "version": "1.0.0", "verified": true },
+    { "id": "ruflo-ruos", "name": "Ruflo ruOS Plugin", "description": "Desktop that runs itself — desktop status segment", "version": "1.0.0", "verified": true }
+  ],
+  "total_items": 7,
+  "verified_count": 7,
+  "new_items_last_update": 7,
+  "last_scan": "2026-10-23T06:00:00Z"
+}

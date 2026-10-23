@@ -1,0 +1,12 @@
+{
+  "catalog_name": "providers",
+  "version": "1.0.0",
+  "items": [
+    { "id": "opencode-provider", "name": "OpenFable / opencode", "api": "https://api.xiaomimimo.com/v1", "verified": true },
+    { "id": "openrouter-provider", "name": "OpenRouter (thinkingmachines/inkling)", "api": "https://api.openrouter.ai/v1", "verified": true },
+    { "id": "ollama-provider", "name": "Ollama (local)", "api": "http://localhost:11434", "verified": true }
+  ],
+  "total_items": 3,
+  "verified_count": 3,
+  "last_scan": "2026-10-23T06:00:00Z"
+}
